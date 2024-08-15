@@ -1,0 +1,84 @@
+﻿@model DataSet
+@using System.Data
+
+@functions {
+    public class Totals
+    {
+        public decimal TotalDoanhThu { get; set; }
+        public decimal TotalKhoan { get; set; }
+        public decimal AverageTyLe { get; set; }
+    }
+
+    private Totals CalculateTotals(DataTable table)
+    {
+        decimal totalDoanhThu = 0;
+        decimal totalKhoan = 0;
+        decimal totalTyLe = 0;
+        int rowCount = table.Rows.Count;
+
+        foreach (DataRow row in table.Rows)
+        {
+            totalDoanhThu += Convert.ToDecimal(row["Tong_Thuc_Hien"]);
+            totalKhoan += Convert.ToDecimal(row["Tong_Khoan"]);
+            totalTyLe += Convert.ToDecimal(row["Ty_Le"]);
+        }
+
+        // Calculate the average Ty Le
+        decimal averageTyLe = rowCount > 0 ? totalTyLe / rowCount : 0;
+
+        return new Totals
+        {
+            TotalDoanhThu = totalDoanhThu,
+            TotalKhoan = totalKhoan,
+            AverageTyLe = averageTyLe
+        };
+    }
+}
+
+<table id="example" class="table table-striped table-bordered">
+    <thead class="table-dark ">
+        <tr>
+            <th class="ten-don-vi" style="width:300px">Tên Đơn Vị</th>
+            <th class="doanh-thu" style="width:120px">Doanh Thu</th>
+            <th class="khoan" style="width:120px">Khoán</th>
+            <th class="ty-le" style="width:120px">Tỷ lệ</th>
+            <th class="luy-ke" style="width:120px">Lũy Kế</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Tables.Count > 0)
+        {
+            foreach (DataRow row2 in Model.Tables[0].Rows)
+            {
+                <tr>
+                    <td class="ten-don-vi">@row2["Ten_DvCs"]</td>
+                    <td class="doanh-thu num" style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["Tong_Thuc_Hien"]))</td>
+                    <td class="khoan num" style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["Tong_Khoan"]))</td>
+                    <td class="ty-le total-tyle" style="text-align:right">
+                        @String.Format("{0:P2}", Convert.ToDecimal(row2["Ty_Le"]) / 100)
+                    </td>
+                    <td class="luy-ke num" style="text-align:right">0</td>
+                </tr>
+            }
+        }
+    </tbody>
+    <tfoot>
+        @if (Model.Tables.Count > 0)
+        {
+            var totals = CalculateTotals(Model.Tables[0]);
+            <tr style="background-color: burlywood">
+                <td class="ten-don-vi"><strong>Tổng cộng</strong></td>
+                <td class="doanh-thu" style="text-align:right">@String.Format("{0:n0}", totals.TotalDoanhThu)</td>
+                <td class="khoan" style="text-align:right">@String.Format("{0:n0}", totals.TotalKhoan)</td>
+                <td class="ty-le total-tyle" style="text-align:right">
+                    @String.Format("{0:P2}", totals.AverageTyLe / 100)
+                </td>
+                <td class="luy-ke" style="text-align:right">0</td>
+            </tr>
+        }
+    </tfoot>
+</table>
+
+
+
+

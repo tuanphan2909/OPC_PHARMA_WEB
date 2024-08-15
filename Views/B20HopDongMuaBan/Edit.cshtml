@@ -1,0 +1,394 @@
+﻿@model web4.Models.B20HDMuaBan
+
+@{
+    ViewBag.Title = "Sửa Hợp Đồng";
+    var dataItemsDtJson = Json.Encode(Model.DataItemsDt);
+    var dataItemsTdvJson = Json.Encode(Model.DataItemsTdv);
+    var paymentDataJson = Json.Encode(Model.PaymentData); // Add this line
+    var ckDataJson = Json.Encode(Model.CKData); // Add this line
+}
+
+<h2 class="text-center mt-4 mb-4">@ViewBag.Title</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var modelState in ViewData.ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            }
+        </ul>
+    </div>
+}
+
+<head>
+    <title>@ViewBag.Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Roboto',sans-serif;
+        }
+        .form-group.auto-width input {
+            width: auto;
+            min-width: 150px;
+            display: inline-block;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-control:read-only {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+            }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+
+            .btn-secondary:hover {
+                background-color: #5a6268;
+            }
+    </style>
+</head>
+
+<div class="container">
+    <form id="editForm" method="post" action="@Url.Action("Edit", "B20HopDongMuaBan")">
+        @Html.AntiForgeryToken()
+        <input type="hidden" id="Id" name="Id" value="@Model.Id" />
+
+        <!-- Mã Chi Nhánh Field -->
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="Ma_Dvcs">Mã Chi Nhánh:</label>
+                <input type="text" id="Ma_Dvcs" name="Ma_Dvcs" class="form-control auto-width" value="@Model.Ma_Dvcs" readonly />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="Ma_Dt">Chọn Mã Đối Tượng:</label>
+                <input type="text" id="Ma_Dt" name="Ma_Dt" class="form-control auto-width" value="@Model.Ma_Dt" required />
+            </div>
+            <div class="form-group col-md-4">
+                <label for="Ten_Dt">Tên Đối Tượng:</label>
+                <input type="text" id="Ten_Dt" name="Ten_Dt" class="form-control auto-width" value="@Model.Ten_Dt" readonly />
+            </div>
+            <div class="form-group col-md-4">
+                <label for="Dia_Chi">Địa Chỉ:</label>
+                <input type="text" id="Dia_Chi" name="Dia_Chi" class="form-control auto-width" value="@Model.Dia_Chi" readonly />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="Ma_TDV">Chọn Mã Trình Dược Viên:</label>
+                <input type="text" id="Ma_TDV" name="Ma_TDV" class="form-control short-input" value="@Model.Ma_TDV" required />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="Ten_TDV">Tên TDV:</label>
+                <input type="text" id="Ten_TDV" name="Ten_TDV" class="form-control auto-width" value="@Model.Ten_TDV" readonly />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="Loai_KH">Loại Khách Hàng:</label>
+                <input type="text" id="Loai_KH" name="Loai_KH" class="form-control auto-width" value="@Model.Loai_KH" />
+            </div>
+            <div class="form-group col-md-4">
+                <label for="Payment_ID_Text">Payment ID:</label>
+                <input type="text" id="Payment_ID_Text" name="Payment_ID" class="form-control auto-width" value="@Model.Payment_ID" required />
+            </div>
+            <div class="form-group col-md-4">
+                <label for="Payment_Text">Payment Text:</label>
+                <input type="text" id="Payment_Text" name="Payment_Text" class="form-control auto-width" value="@Model.Payment_Text" readonly />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="CK_Display">Chiết Khấu:</label>
+                <input type="text" id="CK_Display" name="CK_Display" class="form-control auto-width" value="@Model.CK" required />
+                <input type="hidden" id="CK" name="CK" value="@Model.CK" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="MST">Mã Số Thuế:</label>
+                <input type="text" id="MST" name="MST" class="form-control auto-width" value="@Model.MST" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="Ma_Dai_Dien">Mã Đại Diện:</label>
+                <input type="text" id="Ma_Dai_Dien" name="Ma_Dai_Dien" class="form-control auto-width" value="@Model.Ma_Dai_Dien" />
+            </div>
+            <div class="form-group col-md-4">
+                <label for="Ten_Dai_Dien">Tên Đại Diện:</label>
+                <input type="text" id="Ten_Dai_Dien" name="Ten_Dai_Dien" class="form-control auto-width" value="@Model.Ten_Dai_Dien" />
+            </div>
+            <div class="form-group col-md-4">
+                <label for="So_Dien_Thoai">Số Điện Thoại:</label>
+                <input type="text" id="So_Dien_Thoai" name="So_Dien_Thoai" class="form-control auto-width" value="@Model.So_Dien_Thoai" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="So_Hop_Dong">Số Hợp Đồng:</label>
+            <input type="text" id="So_Hop_Dong" name="So_Hop_Dong" class="form-control auto-width" value="@Model.So_Hop_Dong" required />
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="Ky_Hieu_HD">Ký Hiệu HĐ:</label>
+                <input type="text" id="Ky_Hieu_HD" name="Ky_Hieu_HD" class="form-control auto-width" value="@Model.Ky_Hieu_HD" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="Hop_Dong_VIP">Hợp Đồng VIP:</label>
+                <input type="number" id="Hop_Dong_VIP" name="Hop_Dong_VIP" class="form-control auto-width" value="@Model.Hop_Dong_VIP" required />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Doanh_Thu_Nam">Doanh Thu Năm:</label>
+            <input type="number" id="Doanh_Thu_Nam" name="Doanh_Thu_Nam" class="form-control auto-width" step="0.01" value="@Model.Doanh_Thu_Nam" required />
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label for="Doanh_Thu_Q1">Doanh Thu Q1:</label>
+                <input type="number" id="Doanh_Thu_Q1" name="Doanh_Thu_Q1" class="form-control auto-width" step="0.01" value="@Model.Doanh_Thu_Q1" required />
+            </div>
+            <div class="form-group col-md-3">
+                <label for="Doanh_Thu_Q2">Doanh Thu Q2:</label>
+                <input type="number" id="Doanh_Thu_Q2" name="Doanh_Thu_Q2" class="form-control auto-width" step="0.01" value="@Model.Doanh_Thu_Q2" required />
+            </div>
+            <div class="form-group col-md-3">
+                <label for="Doanh_Thu_Q3">Doanh Thu Q3:</label>
+                <input type="number" id="Doanh_Thu_Q3" name="Doanh_Thu_Q3" class="form-control auto-width" step="0.01" value="@Model.Doanh_Thu_Q3" required />
+            </div>
+            <div class="form-group col-md-3">
+                <label for="Doanh_Thu_Q4">Doanh Thu Q4:</label>
+                <input type="number" id="Doanh_Thu_Q4" name="Doanh_Thu_Q4" class="form-control auto-width" step="0.01" value="@Model.Doanh_Thu_Q4" required />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Ngay_Ky">Ngày Ký:</label>
+            <input type="text" id="Ngay_Ky" name="Ngay_Ky" class="form-control auto-width" value="@Model.Ngay_Ky.ToString("yyyy/MM/dd")" />
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="TG_Ky_HD">Thời Gian Ký Hợp Đồng:</label>
+                <input type="text" id="TG_Ky_HD" name="TG_Ky_HD" class="form-control auto-width" value="@Model.TG_Ky_HD" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="TG_Th_HD">Thời Gian Thực Hiện Hợp Đồng:</label>
+                <input type="text" id="TG_Th_HD" name="TG_Th_HD" class="form-control auto-width" value="@Model.TG_Th_HD" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6">
+                <input type="submit" value="Cập Nhật Hợp Đồng" class="btn btn-primary btn-block" />
+            </div>
+            <div class="col-md-6">
+                <a href="@Url.Action("Index", "B20HopDongMuaBan")" class="btn btn-secondary btn-block">Quay lại</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+$(document).ready(function () {
+    var dataItemsDt = @Html.Raw(dataItemsDtJson);
+    var dataItemsTdv = @Html.Raw(dataItemsTdvJson);
+    var paymentData = @Html.Raw(paymentDataJson); // Add this line
+    var ckData = @Html.Raw(ckDataJson); // Add this line
+
+    function setupAutocomplete(inputId, data, onSelectCallback) {
+        $("#" + inputId).autocomplete({
+            source: function (request, response) {
+                var term = request.term.toLowerCase();
+                var results = data.filter(function (item) {
+                    return item.Ma_Dt.toLowerCase().includes(term) || item.Ten_Dt.toLowerCase().includes(term);
+                }).map(function (item) {
+                    return {
+                        label: item.Ma_Dt + " - " + item.Ten_Dt,
+                        value: item.Ma_Dt,
+                        maDt: item.Ma_Dt,
+                        tenDt: item.Ten_Dt,
+                        diaChi: item.Dia_Chi
+                    };
+                });
+                response(results);
+            },
+            minLength: 1,
+            select: function (event, ui) {
+                $("#" + inputId).val(ui.item.value);
+                if (onSelectCallback) {
+                    onSelectCallback(ui.item);
+                }
+                return false;
+            }
+        }).autocomplete("instance")._renderItem = function (ul, item) {
+            return $("<li>")
+                .append("<div>" + item.label + "</div>")
+                .appendTo(ul);
+        };
+    }
+
+    function setupAutocompleteTdv(inputId, data, onSelectCallback) {
+        $("#" + inputId).autocomplete({
+            source: function (request, response) {
+                var term = request.term.toLowerCase();
+                var results = data.filter(function (item) {
+                    return item.Ma_CbNv.toLowerCase().includes(term) || item.hoten.toLowerCase().includes(term);
+                }).map(function (item) {
+                    return {
+                        label: item.Ma_CbNv + " - " + item.hoten,
+                        value: item.Ma_CbNv ,
+                        maCbNv: item.Ma_CbNv,
+                        hoTen: item.hoten
+                    };
+                });
+                response(results);
+            },
+            minLength: 1,
+            select: function (event, ui) {
+                $("#" + inputId).val(ui.item.value);
+                if (onSelectCallback) {
+                    onSelectCallback(ui.item);
+                }
+                return false;
+            }
+        }).autocomplete("instance")._renderItem = function (ul, item) {
+            return $("<li>")
+                .append("<div>" + item.label + "</div>")
+                .appendTo(ul);
+        };
+    }
+
+    function setupAutocompletePayment(inputId, data, onSelectCallback) {
+        $("#" + inputId).autocomplete({
+            source: function (request, response) {
+                var term = request.term.toLowerCase();
+                var results = data.filter(function (item) {
+                    return item.PaymentId.toLowerCase().includes(term) || item.PaymentText.toLowerCase().includes(term);
+                }).map(function (item) {
+                    return {
+                        label: item.PaymentId + " - " + item.PaymentText,
+                        value: item.PaymentId ,
+                        paymentId: item.PaymentId,
+                        paymentText: item.PaymentText
+                    };
+                });
+                response(results);
+            },
+            minLength: 1,
+            select: function (event, ui) {
+                $("#" + inputId).val(ui.item.value);
+                $("#Payment_Text").val(ui.item.paymentText);
+                if (onSelectCallback) {
+                    onSelectCallback(ui.item);
+                }
+                return false;
+            }
+        }).autocomplete("instance")._renderItem = function (ul, item) {
+            return $("<li>")
+                .append("<div>" + item.label + "</div>")
+                .appendTo(ul);
+        };
+    }
+
+    console.log('ckData:', ckData);
+
+    // Correct the mapping logic
+    var ckDataArray = ckData.map(function (item) {
+        return { key: item.Key.toString(), value: item.Value.toString() };
+    });
+
+    console.log('ckDataArray:', ckDataArray);
+
+    function setupAutocompleteCK(inputId, data, onSelectCallback) {
+        $("#" + inputId).autocomplete({
+            source: function (request, response) {
+                var term = request.term.toLowerCase();
+                var results = data.filter(function (item) {
+                    return item.key.toLowerCase().includes(term) || item.value.toLowerCase().includes(term);
+                }).map(function (item) {
+                    return {
+                        label: item.key + " - " + item.value,
+                        value: item.value, // Display the value
+                        key: item.key // Store the key
+                    };
+                });
+                response(results);
+            },
+            minLength: 1,
+            select: function (event, ui) {
+                $("#CK_Display").val(ui.item.value); // Display the value
+                $("#CK").val(ui.item.key); // Store the key
+                if (onSelectCallback) {
+                    onSelectCallback(ui.item);
+                }
+                return false;
+            }
+        }).autocomplete("instance")._renderItem = function (ul, item) {
+            return $("<li>")
+                .append("<div>" + item.label + "</div>")
+                .appendTo(ul);
+        };
+    }
+
+    setupAutocomplete("Ma_Dt", dataItemsDt, function (selectedItem) {
+        $("#Dia_Chi").val(selectedItem.diaChi);
+        $("#Ten_Dt").val(selectedItem.tenDt);
+    });
+
+    setupAutocompleteTdv("Ma_TDV", dataItemsTdv, function (selectedItem) {
+        $("#Ten_TDV").val(selectedItem.hoTen); // Update this line to set Ten_TDV
+    });
+
+    setupAutocompletePayment("Payment_ID_Text", paymentData); // Add this line
+
+    setupAutocompleteCK("CK_Display", ckDataArray); // Add this line
+
+    // Custom Datepicker for TG_Ky_HD and TG_Th_HD
+    $("#TG_Ky_HD, #TG_Th_HD").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        dateFormat: 'yy/mm',
+        onClose: function(dateText, inst) {
+            var month = ("0" + (inst.selectedMonth + 1)).slice(-2); // Format month as 2 digits
+            var year = inst.selectedYear;
+            $(this).val(year + '/' + month);
+        }
+    }).focus(function() {
+        $(".ui-datepicker-calendar").hide();
+        $(".ui-datepicker-current").hide();
+    });
+
+    $("#Ngay_Ky").datepicker({
+        dateFormat: 'yy/mm/dd',
+        changeMonth: true,
+        changeYear: true,
+        defaultDate: new Date()
+    }).datepicker("setDate", new Date());
+
+});
+</script>

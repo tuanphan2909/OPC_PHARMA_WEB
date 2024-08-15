@@ -1,0 +1,776 @@
+﻿﻿﻿@{
+    ViewBag.Title = "MẪU IN BẢNG KÊ NỘP TIỀN";
+    string chinhanh = "";
+    string Dvcs = Request.Cookies["MA_DVCS"].Value;
+    switch (Dvcs)
+    {
+        case "OPC_CT": chinhanh = "CHI NHÁNH CẦN THƠ";break;    
+        case "OPC_TG": chinhanh = "CHI NHÁNH TIỀN GIANG";break;    
+        case "OPC_MD": chinhanh = "CHI NHÁNH MIỀN ĐÔNG";break;    
+        case "OPC_TP": chinhanh = "CHI NHÁNH HỒ CHÍ MINH";break;    
+        case "OPC_VT": chinhanh = "CHI NHÁNH VŨNG TÀU";break;    
+        case "OPC_NT": chinhanh = "CHI NHÁNH NHA TRANG";break;    
+        case "OPC_DN": chinhanh = "CHI NHÁNH ĐÀ NẴNG";break;    
+        case "OPC_NA": chinhanh = "CHI NHÁNH NGHỆ AN";break;    
+        case "OPC_HN": chinhanh = "CHI NHÁNH HÀ NỘI";break;    
+    
+    }
+}
+
+ @using System.Data;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>MẪU IN BẢNG KÊ NỘP TIỀN</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Times New Roman';
+            color: black;
+        }
+
+        page {
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            /*  align-items: center;*/
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        form {
+            /*                text-align: center;*/
+            padding: 20px;
+            border: 0px solid #ccc;
+            border: none;
+        }
+
+        .flex-container {
+            text-align: left;
+        }
+
+        a:hover {
+            background-color: lightskyblue;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .container table {
+            justify-content: center;
+            align-items: center;
+            height: 50vh;
+            zoom: 90%;
+            text-align: center;
+        }
+
+        .container canvas {
+            justify-content: center;
+            align-items: center;
+            height: min-content;
+            zoom: normal;
+        }
+
+        h3 {
+            text-align: center;
+            font-weight: bold;
+            color: black;
+        }
+
+        table, td, th {
+            border: 1px solid black;
+            align-items: center;
+            margin-left: auto;
+            margin-right: auto;
+            height: 50px;
+            font-size: 12px
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        .num {
+            text-align: center;
+            width: 100px;
+        }
+
+        .ten {
+            text-align: left;
+        }
+
+        button {
+            background-color: #2297f6;
+            border: none;
+            outline: none;
+            padding: 5px;
+            font-size: 30px;
+            color: #ffffff;
+            cursor: pointer;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        p {
+            color: #ffffff;
+        }
+
+
+
+        canvas {
+            width: 200px;
+            height: 100px;
+            text-align: center;
+        }
+
+        .tu_ngay {
+            height: 35px;
+            border-radius: 5px;
+            border: 1px solid #dcdcdc;
+            padding: 0px 10px;
+            outline: none;
+            Format: 'd-m-y';
+        }
+
+        .den_ngay {
+            height: 35px;
+            border-radius: 5px;
+            border: 1px solid #dcdcdc;
+            padding: 0px 10px;
+            outline: none;
+            Format: 'd-m-y';
+        }
+
+
+
+        div#chart {
+            text-align: center;
+            display: flex;
+            justify-content:;
+            width: 50%;
+            height: 300px;
+        }
+
+        .submit {
+            /*height: 50px;
+            width: 100px;*/
+            background-color: silver;
+            border: none;
+            color: cadetblue;
+            border-radius: 7px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 20px;
+            justify-content: center;
+            align-items: center;
+            transition: all 1s ease-in-out;
+        }
+
+            .submit:hover {
+                background-color: darkcyan;
+                color: #ffffff;
+                transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+            }
+
+        .form .locBC {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            width: 500px;
+            height: 400px;
+            float: left;
+        }
+
+        .form table {
+            justify-content: center;
+            align-items: center;
+            height: 50vh;
+            zoom: 90%;
+            text-align: center;
+        }
+
+        .expandable {
+            cursor: pointer;
+        }
+
+        .percent {
+            width: 20%;
+            text-align: right;
+            text-align: center;
+            background-color: #eee;
+            background: linear-gradient(to right, #3399dd, #3399dd);
+            background-size: 1% 100%;
+            background-repeat: no-repeat;
+        }
+
+
+
+        #data {
+            width: 100%;
+            height: 150px;
+            background: white;
+            float: inline-start;
+        }
+
+        .dropdown-check-list {
+            display: inline-block;
+        }
+
+            .dropdown-check-list .anchor {
+                position: relative;
+                cursor: pointer;
+                display: inline-block;
+                padding: 5px 50px 5px 10px;
+                border: 1px solid #ccc;
+            }
+
+                .dropdown-check-list .anchor:after {
+                    position: absolute;
+                    content: "";
+                    border-left: 2px solid black;
+                    border-top: 2px solid black;
+                    padding: 5px;
+                    right: 10px;
+                    top: 20%;
+                    -moz-transform: rotate(-135deg);
+                    -ms-transform: rotate(-135deg);
+                    -o-transform: rotate(-135deg);
+                    -webkit-transform: rotate(-135deg);
+                    transform: rotate(-135deg);
+                }
+
+                .dropdown-check-list .anchor:active:after {
+                    right: 8px;
+                    top: 21%;
+                }
+
+            .dropdown-check-list ul.items {
+                padding: 2px;
+                display: none;
+                margin: 0;
+                border: 1px solid #ccc;
+                border-top: none;
+            }
+
+                .dropdown-check-list ul.items li {
+                    list-style: none;
+                }
+
+            .dropdown-check-list.visible .anchor {
+                color: #0094ff;
+            }
+
+            .dropdown-check-list.visible .items {
+                display: block;
+            }
+
+        .custom-combobox-container {
+            position: relative;
+            width: 100%;
+            outline: none;
+            border: none;
+        }
+
+        .custom-combobox {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            border: 1px solid rgb(199, 199, 199);
+            padding: 10px;
+        }
+
+            .custom-combobox input[type="text"] {
+                width: 95%;
+                border: none;
+                outline: none;
+                background: none;
+            }
+
+        .options-container {
+            position: absolute;
+            width: 100%;
+            z-index: 100;
+            border: 1px solid rgb(204, 204, 204);
+            border-top: none;
+            display: none;
+            height: 150px;
+            overflow-y: scroll;
+        }
+
+            .options-container label {
+                display: block;
+                cursor: pointer;
+                padding: 5px;
+                margin-top: 5px;
+                user-select: none;
+            }
+
+                .options-container label:hover {
+                    background: rgb(255, 255, 255);
+                }
+
+            .options-container::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .options-container::-webkit-scrollbar-thumb {
+                background-color: white;
+            }
+
+        .sidebar {
+            position: fixed;
+            height: 100%;
+            width: 200px;
+            transition: all 0.5s ease;
+        }
+
+        .myInput {
+            text-align: center;
+            height: auto;
+            width: 1000px;
+            padding: 10px;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h5 {
+            /*text-align: center;*/
+            font-size: 15px;
+        }
+
+        .text-loading {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-size: 13px;
+            color: black;
+            z-index: 1;
+            background-color: rgba(255, 255, 255, 0.9); /* Background color for the span */
+            padding: 5px 10px;
+            display: none; /* Hide the span element initially */
+        }
+
+        .expandable-icon {
+            cursor: pointer;
+        }
+
+            .expandable-icon.collapsed {
+                transform: rotate(0deg);
+            }
+
+            .expandable-icon.expanded {
+                transform: rotate(180deg);
+            }
+
+        .material-symbols-outlined {
+            cursor: pointer;
+        }
+        /* Style for the container of the forms */
+        .forms-container {
+            display: flex;
+        }
+
+        /* Style for the locBC form */
+        .locBC-form {
+            width: 300px; /* Adjust width as needed */
+            margin-right: 20px; /* Add space between forms */
+        }
+
+        /* Style for the data form */
+        .data-form {
+            flex: 1; /* Take up remaining space */
+        }
+
+        .print-button {
+            margin-top: 10px;
+        }
+
+        @@media print {
+            #locBC {
+                display: none;
+            }
+
+            #data-form {
+                justify-content: center;
+                /*  align-items: center;*/
+                min-height: 100vh;
+                margin: 0; /* Canh giữa nội dung trong data-form */
+            }
+
+            h5 {
+                text-align: center;
+                font-size: 15px;
+            }
+
+            #data-form .print-button {
+                display: none;
+            }
+        }
+
+        img {
+            width: 70px;
+            height: 40px;
+        }
+
+        tr {
+            page-break-inside: avoid; /* Tránh chuyển trang giữa các dòng */
+        }
+        tr td{
+            text-align:center;
+        }
+        tfoot {
+            display: table-row-group;
+        }
+        thead {
+            display: table-header-group;
+        }
+    </style>
+
+    <link rel="stylesheet" href="~/Styles/loader.css">
+</head>
+<body>
+    <div class="loader" style="z-index:1"></div>
+    <span id="spanText" class="text-loading">[]</span>
+    <div>
+        <form>
+
+            <div style="width:800px;display:flex;justify-content:space-between;">
+
+
+                <div style="text-align: left;width:300px;margin-left:20px">
+                    <div><span style="color:black;font-weight:bold"> </span>@chinhanh</div>
+
+
+                </div>
+
+                <div style="margin-right: 20px">PHỤ LỤC 4_FFO.601.4</div>
+
+            </div>
+            <br />
+
+            <div>
+
+                <h3 style="font-size:25px">BẢNG KÊ NỘP TIỀN VÀ TỔNG HỢP CHIẾT KHẤU THANH TOÁN</h3>
+                <div style="font-size:16px;text-align:center">
+                    @foreach (DataRow row in Model.Tables[0].Rows)
+                    {
+                        @row["Ngay_Ct"]; break;
+                    }
+            </div>
+            <div style="text-align:center">
+                Số: @foreach (DataRow row in Model.Tables[0].Rows)
+                {@row["So_BK"]; break;
+            }
+            </div>
+
+
+
+        </div>
+
+
+        <div style="text-align:left;line-height: 20px;margin-left:40px">
+
+            <div style="font-weight:bold">
+                Người nộp tiền: <span style="color:black;font-weight:bold">
+                    @foreach (DataRow row in Model.Tables[0].Rows)
+                    {@row["Nguoi_Nop_Tien"]; break;
+                }
+                </span>
+            </div>
+
+
+        </div>
+        <div>
+            <table border="1" style="width:750px">
+                <thead>
+                    <tr>
+                        <th rowspan="2">STT</th>
+                        <th colspan="2">Hóa Đơn</th>
+                        <th rowspan="2" width="80px">Biên lai thu tiền</th>
+                        <th rowspan="2" width="150px">Khách Hàng</th>
+                        <th rowspan="2" width="40px">Hạn Mức Ngày Nợ</th>
+                        <th rowspan="2" width="60px">Ngày TT được CK</th>
+                        <th rowspan="2" width="60px">Tiền HĐ trước thuế</th>
+                        <th rowspan="2" width="60px">Tiền thuế</th>
+                        <th rowspan="2" width="60px">CKTT</th>
+                        <th rowspan="2" width="60px">Tiền thu đã trừ CK</th>
+
+                    </tr>
+
+                    <tr>
+                        <th style="width:60px">Số</th>
+                        <th style="width:60px">Ngày</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+                    @{var stt = 1;
+                        foreach (DataRow row in Model.Tables[1].Rows)
+                        {
+                            <tr>
+                                <td>@stt</td>
+                                <td>@row["So_Hd"]</td>
+                                <td>@row["Ngay_HD_1"]</td>
+                                <td>@row["Bien_Lai"]</td>
+                                <td style="text-align:left">@row["Ten_Dt"]</td>
+                                <td>@row["Ngay_No"]</td>
+                                <td>@row["Ngay_Den_Han_1"]</td>
+                                <td style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row["Tien_Truoc_Thue"])).Replace(",", ".")</td>
+                                <td style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row["Thue"])).Replace(",", ".")</td>
+                                <td style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row["Tien_CKTT"])).Replace(",", ".")</td>
+                                <td style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row["Tien_Phai_Thu"])).Replace(",", ".")</td>
+                            </tr>
+                            stt++;
+                        }
+
+                    }
+                </tbody>
+                <tfoot>
+                    <tr style="font-weight:bold">
+                        @foreach (DataRow row in Model.Tables[2].Rows)
+                        {
+                            <td colspan="7">TỔNG CỘNG: </td>
+                            <td style="text-align:right">
+                                @{
+                                    var sumTienTruocThue = row["Sum_Tien_Truoc_Thue"];
+                                    if (sumTienTruocThue == DBNull.Value)
+                                    {
+                                        @:0
+                                    }
+                                    else
+                                    {
+                                        @String.Format("{0:n0}", Convert.ToDecimal(sumTienTruocThue)).Replace(",", ".")
+                                    }
+                                }
+                            </td>
+
+                            <td style="text-align:right">
+                                @{
+                                    var sumThue = row["Sum_Thue"];
+                                    if (sumThue == DBNull.Value)
+                                    {
+                                        @:0
+                                    }
+                                    else
+                                    {
+                                        @String.Format("{0:n0}", Convert.ToDecimal(sumThue)).Replace(",", ".")
+                                    }
+                                }
+                            </td>
+                            <td style="text-align:right">
+                                @{
+                                    var sumTienCKTT = row["Sum_Tien_CKTT"];
+                                    if (sumTienCKTT == DBNull.Value)
+                                    {
+                                        @:0
+                                    }
+                                    else
+                                    {
+                                        @String.Format("{0:n0}", Convert.ToDecimal(sumTienCKTT)).Replace(",", ".")
+                                    }
+                                }
+                            </td>
+                            <td style="text-align:right" class="para">
+                                @{
+                                    var sumTienPT = row["Sum_Tien_PT"];
+                                    if (sumTienPT == DBNull.Value)
+                                    {
+                                        @:0
+                                    }
+                                    else
+                                    {
+                                        @String.Format("{0:n0}", Convert.ToDecimal(sumTienPT)).Replace(",", ".")
+                                    }
+                                }
+                            </td>
+
+                        }
+                    </tr>
+                </tfoot>
+            </table>
+            <br />
+            <div style="text-align:left;margin-left: 20px">
+                <div style="text-align:left">
+                    <div>Tổng Tiền Phiếu Mua Hàng</div><br />
+                    <div>- Ngày Giao Hàng:.....................................................................................................................................................</div><br />
+                    <div>- Số Tiền Bằng Chữ: <span id="resultDiv1"></span></div><br />
+                    <div>- Tổng số lượng biên lai trả KTCN:.............................Nợ lại biên lai:....................................................................... </div><br />
+                    <div>- Lý do:........................................................................................................................................................................</div><br />
+                    <div>- Giải trình bỏ CKTT: .................................................................................................................................................</div>
+                </div>
+            </div>
+
+            <br />
+            <div style="text-align:right;margin-right:30px">
+                <h4>Ngày&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tháng&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;năm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+            </div>
+            <div class="header" style="justify-content:space-between;display:flex">
+                <h4 style="margin-left:10px">Người nộp tiền</h4>
+
+                <h4 style="margin-right:10px">Kế toán công nợ</h4>
+                <h4 style="margin-right:90px">Thủ quỹ</h4>
+            </div>
+            @*<div class="header" style="text-align:center;align-content:space-between;display:flex">
+                    <h4 style="text-align:left;margin-left:25px">(Ký, họ tên)</h4>
+
+                    <h4 style="text-align:center;margin-right:-40px">(Ký, họ tên)</h4>
+                    <h4 style="text-align:right;margin-right:20px;margin-right:50px">(Ký, họ tên)</h4>
+                </div>*@
+        </div>
+    </form>
+</div>
+<script>
+    function showLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.remove("loader-hidden");
+    }
+    function openNewTab(url) {
+        window.open(url, '_blank');
+    }
+    // Function to hide the loader
+    function hideLoader() {
+        const loader = document.querySelector(".loader");
+        loader.classList.add("loader-hidden");
+    }
+
+    // Add event listener for window load event
+    window.addEventListener("load", () => {
+        // Hide the loader after the page is loaded
+        hideLoader();
+    });
+
+</script>
+<script>
+    // Hàm để đọc giá trị từ cookie
+    function getCookieValue(cookieName) {
+        var name = cookieName + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var cookieArray = decodedCookie.split(';');
+        for (var i = 0; i < cookieArray.length; i++) {
+            var cookie = cookieArray[i].trim();
+            if (cookie.indexOf(name) == 0) {
+                return cookie.substring(name.length, cookie.length);
+            }
+        }
+        return "";
+    }
+
+    // Lấy giá trị từ cookie
+    var toDateCookie = getCookieValue("Ngay_Ky");
+
+    // Tách giá trị thành năm, tháng, ngày
+    var dateParts = toDateCookie.split("-");
+    var year = dateParts[0];
+    var month = dateParts[1];
+    var day = dateParts[2];
+
+    // Hiển thị lên HTML
+    var resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = "Ngày " + day + "  tháng " + month + "   năm " + year;
+</script>
+<script>
+    let tienSTString = document.querySelector('.para').innerText;
+
+    // Thay thế dấu phẩy bằng dấu chấm (nếu có)
+    tienSTString = tienSTString.replace(/\./g, '').replace(/,/g, '.');
+
+    // Chuyển đổi chuỗi thành số
+    let tienSTFromTable = parseFloat(tienSTString);
+
+    console.log("Gia trị tienST: ", tienSTFromTable);
+
+    function readNumberInVietnamese(number) {
+        const numberWords = ["", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
+        const unitWords = ["", "nghìn ", "triệu ", "tỷ "];
+
+        function readGroupOfThreeDigits(group) {
+            let result = "";
+            let hundred = Math.floor(group / 100);
+            let remainder = group % 100;
+
+            if (hundred > 0) {
+                result += numberWords[hundred] + " trăm ";
+            }
+
+            // Xử lý trường hợp đặc biệt khi remainder có 3 chữ số và không cần "mười"
+            if (remainder >= 10 && remainder < 20) {
+                result += "mười " + numberWords[remainder % 10];
+            } else if (remainder > 0) {
+                if (remainder < 10) {
+                    result += numberWords[remainder];
+                } else {
+                    result += numberWords[Math.floor(remainder / 10)] + " mươi ";
+                    if (remainder % 10 > 0) {
+                        // Xử lý trường hợp đặc biệt cho số 1 và 5
+                        if (remainder % 10 === 1) {
+                            result += "mốt";
+                        } else if (remainder % 10 === 5) {
+                            result += "lăm";
+                        } else {
+                            result += numberWords[remainder % 10];
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        function addUnitWords(text, unitIndex) {
+            if (text.trim() !== "") {
+                return text + " " + unitWords[unitIndex];
+            }
+            return text;
+        }
+
+        if (number === 0) {
+            return "không đồng";
+        }
+
+        let result = "";
+        let numberString = number.toString();
+
+        while (numberString.length % 3 !== 0) {
+            numberString = "0" + numberString;
+        }
+
+        for (let i = 0; i < numberString.length / 3; i++) {
+            let group = parseInt(numberString.substr(i * 3, 3), 10);
+            result += readGroupOfThreeDigits(group);
+            result = addUnitWords(result, numberString.length / 3 - i - 1);
+        }
+
+        return result.trim() + " đồng.";
+    }
+
+    // Kiểm tra giá trị của tienSTFromTable
+    /*  console.log("Giá trị của tienSTFromTable:", tienSTFromTable);*/
+
+    // Hiển thị giá trị của tienST trong thẻ div có ID là "resultDiv1"
+    if (!isNaN(tienSTFromTable)) {
+        let vietnameseText = readNumberInVietnamese(tienSTFromTable);
+        vietnameseText = vietnameseText.charAt(0).toUpperCase() + vietnameseText.slice(1);
+        let resultDiv = document.getElementById("resultDiv1");
+
+        if (resultDiv) {
+            resultDiv.innerText = vietnameseText;
+        }
+    }
+</script>
+
+</body>
+
+</html>
+
+

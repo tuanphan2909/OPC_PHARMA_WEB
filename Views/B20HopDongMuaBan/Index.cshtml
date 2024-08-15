@@ -1,0 +1,369 @@
+﻿@model IEnumerable<web4.Models.B20HDMuaBan>
+
+@{
+    ViewBag.Title = "HỢP ĐỒNG MUA BÁN";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành công',
+                html: '@Html.Raw(HttpUtility.HtmlDecode(TempData["SuccessMessage"].ToString()))',
+                confirmButtonText: 'OK',
+                customClass: {
+                    popup: 'swal2-custom-popup'
+                }
+            });
+        });
+    </script>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi',
+                html: '@Html.Raw(HttpUtility.HtmlDecode(TempData["ErrorMessage"].ToString()))',
+                confirmButtonText: 'OK',
+                customClass: {
+                    popup: 'swal2-custom-popup'
+                }
+            });
+        });
+    </script>
+}
+
+<!-- DataTables CSS -->
+<link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+<!-- jQuery UI CSS -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+<!--Font Roboto-->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- jQuery UI JS -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<style>
+    * {
+        font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f4f8;
+        color: #333;
+    }
+
+    h1 {
+        margin: 20px 0;
+        font-size: 2em;
+        color: #dc3545;
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    .table-responsive {
+        margin: 20px 0;
+    }
+
+    .table {
+        font-family: 'Courier New', monospace;
+    }
+
+        .table thead th {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            border-bottom: 2px solid #ddd;
+            cursor: pointer;
+            border-right: 1px solid #ddd; /* Add column separators */
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+            border-right: 1px solid #ddd; /* Add column separators */
+            word-wrap: break-word; /* Allow long text to wrap */
+            white-space: normal;
+        }
+
+        .table tbody tr:nth-child(odd) {
+            background-color: #e9ecef;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+    .dt-buttons {
+        margin-bottom: 10px;
+    }
+
+        .dt-buttons .dt-button {
+            background-color: #ffc107;
+            color: black;
+            border: none;
+            padding: 5px 10px;
+            margin: 2px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+            .dt-buttons .dt-button:hover {
+                background-color: #e0a800;
+            }
+
+    .dataTables_wrapper .dataTables_filter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+        .dataTables_wrapper .dataTables_filter label {
+            color: #343a40;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid #343a40;
+            border-radius: 5px;
+            padding: 5px;
+            margin-left: 5px;
+        }
+
+    .dataTables_wrapper .dataTables_paginate {
+        float: right;
+    }
+
+    .dataTables_wrapper .dataTables_info {
+        float: left;
+    }
+
+    .btn-add-contract {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        margin-right: 20px;
+        border-radius: 3px;
+        cursor: pointer;
+        width: 160px;
+        height: 35px;
+    }
+
+        .btn-add-contract:hover {
+            background-color: #218838;
+        }
+
+    .custom-header {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .custom-search {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .swal2-custom-popup {
+        font-size: 0.8rem;
+        background-color: #f0f8ff;
+        border: 1px solid #00bfff;
+        width: 500px;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .btn-edit {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        margin-right: 5px;
+        width: 65px;
+    }
+
+        .btn-edit:hover {
+            background-color: #0056b3;
+        }
+
+    .btn-delete {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        width: 65px;
+    }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+    /* Adjust column widths */
+    #hdMuaBanTable th:nth-child(3),
+    #hdMuaBanTable td:nth-child(3),
+    #hdMuaBanTable th:nth-child(5),
+    #hdMuaBanTable td:nth-child(5) {
+        width: 250px; /* Adjust the width as needed */
+    }
+
+    #hdMuaBanTable th:nth-child(7),
+    #hdMuaBanTable td:nth-child(7) {
+        width: 200px; /* Adjust the width for Payment-Text column */
+    }
+</style>
+
+<h1>DANH SÁCH HỢP ĐỒNG</h1>
+
+<div class="custom-header">
+    <div></div>
+    <div class="custom-search">
+        <button class="btn-add-contract" onclick="addContract()">Thêm Hợp Đồng</button>
+    </div>
+    <div></div>
+</div>
+
+<div class="table-responsive">
+    <table id="hdMuaBanTable" class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Mã Chi Nhánh</th>
+                <th>Mã Đối Tượng</th>
+                <th>Tên Đối Tượng</th>
+                <th>Mã TDV</th>
+                <th>Tên TDV</th>
+                <th>Payment-ID</th>
+                <th>Payment-Text</th>
+                <th>Chiết Khấu</th>
+                <th>Mã Số Thuế</th>
+                <th>Ngày Ký</th>
+                <th>Số Hợp Đồng</th>
+                <th>TG Ký HD</th>
+                <th>TG Thực Hiện HD</th>
+                <th>Lựa Chọn</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@item.Ma_Dvcs</td>
+                <td>@item.Ma_Dt</td>
+                <td>@item.Ten_Dt</td>
+                <td>@item.Ma_TDV</td>
+                <td>@item.Ten_TDV</td>
+                <td>@item.Payment_ID</td>
+                <td>@item.Payment_Text</td>
+                <td>@item.CK</td>
+                <td>@item.MST</td>
+                <td>@item.Ngay_Ky.ToString("dd/MM/yyyy")</td>
+                <td>@item.So_Hop_Dong</td>
+                <td>@item.TG_Ky_HD</td>
+                <td>@item.TG_Th_HD</td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn-edit" onclick="editContract('@item.Id')">Sửa</button>
+                        <button class="btn-delete" onclick="deleteContract('@item.Id')">Xóa</button>
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+function addContract() {
+    var branchCodes = ["OPC_CT", "OPC_TP", "OPC_HN", "OPC_MD", "OPC_VT", "OPC_TG", "OPC_NT", "OPC_DN", "OPC_NA"];
+
+    $('<div id="branchCodeDialog" title="Nhập mã chi nhánh">' +
+        '<input id="branchCodeInput" type="text" class="form-control">' +
+        '</div>').dialog({
+            modal: true,
+            buttons: {
+                "OK": function () {
+                    var branchCode = $('#branchCodeInput').val();
+                    if (branchCode) {
+                        location.href = '@Url.Action("Create", "B20HopDongMuaBan")?branch=' + branchCode;
+                    }
+                    $(this).dialog("close");
+                },
+                "Cancel": function () {
+                    $(this).dialog("close");
+                }
+            },
+            close: function () {
+                $(this).remove();
+            }
+        });
+
+    $("#branchCodeInput").autocomplete({
+        source: branchCodes
+    });
+}
+
+$(document).ready(function () {
+    $('#hdMuaBanTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        "pageLength": 20,
+        "language": {
+            "search": "Tìm kiếm:",
+            "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",
+            "zeroRecords": "Không tìm thấy kết quả",
+            "info": "Hiển thị trang _PAGE_ của _PAGES_",
+            "infoEmpty": "Không có dữ liệu",
+            "infoFiltered": "(lọc từ _MAX_ tổng số dòng)",
+            "paginate": {
+                "first": "Đầu",
+                "last": "Cuối",
+                "next": "Tiếp",
+                "previous": "Trước"
+            }
+        }
+    });
+});
+
+function editContract(id) {
+    window.location.href = '@Url.Action("Edit", "B20HopDongMuaBan")/' + id;
+}
+
+function deleteContract(id) {
+    window.location.href = '@Url.Action("Delete", "B20HopDongMuaBan")/' + id;
+}
+</script>

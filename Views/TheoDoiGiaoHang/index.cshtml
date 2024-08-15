@@ -1,0 +1,374 @@
+﻿﻿@using System.Data;
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        h4 {
+            text-align: center;
+            color: blue;
+        }
+
+        .add-new-button {
+            background-color: #28a745; /* Green color */
+            color: #fff; /* White text color */
+            border: none;
+            border-radius: 5px; /* Rounded corners */
+            padding: 10px 20px; /* Adjust padding as needed */
+            font-size: 16px; /* Adjust font size as needed */
+            /*/float: right; /* Adjust margin to position it to the right */
+            margin-left: auto; /* Auto margin left to push it to the right */
+            display: flex; /* Use flexbox to control layout */
+        }
+        /* Button base style */
+        td button {
+            background-color: transparent;
+            border: 2px solid red;
+            color: red;
+            padding: 10px 20px; /* Adjust padding for a balanced look */
+            font-size: 14px; /* Slightly larger font for better readability */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            font-family: 'Arial', sans-serif; /* Optional: Choose a clean font */
+        }
+
+            /* Hover effect */
+            td button:hover {
+                background-color: red;
+                color: #fff;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow effect */
+            }
+
+            /* Optional: Large button size */
+            td button.large {
+                padding: 15px 30px;
+                font-size: 18px;
+            }
+
+            /* Optional: Primary button style */
+            td button.primary {
+                background-color: red;
+                border-color: red;
+                color: #fff;
+            }
+
+                td button.primary:hover {
+                    background-color: darkred;
+                    border-color: darkred;
+                }
+
+            /* Optional: Add focus effect for accessibility */
+            td button:focus {
+                outline: none;
+                box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+            }
+        /* Base style for the edit button */
+        .editBtn {
+            background-color: transparent;
+            border: 2px solid blue;
+            color: blue;
+            padding: 10px 20px; /* Adjust padding for a balanced look */
+            font-size: 14px; /* Slightly larger font for better readability */
+            text-decoration: none; /* Remove underline */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            display: inline-block; /* Ensure proper padding and margin */
+            font-family: 'Arial', sans-serif; /* Optional: Choose a clean font */
+        }
+
+            /* Hover effect */
+            .editBtn:hover {
+                background-color: blue;
+                color: #fff;
+                box-shadow: 0 0 10px rgba(0, 0, 255, 0.2); /* Optional: Add a shadow effect */
+            }
+
+            /* Optional: Focus effect for accessibility */
+            .editBtn:focus {
+                outline: none;
+                box-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
+            }
+        /* Base style for the print button */
+        .Coppy {
+            background-color: transparent;
+            border: 2px solid orange;
+            color: orange;
+            padding: 10px 20px; /* Adjust padding for a balanced look */
+            font-size: 14px; /* Slightly larger font for better readability */
+            text-decoration: none; /* Remove underline */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            display: inline-block; /* Ensure proper padding and margin */
+            font-family: 'Arial', sans-serif; /* Optional: Choose a clean font */
+        }
+
+            /* Hover effect */
+            .Coppy:hover {
+                background-color: orange;
+                color: #fff;
+                box-shadow: 0 0 10px rgba(255, 165, 0, 0.2); /* Optional: Add a shadow effect */
+            }
+
+            /* Optional: Focus effect for accessibility */
+            .Coppy:focus {
+                outline: none;
+                box-shadow: 0 0 5px rgba(255, 165, 0, 0.5);
+            }
+
+
+        .Coppy2 {
+            background-color: transparent;
+            border: 2px solid orange;
+            color: orange;
+            padding: 10px 20px; /* Adjust padding for a balanced look */
+            font-size: 14px; /* Slightly larger font for better readability */
+            text-decoration: none; /* Remove underline */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            display: inline-block; /* Ensure proper padding and margin */
+            font-family: 'Arial', sans-serif; /* Optional: Choose a clean font */
+        }
+
+            /* Hover effect */
+            .Coppy2:hover {
+                background-color: orange;
+                color: #fff;
+                box-shadow: 0 0 10px rgba(255, 165, 0, 0.2); /* Optional: Add a shadow effect */
+            }
+
+            /* Optional: Focus effect for accessibility */
+            .Coppy2:focus {
+                outline: none;
+                box-shadow: 0 0 5px rgba(255, 165, 0, 0.5);
+            }
+    </style>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Danh Sách Theo Dõi Giao Hàng</title>
+    <meta content="" name="description">
+    <meta content="Author" name="MJ Maraz">
+    <link href="~/assets/images/logo.png" rel="icon">
+    <link href="~/assets/images/favicon.png" rel="apple-touch-icon">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- ========================================================= -->
+
+
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/assets/css/datatables.min.css">
+</head>
+<!-- =============== Design & Develop By = MJ MARAZ   ====================== -->
+
+<body style="background-color: #e0e8ee ">
+    <header class="header_part" style="background-color: #aec9e0; color: #3483bd ">
+        @if (Request.Cookies["UserName"].Value == "admin-cnct" || Request.Cookies["UserName"].Value == "admin-cntg" || Request.Cookies["UserName"].Value == "admin-cnmd" || Request.Cookies["UserName"].Value == "admin-cnh1" || Request.Cookies["UserName"].Value == "admin-cnvt"
+                     || Request.Cookies["UserName"].Value == "admin-cnnt" || Request.Cookies["UserName"].Value == "admin - cndn" || Request.Cookies["UserName"].Value == "admin - cnna" || Request.Cookies["UserName"].Value == "admin - cnhn")
+        {
+            <a href="/Home/About1" style="cursor:pointer">
+                <img src="~/Images/opc.png" style="height:60px;width:60px;margin-left:10px">
+            </a>
+        }
+        else
+        {
+            <a href="/Home/About" style="cursor:pointer">
+                <img src="~/Images/opc.png" style="height:60px;width:60px;margin-left:10px">
+            </a>
+        }
+        <h4 style="color:#3483bd">Danh Sách Theo Dõi Giao Hàng</h4>
+    </header>
+    <!-- =======  Data-Table  = Start  ========================== -->
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <button type="button" id="addNewBtn" class="add-new-button">Thêm mới</button>
+
+                <div class="data_table">
+                    <table id="example" class="table table-striped table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Ngày Chứng từ</th>
+                                <th>Số Chứng Từ</th>
+                                <th>Mã TDV</th>
+                                <th>Tên TDV</th>
+                                <th>Tên NVGH</th>
+                                <th>Lý Do</th>
+                                <th>Mã Đvcs</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th hidden>STT</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (DataRow row2 in Model.Tables[0].Rows)
+                            {
+                                <tr>
+                                    <td style="text-align:right">@row2["Ngay_Ct"]</td>
+                                    <td style="text-align:right">@row2["So_CT"]</td>
+                                    <td style="text-align:right" class="NV_GN">@row2["NV_GiaoHang"]</td>
+                                    <td>@row2["Ten_NVGiaoHang"]</td>
+                                    <td>@row2["Ten_NVPhuKho"]</td>
+                                    <td>@row2["Ly_Do"]</td>
+                                    <td>@row2["Ma_dvcs"]</td>
+                                    <td><a href="#" class="editBtn">Chỉnh Sửa</a></td>
+                                    <td>
+                                        <form action="javascript:void(0);" method="post" onsubmit="deleteRow(this, '@row2["Stt"]');">
+                                            <input type="hidden" name="stt" value="@row2["STT"]" />
+                                            <button type="submit" class="delete-button">Xoá</button>
+                                        </form>
+                                    </td>
+                                    <td><a href="#" class="Coppy">Mẫu In 1</a></td>
+                                    <td><a href="#" class="Coppy2">Mẫu In 2</a></td>
+                                    <td hidden class="ctvid">@row2["Stt"]</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- =======  Data-Table  = End  ===================== -->
+    <!-- ============ Java Script Files  ================== -->
+    <script src="~/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/jquery-3.6.0.min.js"></script>
+    <script src="~/assets/js/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "order": [[0, "desc"]] // Cột đầu tiên (Ngày Chứng từ) và sắp xếp giảm dần
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+
+            function getNextOrderNumber() {
+                var highestNumber = 0;
+                $('.So_Ct').each(function () {
+                    var currentNumber = parseInt($(this).text().slice(-4));
+                    if (currentNumber > highestNumber) {
+                        highestNumber = currentNumber;
+                    }
+                });
+                return highestNumber + 1;
+            }
+
+            function formatOrderNumber(number) {
+                return number.toString().padStart(4, '0');
+            }
+
+            $('#addNewBtn').click(function () {
+                var today = new Date();
+                var year = today.getFullYear().toString().slice(-2);
+                var month = ('0' + (today.getMonth() + 1)).slice(-2);
+                var orderPrefix = 'GHCT' + year + month + '-';
+
+                var nextOrderNumber = getNextOrderNumber();
+                var formattedOrderNumber = formatOrderNumber(nextOrderNumber);
+                var fullOrderNumber = orderPrefix + formattedOrderNumber;
+
+                localStorage.setItem('currentOrderNumber', formattedOrderNumber);
+
+                // Thay thế id của So_Ct bằng order number
+                $('#So_Ct').val(fullOrderNumber);
+
+                // Clear session storage
+                clearSessionStorage();
+
+                // Redirect to the specified URL
+                var newWindow = window.open('', '_blank');
+                newWindow.location.href = '/TheoDoiGiaoHang/InsertGiaoHang';
+            });
+        });
+
+        function clearSessionStorage() {
+            sessionStorage.clear();
+        }
+
+        $(document).on('click', '.editBtn', function () {
+            var Stt = $(this).closest('tr').find('.ctvid').text();
+            var NV_GN = $(this).closest('tr').find('.NV_GN').text();
+            var newWindow = window.open('', '_blank');
+            document.cookie = "stt=" + Stt + ";path=/;expires=Fri, 31 Dec 9999 23:59:59 GMT";
+            document.cookie = "NV_GiaoHang=" + NV_GN + ";path=/;expires=Fri, 31 Dec 9999 23:59:59 GMT";
+            newWindow.location.href = '/TheoDoiGiaoHang/UpdateGiaoHang?Stt=' + Stt;
+        });
+
+        $(document).on('click', '.Coppy', function () {
+            var Stt = $(this).closest('tr').find('.ctvid').text();
+            var newWindow = window.open('', '_blank');
+            document.cookie = "stt=" + Stt + ";path=/;expires=Fri, 31 Dec 9999 23:59:59 GMT";
+            newWindow.location.href = '/TheoDoiGiaoHang/MauInGiaoHang_CNCT?Stt=' + Stt;
+        });
+
+
+        $(document).on('click', '.Coppy2', function () {
+            var Stt = $(this).closest('tr').find('.ctvid').text();
+            var newWindow = window.open('', '_blank');
+            document.cookie = "stt=" + Stt + ";path=/;expires=Fri, 31 Dec 9999 23:59:59 GMT";
+            newWindow.location.href = '/TheoDoiGiaoHang/PhieuDieuPhoiGH_In?Stt=' + Stt;
+        });
+    </script>
+    <script>
+
+
+        function deleteRow(form, stt) {
+           if (confirm('Bạn có chắc chắn muốn xoá dòng này không?')) {
+        $.ajax({
+            url: '@Url.Action("Delete", "TheoDoiGiaoHang")',
+            type: 'POST',
+            data: { STT: stt },
+            success: function (response) {
+                if (response === 'Success! Đã Xoá') {
+                    // Remove the row from the table
+                    $(form).closest('tr').remove();
+                    alert(response);
+                } else {
+                    alert(response);
+                }
+            },
+            error: function () {
+                alert('Error occurred while deleting the record.');
+            }
+        });
+    }
+}
+
+        function deleteCookie(cookieName) {
+            document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        }
+
+    </script>
+    <script>
+        window.onload = function () {
+            sessionStorage.removeItem('tableRows');
+            deleteCookie('soCtCCookie');
+            deleteCookie('Ma_NVGH');
+            deleteCookie('NV_GiaoHang');
+            deleteCookie('NV_GiaoNhan');
+            deleteCookie('tenNVCookie');
+            deleteCookie('tenNVPhuCookie');
+            deleteCookie('Tu_Ngay');
+            deleteCookie('Den_Ngay');
+            deleteCookie('tongCongCookie');
+            deleteCookie('tongCongCookie1');
+            deleteCookie('stt');
+            deleteCookie('STT');
+            deleteCookie('Ten_NVGH');
+            deleteCookie('TenNVCookie');
+            deleteCookie('ngayCookie');
+            deleteCookie('thangCookie');
+
+        };
+    </script>
+</body>
+</html>

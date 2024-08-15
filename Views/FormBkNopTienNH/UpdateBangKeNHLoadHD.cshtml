@@ -1,0 +1,1328 @@
+﻿﻿@model web4.Models.CTV
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Cập Nhật Bảng Kê Nộp Tiền</title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/Application-Form.css">
+    <style>
+        * {
+            font-family: 'Times New Roman';
+        }
+
+        #dropdownInput, #selectedOption, #Ten_NVPhuKho {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+
+        #dropdownInput {
+            width: 18%; /* Adjust width as needed */
+        }
+
+        #selectedOption, #Ten_NVPhuKho {
+            width: 80%; /* Adjust width as needed */
+        }
+
+        .ma-vt-input,
+        .ten-vt-input,
+        .han-muc-input {
+            border-radius: 5px;
+            padding: 5px;
+            margin-bottom: 5px;
+            display: inline-block;
+            width: 80px; /* Adjust width as needed */
+        }
+
+        .han-muc-input {
+            width: 150px; /* Adjust width as needed */
+        }
+
+        .ten-vt-input {
+            width: 80%;
+        }
+
+        .ma-vt-input {
+            width: 20%;
+        }
+
+        #SaveHD {
+            display: block;
+            margin: 10px auto; /* Center the buttons and add some spacing */
+            padding: 10px 20px; /* Adjust padding as needed */
+            font-size: 16px; /* Adjust font size as needed */
+            background-color: #28a745; /* Green color */
+            color: #fff; /* White text color */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        #Ly_do {
+            height: 100px;
+            width: 100%;
+            border-radius: 5px;
+            padding: 5px;
+            margin-bottom: 5px;
+            display: inline-block; /* Adjust this value as needed */
+        }
+
+        .loader-container {
+            position: fixed; /* Full screen */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+            z-index: 9999; /* Make sure it's on top */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+        }
+
+        @@keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .custom-checkbox {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+            /* Kiểu dáng khi checkbox được chọn */
+            .custom-checkbox:checked {
+                border-color: #2196F3;
+                background-color: #2196F3;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z' fill='%23ffffff'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+
+        #Nguoi_Nop_Tien {
+            width: 100%;
+            border-radius: 5px;
+            padding: 5px;
+            margin-bottom: 5px;
+            display: inline-block; /* Adjust this value as needed */
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <h1 class="text-center text-capitalize">Chỉnh Sửa Bảng Kê Nộp Tiền</h1>
+        <div class="container">
+
+            <form action="SaveHD" method="post">
+                @*<form>*@
+                <div class="form-group mb-3">
+                    <div class="row">
+                        <div class="col">
+                            <p><strong>1. Ngày</strong>&nbsp;<span class="text-danger">*</span></p>
+                            <input class="form-control" type="date" required="" name="Ngay_Ct" id="Ngay_Ct">
+                        </div>
+                        <div class="col">
+                            <p><strong>2. SỐ</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="So_Ct" id="So_Ct">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <p><strong>3. Trình Dược Viên&nbsp;</strong></p>
+                </div>
+                <input type="text" id="dropdownInput" list="dropdownList" placeholder="Tìm kiếm danh mục" name="Ma_NVGH">
+                <datalist id="dropdownList">
+                    @foreach (var item in ViewBag.DataTDV)
+                    {
+                      
+                        <option value="@item.Ma_TDV" data-ten="@item.Ten_TDV">@item.Ten_TDV</option>
+                        
+                    }
+                </datalist>
+                <input name="Ten_NVGH" id="selectedOption" readonly>
+
+                <br />
+                <br />
+
+                <button type="button" id="LoadHd">Load Hóa đơn</button>
+
+                @*<datalist id="dropdownList">
+                        @foreach (var item in ViewBag.DataItems)
+                        {
+                            <option value="@item.Ma_Dt" data-ten="@item.Ten_Dt" data-dvcs="@item.Dvcs">@item.Ten_Dt</option>
+                        }
+                    </datalist>*@
+
+                @*<datalist id="dropdownList">
+                        @foreach (var item in ViewBag.DataItems)
+                        {
+                            <option value="@item.Ma_Dt" data-ten="@item.Ten_Dt" data-dvcs="@item.Dvcs">@item.Ten_Dt</option>
+                        }
+                    </datalist>*@
+                <div class="form-group mb-3">
+                    <p><strong>4. Người Nộp Tiền&nbsp;</strong></p>
+
+                </div>
+                <input type="text" id="Nguoi_Nop_Tien" list="" placeholder="Người Nộp Tiền" name="Nguoi_Nop_Tien">
+                <div class="form-group mb-3">
+                    <p><strong>5. Nội Dung&nbsp;</strong></p>
+                </div>
+                <input type="text" id="Ly_do" list="" placeholder="Nội Dung" name="Ly_do">
+                <br />
+                <table id="example" class="table table-striped table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th></th>
+                            <th>Số HD</th>
+                            <th>Số CT</th>
+                            <th>Ngày HD</th>
+                            <th>Ngày Đến Hạn</th>
+                            <th>Biên lai TT</th>
+                            <th>Mã KH</th>
+                            <th>Khách hàng</th>
+
+                            <th hidden></th>
+                            <th hidden></th>
+                            <th hidden></th>
+                            <th hidden></th>
+                            <th>Tiền HD</th>
+                            <th>Tiền CKTT</th>
+                            <th>Tiền Phải Thu</th>
+                            <th>Tiền Còn Lại</th>
+                            <th hidden> </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr hidden>
+                            <td>
+                                <input type="checkbox" id="myCheckbox" name="myCheckbox" class="custom-checkbox">
+                                @*<label for="myCheckbox">Label cho Checkbox</label>*@
+                            </td>
+                            <td>
+                                <input type="text" name="So_HD" id="So_HD" class="So_HD" list="dropdownListVT" placeholder="Tìm kiếm Hóa Đơn">
+                                <datalist id="dropdownListVT">
+                                    @foreach (var item in ViewBag.DataHD)
+                                    {
+                                        <option value="@item.So_HD" data-ten="@item.Ten_Dt" data-NgayHD="@item.Ngay_Nop_Tien" data-MaDt="@item.Ma_Dt" data-So_CT1="@item.So_BK" data-tien="@item.Tien_HD" data-tiencktt="@item.Tien_CKTT" @*data-tienPT="@item.Tien_Phai_Thu"*@>@item.Ten_Dt</option>
+                                    }
+                                </datalist>
+                                <div id="error-messages-1"></div>
+                            </td>
+                            <td> <input type="text" name="So_CT1" id="So_CT1" class="So_CT1" readonly></td>
+
+                            <td> <input name="Ngay_Hd" id="Ngay_Hd" class="Ngay_Hd" readonly></td>
+                            <td> <input name="Ngay_Den_Han" id="Ngay_Den_Han" class="Ngay_Den_Han" readonly></td>
+                            <td><input name="Bien_Lai" id="Bien_Lai" class="Bien_Lai" /></td>
+                            <td> <input name="Ma_Dt" id="Ma_Dt" class="Ma_Dt" readonly></td>
+                            <td> <input name="Ten_Dt" id="Ten_Dt" class="Ten_Dt" readonly></td>
+                            <td hidden><input type="text" name="Tien" class="Tien" id="Tien" oninput="calculateRow(this)" /></td>
+                            <td hidden><input type="text" name="Thue" class="Thue" id="Thue" /></td>
+                            <td hidden><input type="text" name="Tien_Truoc_Thue" class="Tien_Truoc_Thue" id="Tien_Truoc_Thue" /></td>
+
+                            <td hidden><input type="text" name="Tien_CKTT" class="Tien_CKTT" id="Tien_CKTT" oninput="calculateRow(this)" /></td>
+                            <td hidden><input type="text" name="Tien_Phai_Thu" class="Tien_Phai_Thu" id="Tien_Phai_Thu" /></td>
+                            <td hidden><input type="text" name="Tien_Con_Lai" class="Tien_Con_Lai" id="Tien_Con_Lai" /></td>
+
+                            <td><input type="text" name="Tien_1" class="Tien_1" id="Tien_1" oninput="calculateRow(this)" /></td>
+                            <td><input type="text" name="Tien_CKTT_1" class="Tien_CKTT_1" id="Tien_CKTT_1" oninput="calculateRow(this)" /></td>
+                            <td><input type="text" name="Tien_Phai_Thu_1" class="Tien_Phai_Thu_1" id="Tien_Phai_Thu_1" /></td>
+                            <td><input type="text" name="Tien_Con_Lai_1" class="Tien_Con_Lai_1" id="Tien_Con_Lai_1" readonly /></td>
+                            <td hidden></td>
+                            <td><button class="deleteRowBtn">Xóa</button></td>
+                        </tr>
+                    <tfoot>
+                        <tr style="background-color:burlywood">
+                            <td colspan="10" style="text-align:right">Tổng Cộng:</td>
+                            <td id="tien_hang2" style="text-align:right"></td>
+                            <td hidden id="tien_hang"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <button type="button" id="addRowBtn">Thêm dòng</button>
+                <button class="submit" type="button" onclick="saveToCookie()" id="SaveHD">Lưu</button>
+            </form>
+
+        </div>
+        <div id="loader" class="loader-container" style="display: none;">
+            <div class="spinner"></div>
+
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/assets/js/Application-Form-1.js"></script>
+    <script src="/assets/js/Application-Form.js"></script>
+
+
+    @*</ng-><script src="/assets/js/script.js"></script>*@
+    <script>
+        function saveToCookie() {
+            // Lấy giá trị từ element có id "tien_hang"
+            var tienHangElement = document.getElementById("tien_hang");
+            var tienHangValue = tienHangElement.innerText.trim(); // Lấy giá trị và xóa khoảng trắng xung quanh
+
+            // Lưu giá trị vào cookie với tên là "Tong_Tien"
+            document.cookie = "Tong_Tien=" + encodeURIComponent(tienHangValue) + "; path=/"; // Lưu giá trị vào cookie
+
+
+        }
+    </script>
+    <script>
+        document.getElementById("dropdownInput").addEventListener("input", function () {
+            var inputValue = this.value;
+            var options = document.querySelectorAll("#dropdownList option");
+
+            for (var i = 0; i < options.length; i++) {
+                if (options[i].getAttribute("value") === inputValue) {
+                    document.getElementById("selectedOption").value = options[i].getAttribute("data-ten");
+                    break;
+                }
+            }
+        });
+
+
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var runReportButton = document.getElementById("runReportButton");
+
+            if (runReportButton) {
+                runReportButton.addEventListener("click", function () {
+                    var dropdownInput = document.getElementById("dropdownInput");
+                    var selectedOption = document.querySelector("#dropdownList option[value='" + dropdownInput.value + "']");
+
+                    if (selectedOption) {
+                        var tenDt = selectedOption.text.toString();
+
+                        var selectedDvcs = selectedOption.getAttribute('data-Dvcs');
+
+                        document.cookie = 'Ten_Dt= ' + encodeURIComponent(tenDt);
+
+                        document.cookie = 'Dvcs=' + selectedDvcs;
+
+                    }
+                });
+            }
+        });
+
+        /* danh muc vat tu*/
+
+        document.getElementById("So_HD").addEventListener("input", function () {
+            var inputValue = this.value;
+            var options = document.querySelectorAll("#dropdownListVT option");
+
+            for (var i = 0; i < options.length; i++) {
+                if (options[i].getAttribute("value") === inputValue) {
+                    document.getElementById("Ngay_Hd").value = options[i].getAttribute("data-NgayHD");
+                    document.getElementById("Ngay_Den_Han").value = options[i].getAttribute("data-NgayDenHan");
+                    document.getElementById("Ma_Dt").value = options[i].getAttribute("data-MaDt");
+                    document.getElementById("Ten_Dt").value = options[i].getAttribute("data-ten");
+                    document.getElementById("So_CT1").value = options[i].getAttribute("data-So_CT1");
+                    document.getElementById("Tien").value = options[i].getAttribute("data-tien");
+                    document.getElementById("Tien_CKTT").value = options[i].getAttribute("data-tiencktt");
+                    document.getElementById("Thue").value = options[i].getAttribute("data-tienthue");
+                    /*  document.getElementById("Tien_Phai_Thu").value = options[i].getAttribute("data-tienPT");*/
+                    document.getElementById("Tien_Truoc_Thue").value = options[i].getAttribute("data-tientt");
+
+                    break;
+                }
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var runReportButton = document.getElementById("runReportButton");
+
+            if (runReportButton) {
+                runReportButton.addEventListener("click", function () {
+                    var dropdownInput = document.getElementById("dropdownInput");
+                    var selectedOption = document.querySelector("#dropdownList option[value='" + dropdownInput.value + "']");
+
+                    if (selectedOption) {
+                        var Ten_Vt = selectedOption.text.toString();
+
+
+                        document.cookie = 'Ten_Vt= ' + encodeURIComponent(Ten_Vt);
+
+
+
+                    }
+                });
+            }
+        });
+
+
+
+
+
+
+
+    </script>
+    <script>
+        $(document).ready(function () {
+
+
+            function addDuplicateWarning(row, message) {
+                var warningRow = '<tr class="duplicate-warning"><td colspan="10" style="color: red; text-align: center;">' + message + '</td></tr>';
+                $(row).after(warningRow);
+            }
+            function convertNetDate(netDate) {
+                var date = new Date(parseInt(netDate.substr(6)));
+                var day = ("0" + date.getDate()).slice(-2);
+                var month = ("0" + (date.getMonth() + 1)).slice(-2);
+                var year = date.getFullYear();
+                return day + '/' + month + '/' + year;
+            }
+
+
+        // Function to repopulate dropdownListVT
+            function populateDropdownListVT() {
+                var dropdownListVT = $('#dropdownListVT');
+                dropdownListVT.empty();
+
+                var dataItems2 = @Html.Raw(Json.Encode(ViewBag.DataHD));
+                dataItems2.forEach(function (item) {
+                    var readableDate = convertNetDate(item.Ngay_HD); // Convert the date
+
+                    var option = $('<option>')
+                        .val(item.So_HD)
+                        .attr('data-NgayHD', item.Ngay_HD)
+                        .attr('data-NgayDenHan', item.Ngay_Den_Han)
+                        .attr('data-MaDt', item.Ma_Dt)
+                        .attr('data-ten', item.Ten_Dt)
+                        .attr('data-tien', item.Tien_HD)
+                        .attr('data-tiencktt', item.Tien_CKTT)
+                        .attr('data-tienthue', item.Thue)
+                        .attr('data-tientt', item.Tien_Truoc_Thue)
+                       /* .attr('data-tienPT', item.Tien_Phai_Thu)*/
+                        .attr('data-So_CT1', item.So_CT1)
+                        .text(item.Ten_Dt);
+                    dropdownListVT.append(option);
+                });
+            }
+            var rowCount = 1;
+            $('#addRowBtn').click(function () {
+                var currentValues = [];
+                $('#example tbody tr').each(function () {
+                    currentValues.push($(this).find('input[name="Tien_Con_Lai"]').val());
+                });
+                rowCount++;
+                    var newRow = `<tr>
+            <td>
+                <input type="checkbox" id="myCheckbox" name="myCheckbox" class="custom-checkbox" onchange="handleCheckboxChange(event)">
+            </td>
+            <td>
+                <input style="text-align:center" type="text" name="So_HD" id="So_HD" class="So_HD" list="dropdownListVT" placeholder="Tìm kiếm Hóa Đơn">
+                <datalist id="dropdownListVT">
+                    @foreach (var item in ViewBag.DataHD)
+                    {
+                        <option value="@item.So_HD" data-ten="@item.Ten_Dt" data-NgayHD="@item.Ngay_Nop_Tien" data-MaDt="@item.Ma_Dt" data-So_CT1="@item.So_BK" data-tien="@item.Tien_HD" data-tiencktt="@item.Tien_CKTT">@item.Ten_Dt</option>
+                    }
+                </datalist>
+                <div id="error-messages-${rowCount}"></div>
+            </td>
+            <td><input style="text-align:center" name="So_CT1" id="So_CT1" class="So_CT1" readonly></td>
+            <td><input name="Ngay_Hd" id="Ngay_Hd" class="Ngay_Hd" readonly></td>
+            <td><input name="Ngay_Den_Han" id="Ngay_Den_Han" class="Ngay_Den_Han" readonly></td>
+            <td><input name="Bien_Lai" id="Bien_Lai" class="Bien_Lai"></td>
+            <td><input style="text-align:right" name="Ma_Dt" id="Ma_Dt" class="Ma_Dt" readonly></td>
+            <td><input name="Ten_Dt" id="Ten_Dt" class="Ten_Dt" readonly></td>
+            <td hidden><input style="text-align:right" type="text" name="Tien" id="Tien" class="Tien" oninput="calculateRow(this)" /></td>
+ <td hidden><input type="text" name="Thue" class="Thue" id="Thue"/></td>
+                            <td hidden><input type="text" name="Tien_Truoc_Thue" class="Tien_Truoc_Thue" id="Tien_Truoc_Thue"/></td>
+
+<td hidden><input style="text-align:right" type="text" name="Tien_CKTT" id="Tien_CKTT" class="Tien_CKTT" oninput="calculateRow(this)" /></td>
+            <td hidden><input style="text-align:right" type="text" name="Tien_Phai_Thu" id="Tien_Phai_Thu" class="Tien_Phai_Thu" /></td>
+            <td hidden><input style="text-align:right" type="text" name="Tien_Con_Lai" id="Tien_Con_Lai" class="Tien_Con_Lai" /></td>
+            <td><input style="text-align:right" type="text" name="Tien_1" id="Tien_1" class="Tien" oninput="calculateRow(this)" /></td>
+            <td><input style="text-align:right" type="text" name="Tien_CKTT_1" id="Tien_CKTT_1" class="Tien_CKTT" /></td>
+            <td><input style="text-align:right" type="text" name="Tien_Phai_Thu_1" id="Tien_Phai_Thu_1" class="Tien_Phai_Thu_1" /></td>
+            <td><input style="text-align:right" type="text" name="Tien_Con_Lai_1" id="Tien_Con_Lai_1" class="Tien_Con_Lai_1" readonly /></td>
+            <td><button type="button" class="deleteRowBtn" onclick="deleteRow(this)">Xóa</button></td>
+        </tr>`;
+                $('#example tbody').append(newRow);
+                populateDropdownListVT();
+                $('#example tbody tr').each(function (index) {
+                    $(this).find('input[name="Tien_Con_Lai"]').val(currentValues[index]);
+                });
+
+            });
+        $(document).on('input', '.So_HD', function () {
+            var inputValue = $(this).val();
+            var So_CT1 = $(this).closest('tr').find('.So_CT1');
+            var Ngay_Hd = $(this).closest('tr').find('.Ngay_Hd');
+            var Ngay_Den_Han = $(this).closest('tr').find('.Ngay_Den_Han');
+            var Ma_Dt = $(this).closest('tr').find('.Ma_Dt');
+            var Ten_Dt = $(this).closest('tr').find('.Ten_Dt');
+
+            var Tien = $(this).closest('tr').find('.Tien');
+            var Thue = $(this).closest('tr').find('.Thue');
+            var Tien_CKTT = $(this).closest('tr').find('.Tien_CKTT');
+            var Tien_Truoc_Thue = $(this).closest('tr').find('.Tien_Truoc_Thue');
+       /*     var Tien_Phai_Thu = $(this).closest('tr').find('.Tien_Phai_Thu');*/
+
+            // Find the corresponding option in dropdownListVT
+            var option = $('#dropdownListVT option[value="' + inputValue + '"]');
+
+            if (option.length > 0) {
+                // Update the Ten_vt input with the data-ten attribute of the selected option
+                Ngay_Hd.val(option.attr('data-NgayHD'));
+                Ngay_Den_Han.val(option.attr('data-NgayDenHan'));
+                Ma_Dt.val(option.attr('data-MaDt'));
+                Ten_Dt.val(option.attr('data-ten'));
+                So_CT1.val(option.attr('data-So_CT1'));
+                Tien.val(option.attr('data-tien'));
+                Tien_CKTT.val(option.attr('data-tiencktt'));
+                Thue.val(option.attr('data-tienthue'));
+                Tien_Truoc_Thue.val(option.attr('data-tientt'));
+               /* Tien_Phai_Thu.val(option.attr('data-tienPT'));*/
+            } else {
+                Ngay_Hd.val('');
+            }
+            $('.So_HD').next('div').text('');
+
+        });
+
+        $(document).on('click', '.deleteRowBtn', function () {
+            $(this).closest('tr').remove();
+
+            // Call the function to recreate the dropdownListVT after deleting a row
+            populateDropdownListVT();
+        });
+    });
+
+
+        function SaveHD(data) {
+            return $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/FormBKNopTienNH/SaveUpdate",
+                data: data,
+                success: function (result) {
+                    alert(result);
+                    window.location.href = '/FormBKNopTienNH/Index';
+
+                //    console.log(data);
+                },
+                error: function (jqXHR) {
+                    // Hiển thị thông báo lỗi cụ thể từ server
+                    var errorMessage = jqXHR.responseText || "Error!";
+                    alert("Error: " + errorMessage);
+                }
+            });
+        }
+        //Collect Multiple Order List For Pass To Controller
+        $("#SaveHD").click(function (e) {
+            e.preventDefault();
+
+            var orderArr = [];
+            orderArr.length = 0;
+
+            $("#example tbody tr").each(function () { // Sử dụng :gt(0) để bỏ qua dòng đầu tiên
+                var soHD = $(this).find('input[name="So_HD"]').val();
+                if (!soHD) return;
+                var NgayHD = $(this).find('input[name="Ngay_Hd"]').val();
+                var NgayDenHan = $(this).find('input[name="Ngay_Den_Han"]').val();
+                var BienLai = $(this).find('input[name="Bien_Lai"]').val()||" ";
+                var MaDt = $(this).find('input[name="Ma_Dt"]').val();
+                var TenDt = $(this).find('input[name="Ten_Dt"]').val();
+                var Tien = $(this).find('input[name="Tien"]').val();
+                var Tien_TT = $(this).find('input[name="Tien_Truoc_Thue"]').val();
+                var Tien_CKTT = $(this).find('input[name="Tien_CKTT"]').val();
+                var Thue = $(this).find('input[name="Thue"]').val();
+                var Tien_Phai_Thu = $(this).find('input[name="Tien_Phai_Thu"]').val();
+                var Tien_Con_Lai = $(this).find('input[name="Tien_Con_Lai"]').val() || 0;
+                var So_CT1 = $(this).find('input[name="So_CT1"]').val();
+                console.log("Tien PT", Tien_Phai_Thu);
+                orderArr.push({
+                    So_Hd: soHD,
+                    Ngay_HD: NgayHD,
+                    Ngay_Den_Han: NgayDenHan,
+                    Bien_Lai: BienLai,
+                    Ma_Dt: MaDt,
+                    Ten_Dt: TenDt,
+                    Tien_HD: Tien,
+                    Tien_Truoc_Thue: Tien_TT,
+                    Tien_CKTT: Tien_CKTT,
+                    Thue: Thue,
+                    Tien_Phai_Thu: Tien_Phai_Thu,
+                    Tien_Con_Lai: Tien_Con_Lai,
+                    So_CT: So_CT1
+                });
+
+            });
+            console.log("orderArr", orderArr);
+            var data = JSON.stringify({
+                Ngay_Nop_Tien: $("#Ngay_Ct").val(),
+                So_BK: $("#So_Ct").val(),
+                Ma_TDV: $("#dropdownInput").val(),
+                Ten_TDV: $("#selectedOption").val(),
+                Noi_Dung: $("#Ly_do").val(),
+                Nguoi_Nop_Tien: $("#Nguoi_Nop_Tien").val(),
+                Tong_Tien: $("#tien_hang").val(),
+                details: orderArr
+
+            });
+            console.log("data", data);
+            $.when(SaveHD(data)).then(function (response) {
+                console.log(response);
+            }).fail(function (err) {
+                console.log(err);
+            });
+        });
+
+       //function checkDuplicateSoHD() {
+       //     var inputs = document.querySelectorAll('.So_HD');
+       //     var values = {};
+
+       //     inputs.forEach(function (input, index) {
+       //         var value = input.value;
+       //         if (value !== '') {
+       //             if (!values[value]) {
+       //                 values[value] = [];
+       //             }
+       //             values[value].push(index);
+       //         }
+       //     });
+
+       //     Object.keys(values).forEach(function (value) {
+       //         var indexes = values[value];
+       //         if (indexes.length > 1) {
+       //             indexes.forEach(function (index) {
+       //                 var errorMessageDiv = document.getElementById(error - messages - ${ index + 1});
+       //             errorMessageDiv.textContent = 'Có sự trùng lặp số hóa đơn';
+       //         });
+       // }
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+        document.getElementById('LoadHd').addEventListener('click', function () {
+
+            document.getElementById('loader').style.display = 'flex'; // Show the loader
+
+            var ngayCt = document.getElementById('Ngay_Ct').value;
+            var soCt = document.getElementById('So_Ct').value;
+            var maNVGH = document.getElementById('dropdownInput').value;
+            var tenNVGH = document.getElementById('selectedOption').value;
+            var ghichu = document.getElementById('Ly_do').value;
+            var TenGH = document.getElementById('Ten_NVPhuKho').value;
+            var ngNopTien = document.getElementById('Nguoi_Nop_Tien').value;
+
+            console.log("Ngay_Ct khi click button hd 1:", ngayCt);
+
+            // Set the cookie for Ma_NVGH
+            setCookie('Ma_NVGH', maNVGH, 7);
+            setCookie('Ten_NVGH', tenNVGH, 7);// The cookie will expire in 7 days
+            setCookie('NV_GiaoNhan', TenGH, 7);
+            setCookie('Nguoi_Nop_Tien', ngNopTien, 7);
+            var queryParams = 'Ngay_Ct=' + encodeURIComponent(ngayCt) +
+                '&So_Ct=' + encodeURIComponent(soCt) +
+                '&Ma_NVGH=' + encodeURIComponent(maNVGH) +
+                '&Ly_Do=' + encodeURIComponent(ghichu) +
+                '&Ten_NVGH=' + encodeURIComponent(tenNVGH) +        // Redirect or submit form after a short delay
+                '&Nguoi_Nop_Tien=' + encodeURIComponent(ngNopTien);
+            setTimeout(function () {
+                window.location.href = 'UpdateBangKeNHLoadHD?' + queryParams;
+            }, 1000); // Adjust the time as needed
+        });
+
+
+    </script>
+
+
+    <script>
+        function getParameterByName(name) {
+            const url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+            const results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+        function getParameterByNameDate(name) {
+            const url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+            const results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            /* document.getElementById('Ngay_Ct').value = getParameterByName('Ngay_Ct');*/
+            document.getElementById('So_Ct').value = getParameterByName('So_Ct');
+            document.getElementById('dropdownInput').value = getParameterByName('Ma_NVGH');
+            document.getElementById('selectedOption').value = getParameterByName('Ten_NVGH');
+            document.getElementById('Ly_do').value = getParameterByName('Ly_Do');
+            document.getElementById('Nguoi_Nop_Tien').value = getParameterByName('Nguoi_Nop_Tien');
+        });
+        const ngayCt = getParameterByNameDate('Ngay_Ct');
+
+        //Lấy giá trị Ngay_Ct từ URL
+        if (ngayCt) {
+            // Chuyển đổi định dạng DD/MM/YYYY sang YYYY-MM-DD để gán cho input[type="date"]
+            const parts = ngayCt.split('/');
+            const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+
+            // Gán giá trị cho ô input
+            document.getElementById('Ngay_Ct').value = formattedDate;
+        }
+    </script>
+
+
+    <script>
+        function active() {
+            handleTienHDInput();
+            handleTienCKTTInput();
+            console.log("Đã gọi hàm active");
+
+        }
+        function handleTienHDInput() {
+
+        }
+
+        function handleTienCKTTInput() {
+            //// Thực hiện thay thế các ký tự không hợp lệ (chỉ giữ số và dấu chấm)
+            //const tienCKTTInput = document.getElementById('Tien_CKTT');
+            //tienCKTTInput.value = tienCKTTInput.value.replace(/[^0-9.]/g, '');
+
+
+        }
+    </script>
+    <!--lưu các dòng TD-->
+    <script>
+        $(document).ready(function () {
+            calculateTotal();
+
+            // Hàm lưu dữ liệu hàng của bảng vào sessionStorage
+            function saveTableRows() {
+                var tableRows = [];
+                $("#example tbody tr").each(function () {
+                    var row = {};
+                    $(this).find('input, textarea').each(function () {
+                        var type = $(this).attr('type');
+                        if (type === 'checkbox') {
+                            row[$(this).attr('name')] = $(this).prop('checked');
+                        } else {
+                            row[$(this).attr('name')] = $(this).val();
+                        }
+                    });
+                    tableRows.push(row);
+                });
+                sessionStorage.setItem('tableRows', JSON.stringify(tableRows));
+
+                // Lưu giá trị Tien_Phai_Thu vào sessionStorage
+                saveTienPhaiThuToSession();
+                saveTienTruocThueSession();
+                saveTienConLaiToSession();
+                saveTienThueSession();
+            }
+
+            // Hàm tải dữ liệu hàng của bảng từ sessionStorage và khôi phục trạng thái checkbox
+            function loadTableRows() {
+                var tableRows = JSON.parse(sessionStorage.getItem('tableRows'));
+                var tienPhaiThuValues = JSON.parse(sessionStorage.getItem('tienPhaiThuValues')) || [];
+
+                if (tableRows) {
+                    tableRows.forEach(function (row, index) {
+                        if (row['So_HD'] || row['So_CT1'] || row['Ngay_Hd']) {  // Chỉ tải các hàng có So_HD không rỗng
+                            var newRow = '<tr>';
+                            newRow += '<td> <input type="checkbox" name="myCheckbox" class="custom-checkbox" ' + (row['myCheckbox'] ? 'checked' : '') + ' onchange="handleCheckboxChange(event)"> </td>';
+                            newRow += '<td><input style="text-align:center" type="text" name="So_HD" value="' + (row['So_HD'] || '') + '"></td>';
+                            newRow += '<td><input style="text-align:center" type="text" name="So_CT1" value="' + (row['So_CT1'] || '') + '" readonly></td>';
+                            newRow += '<td><input type="text" name="Ngay_Hd" value="' + (row['Ngay_Hd'] || '') + '" readonly></td>';
+                            newRow += '<td><input type="text" name="Ngay_Den_Han" value="' + (row['Ngay_Den_Han'] || '') + '" readonly></td>';
+                            newRow += '  <td><input name="Bien_Lai" id="Bien_Lai" class="Bien_Lai" value="' + (row['Bien_Lai'] || '') + '"></td>';
+                            newRow += '<td><input style="text-align:right" type="text" name="Ma_Dt" value="' + (row['Ma_Dt'] || '') + '" readonly></td>';
+                            newRow += '<td><input type="text" name="Ten_Dt" value="' + (row['Ten_Dt'] || '') + '" readonly></td>';
+                            newRow += '<td hidden><input style="text-align:right" type="text" id="Tien_Truoc_Thue" name="Tien_Truoc_Thue" value="' + (row['Tien_Truoc_Thue'] || '') + '" oninput="calculateRow(this)" readonly></td>';
+                            newRow += '<td hidden><input style="text-align:right" type="text" id="Thue" name="Thue" value="' + (row["Thue"] || 0) + '" oninput="calculateRow(this)" readonly></td>';
+
+                            newRow += '<td hidden><input style="text-align:right" type="text" id="Tien" name="Tien" value="' + (row['Tien'] || '') + '" oninput="calculateRow(this)" readonly></td>';
+                            newRow += '<td hidden><input style="text-align:right" type="text" id="Tien_CKTT" name="Tien_CKTT" value="' + (row["Tien_CKTT"] || '') + '" oninput="calculateRow(this)" readonly></td>';
+                            newRow += '<td hidden><input style="text-align:right" type="text" id="Tien_Phai_Thu" name="Tien_Phai_Thu" value="' + (tienPhaiThuValues[index] || 0) + '"></td>';
+                            newRow += '<td hidden><input style="text-align:right" type="text" id="Tien_Con_Lai" name="Tien_Con_Lai"value="' + (row["Tien_Con_Lai"] || 0) + '"></td>';
+
+                            newRow += '<td><input style="text-align:right" type="text" id="Tien_1" name="Tien_1" value="' + formatCurrency(row['Tien'] || '') + '" oninput="calculateRow(this)" readonly></td>';
+                            newRow += '<td><input style="text-align:right" type="text" id="Tien_CKTT_1" name="Tien_CKTT_1" value="' + formatCurrency(row["Tien_CKTT"] || '') + '" oninput="calculateRow(this)" readonly></td>';
+                            newRow += '<td><input style="text-align:right" type="text" id="Tien_Phai_Thu_1" name="Tien_Phai_Thu_1" value="' + formatCurrency(tienPhaiThuValues[index] || 0) + '" oninput="calculateRow(this)" readonly></td>';
+                            newRow += '<td><input style="text-align:right" type="text" id="Tien_Con_Lai_1" name="Tien_Con_Lai_1" value="' + formatCurrency(row["Tien_Con_Lai"] || '') + '" readonly></td>';
+
+                            newRow += '<td><button type="button" class="deleteRowBtn">Xóa</button></td>';
+                            newRow += '</tr>';
+                            $('#example tbody').append(newRow);
+                        }
+                    });
+                }
+            }
+
+            // Tải dữ liệu hàng của bảng khi trang được tải
+            loadTableRows();
+            calculateTotal();
+            // Lưu dữ liệu hàng của bảng khi nhấn nút "Load Hóa đơn"
+            $('#LoadHd').click(function () {
+                saveTableRows();
+                var ngayCt = document.getElementById('Ngay_Ct').value;
+                var soCt = document.getElementById('So_Ct').value;
+                var maNVGH = document.getElementById('dropdownInput').value;
+                var tenNVGH = document.getElementById('selectedOption').value;
+                var ghichu = document.getElementById('Ly_do').value;
+                var ngNopTien = document.getElementById('Nguoi_Nop_Tien').value;
+                var urlParams = new URLSearchParams(window.location.search);
+                var Stt = urlParams.get('Stt') || '';
+                var parts = ngayCt.split('-');
+                var formattedDate = parts[2] + '/' + parts[1] + '/' + parts[0];
+                setCookie('Ma_CbNv', maNVGH, 7);
+                setCookie('Ten_NVGH', tenNVGH, 7);
+                setCookie('Stt', Stt, 1);
+                console.log("Ngay_Ct khi click button hd 2:", ngayCt);
+                var queryParams = 'Ngay_Ct=' + encodeURIComponent(formattedDate) +
+                    '&So_Ct=' + encodeURIComponent(soCt) +
+                    '&Ma_NVGH=' + encodeURIComponent(maNVGH) +
+                    '&Ly_Do=' + encodeURIComponent(ghichu) +
+                    '&Ten_NVGH=' + encodeURIComponent(tenNVGH) +
+                    '&Nguoi_Nop_Tien=' + encodeURIComponent(ngNopTien)+
+                    '&Stt=' + encodeURIComponent(Stt);
+                setTimeout(function () {
+                    window.location.href = 'UpdateBangKeNHLoadHD?' + queryParams;
+                }, 1000);
+            });
+
+            // Sự kiện nhấn nút xóa hàng
+            $(document).on('click', '.deleteRowBtn', function () {
+                $(this).closest('tr').remove();
+                calculateTotal();
+                saveTableRows();
+            });
+
+            // Lưu dữ liệu hàng của bảng khi có thay đổi trong ô input
+            $(document).on('input', '#example tbody input', function () {
+                saveTableRows();
+            });
+
+            // Sự kiện thay đổi checkbox
+            $(document).on('change', '.custom-checkbox', function () {
+                saveTableRows();
+            });
+            $('#example tbody').on('keypress', 'input[name="Bien_Lai"]', function (e) {
+                if (e.which == 13) { // 13 là mã phím Enter
+                    // Tick lại checkbox
+                    const checkbox = $(this).closest('tr').find('input[name="myCheckbox"]');
+                    checkbox.prop('checked', true);
+                    saveTableRows();
+
+                    populateDropdownListVTAg();
+                }
+            });
+            $('#example tbody').on('keypress', 'input[name="Tien_Phai_Thu_1"]', function (e) {
+                if (e.which == 13) { // 13 là mã phím Enter
+                    // Tick lại checkbox
+                    const checkbox = $(this).closest('tr').find('input[name="myCheckbox"]');
+                    checkbox.prop('checked', true);
+                    const row = $(this).closest('tr');
+                    const newTienPhaiThu = parseFloat($(this).val().replace(/,/g, '')) || 0;
+                    row.find('input[name="Tien_Phai_Thu"]').val(newTienPhaiThu);
+                    // Tính toán lại giá trị tiền phải thu
+                    /* calculateRow(this);*/
+                    calculateTienConLai(this);
+                    calculateTotal();
+                    saveTableRows();
+                    saveTienConLaiToSession();
+                    populateDropdownListVTAg();
+                }
+            });
+            // Bổ sung sự kiện khi nhấn phím Enter trong input Tien_CKTT_1
+            $('#example tbody').on('keypress', 'input[name="Tien_CKTT_1"]', function (e) {
+                if (e.which == 13) { // 13 là mã phím Enter
+                    // Tick lại checkbox
+                    const checkbox = $(this).closest('tr').find('input[name="myCheckbox"]');
+                    checkbox.prop('checked', true);
+                    const row = $(this).closest('tr');
+                    const newTienCKTT = parseFloat($(this).val().replace(/,/g, '')) || 0;
+                    row.find('input[name="Tien_CKTT"]').val(newTienCKTT);
+                    //const newTienConLai = parseFloat($(this).val().replace(/,/g, '')) || 0;
+                    //row.find('input[name="Tien_Con_Lai"]').val(newTienConLai);
+                    // Tính toán lại giá trị tiền phải thu
+                    /*  calculateRow(this);*/
+                    calculateTienConLai(this);
+                    calculateTotal();
+                    saveTableRows();
+                    populateDropdownListVTAg();
+                }
+            });
+            // Hàm đặt cookie
+            function setCookie(name, value, days) {
+                var expires = "";
+                if (days) {
+                    var date = new Date();
+                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + (value || "") + expires + "; path=/";
+            }
+
+            // Hàm định dạng tiền tệ
+            //function formatCurrency(value) {
+            //    return parseFloat(value).toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            //}
+
+            // Hàm lưu giá trị Tien_Phai_Thu vào sessionStorage
+            function saveTienPhaiThuToSession() {
+                let tienPhaiThuValues = [];
+                document.querySelectorAll('#example tbody tr').forEach(row => {
+                    const tienPhaiThuInput = row.querySelector('input[name="Tien_Phai_Thu"]');
+                    if (tienPhaiThuInput) {
+                        const tienPhaiThu = parseFloat(tienPhaiThuInput.value) || 0;
+                        tienPhaiThuValues.push(tienPhaiThu);
+                    }
+                });
+                sessionStorage.setItem('tienPhaiThuValues', JSON.stringify(tienPhaiThuValues));
+                console.log('Đã lưu các giá trị Tien_Phai_Thu vào sessionStorage:', tienPhaiThuValues);
+            }
+            function convertNetDateAg(netDate) {
+                var date = new Date(parseInt(netDate.substr(6)));
+                var day = ("0" + date.getDate()).slice(-2);
+                var month = ("0" + (date.getMonth() + 1)).slice(-2);
+                var year = date.getFullYear();
+                return day + '/' + month + '/' + year;
+            }
+            function populateDropdownListVTAg() {
+                var dropdownListVT = $('#dropdownListVT');
+                dropdownListVT.empty();
+
+                var dataItems2 = @Html.Raw(Json.Encode(ViewBag.DataHD));
+                dataItems2.forEach(function (item) {
+                    var readableDate = convertNetDateAg(item.Ngay_HD); // Convert the date
+
+                    var option = $('<option>')
+                        .val(item.So_HD)
+                        .attr('data-NgayHD', item.Ngay_HD)
+                        .attr('data-NgayDenHan', item.Ngay_Den_Han)
+                        .attr('data-MaDt', item.Ma_Dt)
+                        .attr('data-ten', item.Ten_Dt)
+                        .attr('data-tien', item.Tien_HD)
+                        .attr('data-tienthue', item.Thue)
+                        .attr('data-tiencktt', item.Tien_CKTT)
+                       /* .attr('data-tienPT', item.Tien_Phai_Thu)*/
+                        .attr('data-So_CT1', item.So_CT1)
+                        .text(item.Ten_Dt);
+                    dropdownListVT.append(option);
+                });
+                 console.log("Đã gọi là hàm populate");
+            }
+            function saveTienConLaiToSession() {
+                let tienConLaiValues = [];
+
+                document.querySelectorAll('#example tbody tr').forEach(row => {
+                    const tienConLaiInput = row.querySelector('input[name="Tien_Con_Lai"]');
+                    if (tienConLaiInput) {
+                        const value = tienConLaiInput.value.trim();
+                        const tienConLai = parseFloat(value);
+                        if (!isNaN(tienConLai)) {
+                            tienConLaiValues.push(tienConLai);
+                        } else {
+                            tienConLaiValues.push(0); // Hoặc giá trị mặc định nếu không có giá trị hợp lệ
+                        }
+                    }
+                });
+
+                // Lưu các giá trị "Tien_Con_Lai" vào sessionStorage
+                sessionStorage.setItem('tienConLaiValues', JSON.stringify(tienConLaiValues));
+
+                // Console log để xác nhận lưu trữ thành công
+                console.log('Đã lưu các giá trị Tien_Con_Lai vào sessionStorage:', tienConLaiValues);
+            }
+            function saveTienTruocThueSession() {
+                let tienTruocThueValues = [];
+
+                document.querySelectorAll('#example tbody tr').forEach(row => {
+                    const tienTruocThueInput = row.querySelector('input[name="Tien_Truoc_Thue"]');
+                    if (tienTruocThueInput) {
+                        const tienTruocThue = parseFloat(tienTruocThueInput.value) || 0;
+                        tienTruocThueValues.push(tienTruocThue);
+                    }
+                });
+
+                // Lưu các giá trị "Tien_Phai_Thu" vào sessionStorage
+                sessionStorage.setItem('tienTruocThueValues', JSON.stringify(tienTruocThueValues));
+
+                // Console log để xác nhận lưu trữ thành công
+                console.log('Đã lưu các giá trị Tien_Truoc_Thue vào sessionStorage:', tienTruocThueValues);
+            }
+            function saveTienThueSession() {
+                let tienThueValues = [];
+
+                document.querySelectorAll('#example tbody tr').forEach(row => {
+                    const tienThueInput = row.querySelector('input[name="Thue"]');
+                    if (tienThueInput) {
+                        const tienThue = parseFloat(tienThueInput.value) || 0;
+                        tienThueValues.push(tienThue);
+                    }
+                });
+
+                // Lưu các giá trị "Tien_Phai_Thu" vào sessionStorage
+                sessionStorage.setItem('tienThueValues', JSON.stringify(tienThueValues));
+
+                // Console log để xác nhận lưu trữ thành công
+                console.log('Đã lưu các giá trị Thue vào sessionStorage:', tienThueValues);
+
+            }
+        });
+
+
+
+
+
+        //function getParameterByName(name, url = window.location.href) {
+        //    name = name.replace(/[\[\]]/g, '\\$&');
+        //    let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        //        results = regex.exec(url);
+        //    if (!results) return null;
+        //    if (!results[2]) return '';
+        //    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        //}
+        //var ngayCt = getParameterByName('Ngay_Ct');
+        //console.log('Ngay_Ct from URL:', ngayCt); // Kiểm tra giá trị Ngay_Ct từ URL
+
+        //if (ngayCt) {
+        //    // Tách chuỗi ngày
+        //    var parts = ngayCt.split('/');
+        //    console.log('Date parts:', parts); // Kiểm tra các phần của ngày sau khi tách
+
+        //    if (parts.length === 3) {
+        //        // Chuyển đổi định dạng ngày từ dd/MM/yyyy sang yyyy-MM-dd
+        //        var formattedDate = parts[2] + '-' + parts[1] + '-' + parts[0];
+        //        console.log('Formatted Date:', formattedDate); // Kiểm tra giá trị sau khi format
+
+        //        // Đặt giá trị đã định dạng vào input
+        //        document.getElementById('Ngay_Ct').value = formattedDate;
+        //    }
+        //}
+        //document.addEventListener('DOMContentLoaded', (event) => {
+
+        //    document.getElementById('So_Ct').value = getParameterByName('So_Ct');
+        //    document.getElementById('Ngay_Ct').value = getParameterByName('Ngay_Ct');
+        //    document.getElementById('Nguoi_Nop_Tien').value = getParameterByName('Nguoi_Nop_Tien');
+        //    document.getElementById('dropdownInput').value = getParameterByName('Ma_NVGH');
+        //    document.getElementById('selectedOption').value = getParameterByName('Ten_NVGH');
+        //    document.getElementById('Ly_do').value = getParameterByName('Ly_Do');
+        //});
+    </script>
+    <!--Xử lý checkbox so sánh ngày-->
+    <script>
+        // Lấy đối tượng URLSearchParams từ đường dẫn URL
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Lấy giá trị của tham số 'Ngay_Ct'
+        let ngayCtValue = urlParams.get('Ngay_Ct');
+
+        function formatNgayCtValue(value) {
+            const regex = /^(\d{4})-(\d{2})-(\d{2})$/; // Biểu thức chính quy mới
+            const match = value.match(regex);
+            if (match) {
+                const year = match[1];
+                const month = match[2];
+                const day = match[3];
+                return `${day}/${month}/${year}`;
+            }
+            return value;
+        }
+
+        // Định dạng giá trị của Ngay_Ct
+        ngayCtValue = formatNgayCtValue(ngayCtValue);
+        console.log('Giá trị của Ngay_Ct sau định dạng:', ngayCtValue);
+
+        // Lấy checkbox
+        const checkbox = document.getElementById('myCheckbox');
+
+        // Thêm sự kiện change cho checkbox
+        checkbox.addEventListener('change', handleCheckboxChange);
+
+        function handleCheckboxChange(event) {
+            const checkbox = event.target;
+            const row = checkbox.closest('tr');
+            const isChecked = checkbox.checked;
+
+            active();
+            saveTienPhaiThuToSession();
+            saveTienConLaiToSession();
+            saveTienTruocThueSession();
+            saveTienThueSession();
+
+            // Lấy ô "Tiền CKTT" trong dòng tương ứng
+            const tienCKTTInput = row.querySelector('.Tien_CKTT');
+
+            if (isChecked) {
+
+                // Xử lý khi checkbox được tick
+                console.log('Checkbox đã được tick');
+                // Lấy giá trị ngày từ ô input
+                const ngayCtInput = document.getElementById('Ngay_Ct');
+                const ngayCtValue = parseDate(ngayCtInput.value);
+
+                // Lấy giá trị ngày từ cột "Ngày HD"
+                const ngayHdInput = row.querySelector('.Ngay_Den_Han').value;
+                console.log("Ngay HD Input:", ngayHdInput);
+                const ngayHdValue = parseDate(ngayHdInput);
+
+
+                // So sánh ngày và cập nhật giá trị "Tiền CKTT"
+                if (ngayCtValue > ngayHdValue) {
+                    tienCKTTInput.value = '0';
+                } else {
+                    /*   tienCKTTInput.value = row.querySelector('.Tien_CKTT');*/
+                }
+                calculateRow(row);
+            } else {
+                // Xử lý khi checkbox được bỏ tick
+                console.log('Checkbox đã được bỏ tick');
+
+                // Khôi phục giá trị ban đầu của "Tiền CKTT"
+                if (tienCKTTInput.dataset.tienCKTTGoc !== undefined) {
+                    tienCKTTInput.value = row.querySelector('.Tien_CKTT');
+
+                }
+            }
+
+        }
+        function formatCurrency(value) {
+            return parseFloat(value).toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        }
+
+        function parseDate(dateStr) {
+            const [day, month, year] = dateStr.split('/');
+            return new Date(`${year}-${month}-${day}`);
+        }
+
+        function calculateRow(inputElement) {
+
+            const row = inputElement.closest('tr');
+            const soLuong = parseFloat(row.querySelector('#Tien').value) || 0;
+            const donGia = parseFloat(row.querySelector('#Tien_CKTT').value) || 0;
+            const thanhTien = soLuong - donGia;
+            const formattedTienPhaiThu = thanhTien.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            const formattedTienHD = soLuong.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            const formattedTienCKTT = donGia.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            row.querySelector('#Tien_Phai_Thu_1').value = formattedTienPhaiThu;
+            row.querySelector('#Tien_Phai_Thu').value = thanhTien.toFixed(0);
+            row.querySelector('#Tien_1').value = formattedTienHD;
+            row.querySelector('#Tien_CKTT_1').value = formattedTienCKTT;
+
+            calculateTotal();
+
+        }
+        function calculateTienConLai(inputElement) {
+            const row = inputElement.closest('tr');
+            const TienHD = parseFloat(row.querySelector('input[name="Tien"]').value) || 0;
+            const TienCKTT = parseFloat(row.querySelector('input[name="Tien_CKTT"]').value) || 0;
+            const TienPT = parseFloat(row.querySelector('input[name="Tien_Phai_Thu"]').value) || 0;
+            const TienConLai = TienHD - TienCKTT - TienPT;
+            const formattedTienConLai = TienConLai.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            row.querySelector('#Tien_Con_Lai_1').value = formattedTienConLai;
+            row.querySelector('#Tien_Con_Lai').value = TienConLai.toFixed(0);
+            console.log("Tien con lai la: ", TienConLai.toFixed(0));
+
+        }
+        function calculateTotal() {
+            let tienHang = 0;
+            let tienPhaiThuValues = []; // Mảng để lưu trữ các giá trị Tien_Phai_Thu
+
+            document.querySelectorAll('#example tbody tr').forEach(row => {
+                const tienPhaiThuInput = row.querySelector('input[name="Tien_Phai_Thu"]');
+                if (tienPhaiThuInput) {
+                    const tienPhaiThu = parseFloat(tienPhaiThuInput.value) || 0;
+                    tienHang += tienPhaiThu;
+                    tienPhaiThuValues.push(tienPhaiThu); // Thêm giá trị vào mảng
+                }
+            });
+
+            // Console log các giá trị Tien_Phai_Thu có trong bảng
+            console.log('Các giá trị Tien_Phai_Thu trong bảng:', tienPhaiThuValues);
+
+            // Định dạng số tiền theo kiểu tiền VNĐ mà không có ký hiệu đơn vị
+            const formattedTienHang = tienHang.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+            // Gán giá trị gốc cho phần tử hidden
+            document.getElementById('tien_hang').textContent = tienHang.toFixed(2);
+
+            // Gán giá trị đã định dạng cho phần tử hiển thị
+            document.getElementById('tien_hang2').textContent = formattedTienHang;
+        }
+        function saveTienPhaiThuToSession() {
+            let tienPhaiThuValues = [];
+
+            document.querySelectorAll('#example tbody tr').forEach(row => {
+                const tienPhaiThuInput = row.querySelector('input[name="Tien_Phai_Thu"]');
+                if (tienPhaiThuInput) {
+                    const tienPhaiThu = parseFloat(tienPhaiThuInput.value) || 0;
+                    tienPhaiThuValues.push(tienPhaiThu);
+                }
+            });
+
+            // Lưu các giá trị "Tien_Phai_Thu" vào sessionStorage
+            sessionStorage.setItem('tienPhaiThuValues', JSON.stringify(tienPhaiThuValues));
+
+            // Console log để xác nhận lưu trữ thành công
+            console.log('Đã lưu các giá trị Tien_Phai_Thu vào sessionStorage:', tienPhaiThuValues);
+        }
+        function updateTienPhaiThuValues() {
+            let index = 0;
+            document.querySelectorAll('#example tbody tr').forEach(row => {
+                const tienPhaiThuInput = row.querySelector('input[name="Tien_Phai_Thu"]');
+                if (tienPhaiThuInput) {
+                    tienPhaiThuInput.value = tienPhaiThuValues[index] || 0;
+                    index++;
+                }
+            });
+        }
+        function saveTienConLaiToSession() {
+            let tienConLaiValues = [];
+
+            document.querySelectorAll('#example tbody tr').forEach(row => {
+                const tienConLaiInput = row.querySelector('input[name="Tien_Con_Lai"]');
+                if (tienConLaiInput) {
+                    const value = tienConLaiInput.value.trim();
+                    const tienConLai = parseFloat(value);
+                    if (!isNaN(tienConLai)) {
+                        tienConLaiValues.push(tienConLai);
+                    } else {
+                        tienConLaiValues.push(0); // Hoặc giá trị mặc định nếu không có giá trị hợp lệ
+                    }
+                }
+            });
+
+            // Lưu các giá trị "Tien_Con_Lai" vào sessionStorage
+            sessionStorage.setItem('tienConLaiValues', JSON.stringify(tienConLaiValues));
+
+            // Console log để xác nhận lưu trữ thành công
+            console.log('Đã lưu các giá trị Tien_Con_Lai vào sessionStorage:', tienConLaiValues);
+        }
+        function loadTienConLaiFromSession() {
+            const tienConLaiValues = JSON.parse(sessionStorage.getItem('tienConLaiValues')) || [];
+            document.querySelectorAll('#example tbody tr').forEach((row, index) => {
+                const tienConLaiInput = row.querySelector('input[name="Tien_Con_Lai"]');
+                if (tienConLaiInput && tienConLaiValues[index] !== undefined) {
+                    tienConLaiInput.value = tienConLaiValues[index];
+                }
+            });
+        }
+
+
+
+        function updateTienConLaiValues() {
+            let tableRows = JSON.parse(sessionStorage.getItem('tableRows')) || [];
+            let tienConLaiValues = [];
+
+            tableRows.forEach(row => {
+                if (row.Tien_Con_Lai !== undefined) {
+                    tienConLaiValues.push(parseFloat(row.Tien_Con_Lai) || 0);
+                }
+            });
+
+            let index = 0;
+            document.querySelectorAll('#example tbody tr').forEach(row => {
+                const tienConLaiInput = row.querySelector('input[name="Tien_Con_Lai"]');
+                if (tienConLaiInput) {
+                    tienConLaiInput.value = tienConLaiValues[index] || 0;
+                    index++;
+                }
+            });
+
+            // Cập nhật sessionStorage với các giá trị mới
+            sessionStorage.setItem('tienConLaiValues', JSON.stringify(tienConLaiValues));
+
+            // Console log để xác nhận cập nhật thành công
+            console.log('Đã cập nhật các giá trị Tien_Con_Lai từ tableRows vào sessionStorage:', tienConLaiValues);
+        }
+
+    </script>
+    <script>
+        function saveTienTruocThueSession() {
+            let tienTruocThueValues = [];
+
+            document.querySelectorAll('#example tbody tr').forEach(row => {
+                const tienTruocThueInput = row.querySelector('input[name="Tien_Truoc_Thue"]');
+                if (tienTruocThueInput) {
+                    const tienTruocThue = parseFloat(tienTruocThueInput.value) || 0;
+                    tienTruocThueValues.push(tienTruocThue);
+                }
+            });
+
+            // Lưu các giá trị "Tien_Phai_Thu" vào sessionStorage
+            sessionStorage.setItem('tienTruocThueValues', JSON.stringify(tienTruocThueValues));
+
+            // Console log để xác nhận lưu trữ thành công
+            console.log('Đã lưu các giá trị Tien_Truoc_Thue vào sessionStorage:', tienTruocThueValues);
+
+        }
+        function saveTienThueSession() {
+            let tienThueValues = [];
+
+            document.querySelectorAll('#example tbody tr').forEach(row => {
+                const tienThueInput = row.querySelector('input[name="Thue"]');
+                if (tienThueInput) {
+                    const tienThue = parseFloat(tienThueInput.value) || 0;
+                    tienThueValues.push(tienThue);
+                }
+            });
+
+            // Lưu các giá trị "Tien_Phai_Thu" vào sessionStorage
+            sessionStorage.setItem('tienThueValues', JSON.stringify(tienThueValues));
+
+            // Console log để xác nhận lưu trữ thành công
+            console.log('Đã lưu các giá trị Thue vào sessionStorage:', tienThueValues);
+
+        }
+        function updateTienTruocThueValues() {
+            let index = 0;
+            document.querySelectorAll('#example tbody tr').forEach(row => {
+                const tienTruocThueInput = row.querySelector('input[name="Tien_Truoc_Thue"]');
+                if (tienTruocThueInput) {
+                    tienTruocThueInput.value = tienTruocThueValues[index] || 0;
+                    index++;
+                }
+            });
+        }
+    </script>
+</body>
+
+
+</html>

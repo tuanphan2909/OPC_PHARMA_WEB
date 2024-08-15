@@ -1,0 +1,223 @@
+﻿@model web4.Models.B20HDMuaBan
+
+@{
+    ViewBag.Title = "Xác Nhận Xóa Hợp Đồng";
+}
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Roboto',sans-serif;
+        }
+    </style>
+</head>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">@ViewBag.Title</h2>
+
+    <div class="card shadow-sm mx-auto" style="max-width: 900px;">
+        <div class="card-header bg-danger text-white text-center">
+            Chi tiết Hợp Đồng
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6"><strong>Mã Đối Tượng:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.Ma_Dt) ? "" : "text-danger")">@Model.Ma_Dt</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Tên Đối Tượng:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.Ten_Dt) ? "" : "text-danger")">@Model.Ten_Dt</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Địa Chỉ:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.Dia_Chi) ? "" : "text-danger")">@Model.Dia_Chi</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Mã Trình Dược Viên:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.Ma_TDV) ? "" : "text-danger")">@Model.Ma_TDV</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Tên TDV:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.Ten_TDV) ? "" : "text-danger")">@Model.Ten_TDV</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Loại Khách Hàng:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.Loai_KH) ? "" : "text-danger")">@Model.Loai_KH</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Payment ID:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.Payment_ID) ? "" : "text-danger")">@Model.Payment_ID</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Payment Text:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.Payment_Text) ? "" : "text-danger")">@Model.Payment_Text</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Chiết Khấu:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.CK) ? "" : "text-danger")">@Model.CK</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Mã Số Thuế:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.MST) ? "" : "text-danger")">@Model.MST</div>
+                    </div>
+                    <hr>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6"><strong>Mã Đại Diện:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.Ma_Dai_Dien) ? "" : "text-danger")">@Model.Ma_Dai_Dien</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Tên Đại Diện:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.Ten_Dai_Dien) ? "" : "text-danger")">@Model.Ten_Dai_Dien</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Số Điện Thoại:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.So_Dien_Thoai) ? "" : "text-danger")">@Model.So_Dien_Thoai</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Ngày Ký:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.Ngay_Ky.ToString("yyyy/MM/dd")) ? "" : "text-danger")">@Model.Ngay_Ky.ToString("yyyy/MM/dd")</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Số Hợp Đồng:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.So_Hop_Dong) ? "" : "text-danger")">@Model.So_Hop_Dong</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Ký Hiệu HĐ:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.Ky_Hieu_HD) ? "" : "text-danger")">@Model.Ky_Hieu_HD</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Hợp Đồng VIP:</strong></div>
+                        <div class="col-md-6 @(Model.Hop_Dong_VIP == 0 ? "" : "text-danger")">@Model.Hop_Dong_VIP</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Doanh Thu Năm:</strong></div>
+                        <div class="col-md-6 @(Model.Doanh_Thu_Nam == 0 ? "" : "text-danger")">@Model.Doanh_Thu_Nam</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Doanh Thu Q1:</strong></div>
+                        <div class="col-md-6 @(Model.Doanh_Thu_Q1 == 0 ? "" : "text-danger")">@Model.Doanh_Thu_Q1</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Doanh Thu Q2:</strong></div>
+                        <div class="col-md-6 @(Model.Doanh_Thu_Q2 == 0 ? "" : "text-danger")">@Model.Doanh_Thu_Q2</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Doanh Thu Q3:</strong></div>
+                        <div class="col-md-6 @(Model.Doanh_Thu_Q3 == 0 ? "" : "text-danger")">@Model.Doanh_Thu_Q3</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Doanh Thu Q4:</strong></div>
+                        <div class="col-md-6 @(Model.Doanh_Thu_Q4 == 0 ? "" : "text-danger")">@Model.Doanh_Thu_Q4</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Thời Gian Ký HĐ:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.TG_Ky_HD) ? "" : "text-danger")">@Model.TG_Ky_HD</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Thời Gian Thực Hiện HĐ:</strong></div>
+                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.TG_Th_HD) ? "" : "text-danger")">@Model.TG_Th_HD</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Trạng Thái:</strong></div>
+                        <div class="col-md-6 @(Model.Isactive == 1 ? "text-success" : "text-danger")">
+                            @if (Model.Isactive == 1)
+                            {
+                                <span class="badge badge-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-secondary">Inactive</span>
+                            }
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <button id="deleteButton" class="btn btn-danger mr-2">Xóa</button>
+            <a href="@Url.Action("Index", "B20HopDongMuaBan")" class="btn btn-secondary">Hủy</a>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.getElementById('deleteButton').addEventListener('click', function () {
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn xóa hợp đồng này không?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Có',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '@Url.Action("DeleteConfirmed", "B20HopDongMuaBan")',
+                    type: 'POST',
+                    data: JSON.stringify({ id: @Model.Id }),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
+                                title: 'Xóa thành công!',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                window.location.href = '@Url.Action("Index", "B20HopDongMuaBan")';
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Lỗi',
+                                text: response.message,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error in AJAX request:", status, error, xhr.responseText);
+                        var response = xhr.responseJSON;
+                        var errorMessage = response ? response.errorDetails : 'Xảy ra lỗi trong quá trình xóa. Vui lòng thử lại.';
+                        Swal.fire({
+                            title: 'Lỗi',
+                            text: errorMessage,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>

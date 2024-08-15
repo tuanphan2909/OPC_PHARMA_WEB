@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .background-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none; /* Ẩn tất cả ảnh ban đầu */
+        }
+
+            .background-image.active {
+                display: block; /* Chỉ hiển thị ảnh đang hoạt động */
+            }
+
+        #switch-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            opacity: 0.7; /* Độ mờ */
+            background-color: rgba(255, 255, 255, 0.5); /* Màu nền với độ mờ */
+            border: none; /* Bỏ viền */
+            border-radius: 5px; /* Bo góc */
+        }
+
+            #switch-button:hover {
+                opacity: 1; /* Tăng độ rõ khi hover */
+            }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Switcher</title>
+    @*<link rel="stylesheet" href="styles.css">*@
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <img class="background-image active" src="~/Images/Image4.jpg" alt="Background Image">
+        <img class="background-image" src="~/Images/Image3.jpg" alt="Background Image">
+        <img class="background-image" src="~/Images/bgimage.jpg" alt="Background Image">
+        <button id="switch-button">Next</button>
+    </div>
+
+    <script>
+        const images = document.querySelectorAll('.background-image');
+        let currentIndex = 0;
+
+        document.getElementById('switch-button').addEventListener('click', () => {
+            // Ẩn ảnh hiện tại
+            images[currentIndex].classList.remove('active');
+            // Chuyển sang ảnh tiếp theo
+            currentIndex = (currentIndex + 1) % images.length;
+            // Hiển thị ảnh tiếp theo
+            images[currentIndex].classList.add('active');
+        });
+    </script>
+
+</body>
+
+</html>
