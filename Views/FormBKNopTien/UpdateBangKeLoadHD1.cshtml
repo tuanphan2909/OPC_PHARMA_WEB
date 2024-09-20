@@ -131,7 +131,9 @@
             margin-bottom: 5px;
             display: inline-block; /* Adjust this value as needed */
         }
-
+        .highlight {
+            background-color: #ff4343 !important;
+        }
     </style>
 </head>
 
@@ -439,14 +441,14 @@
                 <input type="checkbox" id="myCheckbox" name="myCheckbox" class="custom-checkbox" onchange="handleCheckboxChange(event)">
             </td>
             <td>
-                <input style="text-align:center" type="text" name="So_HD" id="So_HD" class="So_HD" list="dropdownListVT" placeholder="Tìm kiếm Hóa Đơn">
+                <input style="text-align:center" type="text" name="So_HD" id="So_HD" class="So_HD" list="dropdownListVT" placeholder="Tìm kiếm Hóa Đơn"data-index="${rowCount}">
                 <datalist id="dropdownListVT">
                     @foreach (var item in ViewBag.DataHD)
                     {
                         <option value="@item.So_HD" data-ten="@item.Ten_Dt" data-NgayHD="@item.Ngay_Nop_Tien" data-MaDt="@item.Ma_Dt" data-So_CT1="@item.So_BK" data-tien="@item.Tien_HD" data-tiencktt="@item.Tien_CKTT">@item.Ten_Dt</option>
                     }
                 </datalist>
-                <div id="error-messages-${rowCount}"></div>
+                <div id="error-messages-${rowCount}"style="color:white"></div>
             </td>
             <td><input style="text-align:center" name="So_CT1" id="So_CT1" class="So_CT1" readonly></td>
             <td><input name="Ngay_Hd" id="Ngay_Hd" class="Ngay_Hd" readonly></td>
@@ -507,12 +509,12 @@
                 Ngay_Hd.val('');
             }
             $('.So_HD').next('div').text('');
-           
+            checkDuplicateSoHD();
         });
 
         $(document).on('click', '.deleteRowBtn', function () {
             $(this).closest('tr').remove();
-
+            checkDuplicateSoHD();
             // Call the function to recreate the dropdownListVT after deleting a row
             populateDropdownListVT();
         });
@@ -542,7 +544,19 @@
         //Collect Multiple Order List For Pass To Controller
         $("#SaveHD").click(function (e) {
             e.preventDefault();
+            var hasError = false;
+            $("#example tbody tr").each(function () {
+                var errorMessage = $(this).find('div[id^="error-messages"]').text();
+                if (errorMessage !== '') {
+                    hasError = true;
+                    return false; // Exit the loop if an error is found
+                }
+            });
 
+            if (hasError) {
+                alert("Có hóa đơn bị trùng vui lòng kiểm tra lại.");
+                return; // Stop the execution if there are errors
+            }
             var orderArr = [];
             orderArr.length = 0;
 
@@ -599,28 +613,47 @@
             });
         });
 
-       //function checkDuplicateSoHD() {
-       //     var inputs = document.querySelectorAll('.So_HD');
-       //     var values = {};
+        function checkDuplicateSoHD() {
+            var inputs = document.querySelectorAll('.So_HD');
+            var values = {};
+            inputs.forEach(function (input) {
+                var value = input.value;
+                var index = input.getAttribute('data-index'); // Lấy giá trị data-index chính xác
+                console.log('Index:', index);
 
-       //     inputs.forEach(function (input, index) {
-       //         var value = input.value;
-       //         if (value !== '') {
-       //             if (!values[value]) {
-       //                 values[value] = [];
-       //             }
-       //             values[value].push(index);
-       //         }
-       //     });
+                var errorMessageDiv = document.getElementById(`error-messages-${index}`);
+                console.log('ErrorMessageDiv:', errorMessageDiv);
 
-       //     Object.keys(values).forEach(function (value) {
-       //         var indexes = values[value];
-       //         if (indexes.length > 1) {
-       //             indexes.forEach(function (index) {
-       //                 var errorMessageDiv = document.getElementById(error - messages - ${ index + 1});
-       //             errorMessageDiv.textContent = 'Có sự trùng lặp số hóa đơn';
-       //         });
-       // }
+                if (errorMessageDiv) {
+                    errorMessageDiv.textContent = ''; // Clear previous error message
+                }
+                input.closest('tr').classList.remove('highlight');
+
+                if (value !== '') {
+                    if (!values[value]) {
+                        values[value] = [];
+                    }
+                    values[value].push(input); // Lưu trực tiếp input thay vì chỉ số
+                }
+            });
+
+            Object.keys(values).forEach(function (value) {
+                var inputsWithSameValue = values[value];
+                if (inputsWithSameValue.length > 1) {
+                    inputsWithSameValue.forEach(function (input) {
+                        var index = input.getAttribute('data-index'); // Lấy data-index để khớp với ID div lỗi
+                        var errorMessageDiv = document.getElementById(`error-messages-${index}`);
+                        if (errorMessageDiv) {
+                            errorMessageDiv.textContent = 'Có sự trùng lặp số hóa đơn';
+                        }
+                        var row = input.closest('tr');
+                        if (row) {
+                            row.classList.add('highlight');
+                        }
+                    });
+                }
+            });
+        }
         function setCookie(name, value, days) {
             var expires = "";
             if (days) {

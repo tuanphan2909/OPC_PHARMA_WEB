@@ -172,9 +172,8 @@
                     <datalist id="dropdownList">
                         @foreach (var item in ViewBag.DataTDV)
                         {
-                            if (item.Ma_TDV == Request.Cookies["Ma_CbNv"].Value)
-                            {
-                            <option value="@item.Ma_TDV" data-ten="@item.Ten_TDV">@item.Ten_TDV</option>}
+                           
+                            <option value="@item.Ma_TDV" data-ten="@item.Ten_TDV">@item.Ten_TDV</option>
                         }
                     </datalist>
                     <input name="Ten_NVGH" id="selectedOption" value="@row2["Ten_TDV"]" readonly>

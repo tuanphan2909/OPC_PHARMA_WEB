@@ -38,7 +38,7 @@ namespace web4.Controllers
             ViewBag.DataItems = dmDlist;
             var fromDate = Request.Cookies["From_date"].Value;
             var toDate = Request.Cookies["To_date"].Value;
-            var Ma_Dt = Request.Cookies["Ma_Dt"].Value;
+            var Ma_Dt = Request.Cookies["Ma_Dt"] != null ? Request.Cookies["Ma_Dt"].Value: "";
             var Ma_Dvcs = Request.Cookies["MA_DVCS"].Value;
             DataSet ds = new DataSet();
 

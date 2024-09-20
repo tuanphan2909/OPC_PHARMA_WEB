@@ -5,10 +5,10 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using web4.Models;
-using static web4.Controllers.SERVERController;
-using static web4.Controllers.LoadDataController;
+
 namespace web4.Controllers
 {
     public class B20HopDongMuaBanController : Controller
@@ -18,26 +18,143 @@ namespace web4.Controllers
         SqlDataReader dt;
         public B20HopDongMuaBanController()
         {
-            SqlConnectionHelper.ConnectSQL(con);
+            connectSQL();
         }
 
+        public void connectSQL()
+        {
+            con.ConnectionString = "Data source= " + "118.69.109.109" + ";database=" + "SAP_OPC" + ";uid=OPC;password=OpcaBc@135#";
+        }
 
         public ActionResult Index()
         {
-            List<B20HDMuaBan> b20HopDongMuaBanList = GetB20HopDongMuaBanData();
+            string branchCode = GetBranchCodeFromCookie();
+            ViewBag.CurrentBranchCode = branchCode; // Truyền mã chi nhánh hiện tại sang View
+            List<B20HDMuaBan> b20HopDongMuaBanList = GetB20HopDongMuaBanData(branchCode);
             return View(b20HopDongMuaBanList);
         }
 
-        private List<B20HDMuaBan> GetB20HopDongMuaBanData()
+        private List<B20HDMuaBan> GetB20HopDongMuaBanData(string branchCode)
         {
             List<B20HDMuaBan> b20HopDongMuaBanList = new List<B20HDMuaBan>();
 
             using (SqlConnection conn = new SqlConnection(con.ConnectionString))
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand("SELECT * FROM B20HopDongMuaBan", conn))
+                string query = "SELECT * FROM B20HopDongMuaBan";
+
+                if (!string.IsNullOrEmpty(branchCode))
                 {
-                    cmd.CommandType = System.Data.CommandType.Text;
+                    query += " WHERE Ma_Dvcs = @Ma_Dvcs";
+                }
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    if (!string.IsNullOrEmpty(branchCode))
+                    {
+                        cmd.Parameters.AddWithValue("@Ma_Dvcs", branchCode);
+                    }
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        int colId = reader.GetOrdinal("Id");
+                        int colMaDvcs = reader.GetOrdinal("Ma_Dvcs");
+                        int colMaDt = reader.GetOrdinal("Ma_Dt");
+                        int colTenDt = reader.GetOrdinal("Ten_Dt");
+                        int colDiaChi = reader.GetOrdinal("Dia_Chi");
+                        int colMaTDV = reader.GetOrdinal("Ma_TDV");
+                        int colTenTDV = reader.GetOrdinal("Ten_TDV");
+                        int colLoaiKH = reader.GetOrdinal("Loai_KH");
+                        int colPaymentID = reader.GetOrdinal("Payment_ID");
+                        int colPaymentText = reader.GetOrdinal("Payment_Text");
+                        int colCK = reader.GetOrdinal("CK");
+                        int colMST = reader.GetOrdinal("MST");
+                        int colMaDaiDien = reader.GetOrdinal("Ma_Dai_Dien");
+                        int colTenDaiDien = reader.GetOrdinal("Ten_Dai_Dien");
+                        int colSoDienThoai = reader.GetOrdinal("So_Dien_Thoai");
+                        int colNgayKy = reader.GetOrdinal("Ngay_Ky");
+                        int colSoHopDong = reader.GetOrdinal("So_Hop_Dong");
+                        int colKyHieuHD = reader.GetOrdinal("Ky_Hieu_HD");
+                        int colHopDongVIP = reader.GetOrdinal("Hop_Dong_VIP");
+                        int colDoanhThuNam = reader.GetOrdinal("Doanh_Thu_Nam");
+                        int colDoanhThuQ1 = reader.GetOrdinal("Doanh_Thu_Q1");
+                        int colDoanhThuQ2 = reader.GetOrdinal("Doanh_Thu_Q2");
+                        int colDoanhThuQ3 = reader.GetOrdinal("Doanh_Thu_Q3");
+                        int colDoanhThuQ4 = reader.GetOrdinal("Doanh_Thu_Q4");
+                        int colTGKyHD = reader.GetOrdinal("TG_Ky_HD");
+                        int colTGThHD = reader.GetOrdinal("TG_Th_HD");
+                        int colIsactive = reader.GetOrdinal("Isactive");
+
+                        while (reader.Read())
+                        {
+                            B20HDMuaBan hd = new B20HDMuaBan
+                            {
+                                Id = reader.GetInt32(colId),
+                                Ma_Dvcs = reader.IsDBNull(colMaDvcs) ? string.Empty : reader.GetString(colMaDvcs),
+                                Ma_Dt = reader.IsDBNull(colMaDt) ? string.Empty : reader.GetString(colMaDt),
+                                Ten_Dt = reader.IsDBNull(colTenDt) ? string.Empty : reader.GetString(colTenDt),
+                                Dia_Chi = reader.IsDBNull(colDiaChi) ? string.Empty : reader.GetString(colDiaChi),
+                                Ma_TDV = reader.IsDBNull(colMaTDV) ? string.Empty : reader.GetString(colMaTDV),
+                                Ten_TDV = reader.IsDBNull(colTenTDV) ? string.Empty : reader.GetString(colTenTDV),
+                                Loai_KH = reader.IsDBNull(colLoaiKH) ? string.Empty : reader.GetString(colLoaiKH),
+                                Payment_ID = reader.IsDBNull(colPaymentID) ? string.Empty : reader.GetString(colPaymentID),
+                                Payment_Text = reader.IsDBNull(colPaymentText) ? string.Empty : reader.GetString(colPaymentText),
+                                CK = reader.IsDBNull(colCK) ? string.Empty : reader.GetString(colCK),
+                                MST = reader.IsDBNull(colMST) ? string.Empty : reader.GetString(colMST),
+                                Ma_Dai_Dien = reader.IsDBNull(colMaDaiDien) ? string.Empty : reader.GetString(colMaDaiDien),
+                                Ten_Dai_Dien = reader.IsDBNull(colTenDaiDien) ? string.Empty : reader.GetString(colTenDaiDien),
+                                So_Dien_Thoai = reader.IsDBNull(colSoDienThoai) ? string.Empty : reader.GetString(colSoDienThoai),
+                                Ngay_Ky = reader.IsDBNull(colNgayKy) ? DateTime.MinValue : reader.GetDateTime(colNgayKy),
+                                So_Hop_Dong = reader.IsDBNull(colSoHopDong) ? string.Empty : reader.GetString(colSoHopDong),
+                                Ky_Hieu_HD = reader.IsDBNull(colKyHieuHD) ? string.Empty : reader.GetString(colKyHieuHD),
+                                Hop_Dong_VIP = reader.IsDBNull(colHopDongVIP) ? 0 : (reader.GetBoolean(colHopDongVIP) ? 1 : 0),
+                                Doanh_Thu_Nam = reader.IsDBNull(colDoanhThuNam) ? 0 : reader.GetDecimal(colDoanhThuNam),
+                                Doanh_Thu_Q1 = reader.IsDBNull(colDoanhThuQ1) ? 0 : reader.GetDecimal(colDoanhThuQ1),
+                                Doanh_Thu_Q2 = reader.IsDBNull(colDoanhThuQ2) ? 0 : reader.GetDecimal(colDoanhThuQ2),
+                                Doanh_Thu_Q3 = reader.IsDBNull(colDoanhThuQ3) ? 0 : reader.GetDecimal(colDoanhThuQ3),
+                                Doanh_Thu_Q4 = reader.IsDBNull(colDoanhThuQ4) ? 0 : reader.GetDecimal(colDoanhThuQ4),
+                                TG_Ky_HD = reader.IsDBNull(colTGKyHD) ? string.Empty : reader.GetString(colTGKyHD),
+                                TG_Th_HD = reader.IsDBNull(colTGThHD) ? string.Empty : reader.GetString(colTGThHD),
+                                Isactive = reader.IsDBNull(colIsactive) ? 0 : (reader.GetBoolean(colIsactive) ? 1 : 0)
+                            };
+                            b20HopDongMuaBanList.Add(hd);
+                        }
+                    }
+                }
+            }
+
+            return b20HopDongMuaBanList;
+        }
+        private List<B20HDMuaBan> GetB20HopDongMuaBanData(string branchCode, int? id = null)
+        {
+            List<B20HDMuaBan> b20HopDongMuaBanList = new List<B20HDMuaBan>();
+
+            using (SqlConnection conn = new SqlConnection(con.ConnectionString))
+            {
+                conn.Open();
+                string query = "SELECT * FROM B20HopDongMuaBan WHERE 1=1";
+
+                if (!string.IsNullOrEmpty(branchCode))
+                {
+                    query += " AND Ma_Dvcs = @Ma_Dvcs";
+                }
+
+                if (id.HasValue)
+                {
+                    query += " AND Id = @Id";
+                }
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    if (!string.IsNullOrEmpty(branchCode))
+                    {
+                        cmd.Parameters.AddWithValue("@Ma_Dvcs", branchCode);
+                    }
+
+                    if (id.HasValue)
+                    {
+                        cmd.Parameters.AddWithValue("@Id", id.Value);
+                    }
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -82,6 +199,20 @@ namespace web4.Controllers
             return b20HopDongMuaBanList;
         }
 
+
+
+        private string GetBranchCodeFromCookie()
+        {
+            var cookie = Request.Cookies["MA_DVCS"];
+            if (cookie != null && cookie.Value == "OPC")
+            {
+                cookie.Value = ""; // Gán giá trị rỗng cho cookie
+            }
+            return cookie != null ? cookie.Value : string.Empty;
+        }
+
+
+
         // Override Json method to set MaxJsonLength
         protected override JsonResult Json(object data, string contentType, Encoding contentEncoding, JsonRequestBehavior behavior)
         {
@@ -97,8 +228,10 @@ namespace web4.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(B20HDMuaBan model, string SelectedBranch)
+        public ActionResult Create(B20HDMuaBan model)
         {
+            string branchCode = GetBranchCodeFromCookie();
+
             if (!ModelState.IsValid)
             {
                 System.Diagnostics.Debug.WriteLine("ModelState is invalid");
@@ -111,11 +244,11 @@ namespace web4.Controllers
                 }
 
                 // Re-populate the data for dropdowns and other controls
-                model.DataItemsDt = LoadData.LoadDmDt(SelectedBranch,Request);
-                model.DataItemsTdv = LoadDmTDV(SelectedBranch);
+                model.DataItemsDt = LoadDmDt(branchCode);
+                model.DataItemsTdv = LoadDmTDV(branchCode);
                 model.PaymentData = GetPaymentData();
                 model.CKData = GetCKData();
-                model.SelectedBranch = SelectedBranch;
+                model.SelectedBranch = branchCode;
 
                 return View(model);
             }
@@ -128,7 +261,7 @@ namespace web4.Controllers
                     conn.Open();
                     using (SqlCommand cmd = new SqlCommand("INSERT INTO B20HopDongMuaBan (Ma_Dvcs, Ma_Dt, Ten_Dt, Dia_Chi, Ma_TDV, Ten_TDV, Loai_KH, Payment_ID, Payment_Text, CK, MST, Ma_Dai_Dien, Ten_Dai_Dien, So_Dien_Thoai, Ngay_Ky, So_Hop_Dong, Ky_Hieu_HD, Hop_Dong_VIP, Doanh_Thu_Nam, Doanh_Thu_Q1, Doanh_Thu_Q2, Doanh_Thu_Q3, Doanh_Thu_Q4, TG_Ky_HD, TG_Th_HD, Isactive) VALUES (@Ma_Dvcs, @Ma_Dt, @Ten_Dt, @Dia_Chi, @Ma_TDV, @Ten_TDV, @Loai_KH, @Payment_ID, @Payment_Text, @CK, @MST, @Ma_Dai_Dien, @Ten_Dai_Dien, @So_Dien_Thoai, @Ngay_Ky, @So_Hop_Dong, @Ky_Hieu_HD, @Hop_Dong_VIP, @Doanh_Thu_Nam, @Doanh_Thu_Q1, @Doanh_Thu_Q2, @Doanh_Thu_Q3, @Doanh_Thu_Q4, @TG_Ky_HD, @TG_Th_HD, @Isactive)", conn))
                     {
-                        cmd.Parameters.AddWithValue("@Ma_Dvcs", (object)SelectedBranch ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Ma_Dvcs", branchCode);
                         cmd.Parameters.AddWithValue("@Ma_Dt", (object)model.Ma_Dt ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@Ten_Dt", string.IsNullOrWhiteSpace(model.Ten_Dt) ? " " : model.Ten_Dt);
                         cmd.Parameters.AddWithValue("@Dia_Chi", string.IsNullOrWhiteSpace(model.Dia_Chi) ? " " : model.Dia_Chi);
@@ -142,7 +275,7 @@ namespace web4.Controllers
                         cmd.Parameters.AddWithValue("@Ma_Dai_Dien", string.IsNullOrWhiteSpace(model.Ma_Dai_Dien) ? " " : model.Ma_Dai_Dien);
                         cmd.Parameters.AddWithValue("@Ten_Dai_Dien", string.IsNullOrWhiteSpace(model.Ten_Dai_Dien) ? " " : model.Ten_Dai_Dien);
                         cmd.Parameters.AddWithValue("@So_Dien_Thoai", string.IsNullOrWhiteSpace(model.So_Dien_Thoai) ? " " : model.So_Dien_Thoai);
-                        cmd.Parameters.AddWithValue("@Ngay_Ky", model.Ngay_Ky);
+                        cmd.Parameters.AddWithValue("@Ngay_Ky", model.Ngay_Ky.HasValue ? (object)model.Ngay_Ky.Value : DBNull.Value);
                         cmd.Parameters.AddWithValue("@So_Hop_Dong", (object)model.So_Hop_Dong ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@Ky_Hieu_HD", string.IsNullOrWhiteSpace(model.Ky_Hieu_HD) ? " " : model.Ky_Hieu_HD);
                         cmd.Parameters.AddWithValue("@Hop_Dong_VIP", model.Hop_Dong_VIP);
@@ -183,14 +316,15 @@ namespace web4.Controllers
             }
 
             // Re-populate the data for dropdowns and other controls
-            model.DataItemsDt = LoadData.LoadDmDt(SelectedBranch,Request);
-            model.DataItemsTdv = LoadDmTDV(SelectedBranch);
+            model.DataItemsDt = LoadDmDt(branchCode);
+            model.DataItemsTdv = LoadDmTDV(branchCode);
             model.PaymentData = GetPaymentData();
             model.CKData = GetCKData();
-            model.SelectedBranch = SelectedBranch;
+            model.SelectedBranch = branchCode;
 
             return View(model);
         }
+
 
         // LOAD DATA 
         [HttpGet]
@@ -214,49 +348,120 @@ namespace web4.Controllers
 
         public ActionResult Create(string branch)
         {
-            var dataItemsDt = LoadData.LoadDmDt(branch,Request);
-            var dataItemsTdv = LoadDmTDV(branch);
+            string branchCode = string.IsNullOrEmpty(GetBranchCodeFromCookie()) ? branch : GetBranchCodeFromCookie();
+            var dataItemsDt = LoadDmDt(branchCode);
+            var dataItemsTdv = LoadDmTDV(branchCode);
             var paymentData = GetPaymentData();
             var ckData = GetCKData();
 
+            var specialBranches = new List<string> { "OPC_CT", "OPC_TG","OPC_HN", "OPC_TP", "OPC_MD", "OPC_NA", "OPC_VT", "OPC_DN", "OPC_NT","OPC_KD-CNT","OPC_KD-CH" };
+            var isSpecialBranch = specialBranches.Contains(branchCode);
+
             var model = new B20HDMuaBan
             {
-                SelectedBranch = branch,
+                SelectedBranch = branchCode,
                 DataItemsDt = dataItemsDt,
                 DataItemsTdv = dataItemsTdv,
-                PaymentData = paymentData, // Add this line
-                CKData = ckData, // Add this line
-                Loai_KH = "OTC_L" // Default value for Loai_KH
+                PaymentData = paymentData,
+                CKData = ckData,
+                Loai_KH = "OTC_L", // Giá trị mặc định cho Loai_KH
+                So_Hop_Dong = isSpecialBranch ? "HDMB_OTC_TAM" : string.Empty,
+                Ma_Dvcs = branchCode // Thêm mã chi nhánh vào model
             };
 
             return View(model);
         }
-        /*
-         *   private string ModifyBranchCodeForDt(string branch)
-        {
-            // Append '_01' to the branch code.
-            return $"{branch}_01";
-        }
 
-         */
+
 
         [HttpGet]
         public JsonResult GetBranchData(string branchCode)
         {
-            var branchData = LoadData.LoadDmDt(branchCode, Request); // Lấy dữ liệu từ CSDL dựa trên branchCode
+            var branchData = LoadDmDt(branchCode);
             return Json(branchData, JsonRequestBehavior.AllowGet);
         }
-
-     
-
-        public List<BKHoaDonGiaoHang> LoadDmTDV(string Ma_dvcs)
+        public async Task<List<MauInChungTu>> LoadDmDtAsync(string Ma_dvcs)
         {
-            List<BKHoaDonGiaoHang> dataItems = new List<BKHoaDonGiaoHang>();
+            List<MauInChungTu> dataItems = new List<MauInChungTu>();
+            if (Ma_dvcs == "OPC_KD-CNT" || Ma_dvcs == "OPC_KD-CH"||Ma_dvcs=="")
+            {
+                Ma_dvcs = "OPC";
+            }
+            using (SqlConnection connection = new SqlConnection(con.ConnectionString))
+            {
+                await connection.OpenAsync();
+                using (SqlCommand command = new SqlCommand("[usp_DmDt9CN_SAP]", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@_Ma_Dvcs", Ma_dvcs);
+                    command.CommandTimeout = 950;
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            MauInChungTu dataItem = new MauInChungTu
+                            {
+                                Ma_Dt = reader["ma_dt"].ToString(),
+                                Ten_Dt = reader["ten_dt"].ToString(),
+                                Dia_Chi = reader["Dia_Chi"].ToString(),
+                            };
+                            dataItems.Add(dataItem);
+                        }
+                    }
+                }
+            }
+
+            return dataItems;
+        }
+
+        public List<MauInChungTu> LoadDmDt(string Ma_dvcs)
+        {
+            List<MauInChungTu> dataItems = new List<MauInChungTu>();
+            if(Ma_dvcs == "OPC_KD-CNT" || Ma_dvcs == "OPC_KD-CH")
+            {
+                Ma_dvcs = "OPC";
+            }
 
             using (SqlConnection connection = new SqlConnection(con.ConnectionString))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand("[usp_DanhSachTDV]", connection))
+                using (SqlCommand command = new SqlCommand("[usp_DmDt9CN_SAP]", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@_Ma_Dvcs", Ma_dvcs);
+                    command.CommandTimeout = 950;
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            MauInChungTu dataItem = new MauInChungTu
+                            {
+                                Ma_Dt = reader["ma_dt"].ToString(),
+                                Ten_Dt = reader["ten_dt"].ToString(),
+                                Dia_Chi = reader["Dia_Chi"].ToString(),
+                            };
+                            dataItems.Add(dataItem);
+                        }
+                    }
+                }
+            }
+
+            return dataItems;
+        }
+
+        public List<BKHoaDonGiaoHang> LoadDmTDV(string Ma_dvcs)
+        {
+            List<BKHoaDonGiaoHang> dataItems = new List<BKHoaDonGiaoHang>();
+            if (Ma_dvcs == "OPC_KD-CNT" || Ma_dvcs == "OPC_KD-CH")
+            {
+                Ma_dvcs = "OPC";
+            }
+            using (SqlConnection connection = new SqlConnection(con.ConnectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand("[usp_DanhSach_TDV_SAP]", connection))
                 {
                     command.CommandTimeout = 950;
                     command.CommandType = CommandType.StoredProcedure;
@@ -275,10 +480,51 @@ namespace web4.Controllers
                         {
                             BKHoaDonGiaoHang dataItem = new BKHoaDonGiaoHang
                             {
-                                Ma_CbNv = reader["Ma_CbNv"].ToString(),
-                                hoten = reader["hoten"].ToString(),
-                                Ma_Dvcs = columnNames.Contains("Ma_Dvcs") ? reader["Ma_Dvcs"].ToString() : string.Empty,
-                                Ma_Business = columnNames.Contains("Ma_Business") ? reader["Ma_Business"].ToString() : string.Empty
+                                Ma_CbNv = reader["Ma_TDV"].ToString(),
+                                hoten = reader["Ten_TDV"].ToString(),
+                                Ma_Dvcs = columnNames.Contains("Dvcs") ? reader["Dvcs"].ToString() : string.Empty,
+                            };
+                            dataItems.Add(dataItem);
+                        }
+                    }
+                }
+            }
+
+            return dataItems;
+        }
+        public async Task<List<BKHoaDonGiaoHang>> LoadDmTDVAsync(string Ma_dvcs)
+        {
+            List<BKHoaDonGiaoHang> dataItems = new List<BKHoaDonGiaoHang>();
+            if (Ma_dvcs == "OPC_KD-CNT" || Ma_dvcs == "OPC_KD-CH")
+            {
+                Ma_dvcs = "OPC";
+            }
+            using (SqlConnection connection = new SqlConnection(con.ConnectionString))
+            {
+                await connection.OpenAsync();
+                using (SqlCommand command = new SqlCommand("[usp_DanhSach_TDV_SAP]", connection))
+                {
+                    command.CommandTimeout = 950;
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@_Ma_Dvcs", Ma_dvcs);
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (!reader.HasRows)
+                        {
+                            throw new Exception("No rows returned from the stored procedure.");
+                        }
+
+                        var columnNames = Enumerable.Range(0, reader.FieldCount).Select(reader.GetName).ToList();
+
+                        while (await reader.ReadAsync())
+                        {
+                            BKHoaDonGiaoHang dataItem = new BKHoaDonGiaoHang
+                            {
+                                Ma_CbNv = reader["Ma_TDV"].ToString(),
+                                hoten = reader["Ten_TDV"].ToString(),
+                                Ma_Dvcs = columnNames.Contains("Dvcs") ? reader["Dvcs"].ToString() : string.Empty,
+                           
                             };
                             dataItems.Add(dataItem);
                         }
@@ -291,7 +537,6 @@ namespace web4.Controllers
 
         private List<PaymentData> GetPaymentData()
         {
-            // Ideally, this data should come from a database. For demonstration, it's hardcoded here.
             return new List<PaymentData>
             {
                 new PaymentData { PaymentId = "1001", PaymentText = "10 days net" },
@@ -388,96 +633,149 @@ namespace web4.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            var model = GetB20HopDongMuaBanData().FirstOrDefault(x => x.Id == id);
-
+            string branchCode = GetBranchCodeFromCookie();
+            var model = GetB20HopDongMuaBanData(branchCode, id).FirstOrDefault();
+            string dvcs = Request.Cookies["MA_DVCS"].Value;
             if (model == null)
             {
                 return HttpNotFound();
             }
 
-            model.DataItemsDt = LoadData.LoadDmDt(model.Ma_Dvcs,Request);
-            model.DataItemsTdv = LoadDmTDV(model.Ma_Dvcs);
+            // Kiểm tra điều kiện số hợp đồng
+            if (model.So_Hop_Dong != "HDMB_OTC_TAM"&&dvcs!="")
+            {
+                TempData["ErrorMessage"] = "Bạn không được phép sửa hợp đồng này.";
+                return RedirectToAction("Index");
+            }
+
+            model.DataItemsDt = await LoadDmDtAsync(branchCode);
+            model.DataItemsTdv = await LoadDmTDVAsync(branchCode);
             model.PaymentData = GetPaymentData();
             model.CKData = GetCKData();
 
+            // Đặt lại giá trị Ngày Ký nếu bằng DateTime.MinValue
+            if (model.Ngay_Ky == DateTime.MinValue)
+            {
+                model.Ngay_Ky = null;
+            }
+
+            // Log dữ liệu hợp đồng
+            System.Diagnostics.Debug.WriteLine($"Edit GET: {Newtonsoft.Json.JsonConvert.SerializeObject(model)}");
             return View("Edit", model);
         }
 
         [HttpPost]
-        public ActionResult Edit(B20HDMuaBan model)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(B20HDMuaBan model)
         {
-            if (ModelState.IsValid)
+            System.Diagnostics.Debug.WriteLine($"Model Values: {Newtonsoft.Json.JsonConvert.SerializeObject(model)}");
+
+            if (!ModelState.IsValid)
             {
-                try
+                System.Diagnostics.Debug.WriteLine("ModelState is not valid.");
+                var allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var error in allErrors)
                 {
-                    using (SqlConnection conn = new SqlConnection(con.ConnectionString))
-                    {
-                        conn.Open();
-                        using (SqlCommand cmd = new SqlCommand("UPDATE B20HopDongMuaBan SET Ma_Dvcs = @Ma_Dvcs, Ma_Dt = @Ma_Dt, Ten_Dt = @Ten_Dt, Dia_Chi = @Dia_Chi, Ma_TDV = @Ma_TDV, Ten_TDV = @Ten_TDV, Loai_KH = @Loai_KH, Payment_ID = @Payment_ID, Payment_Text = @Payment_Text, CK = @CK, MST = @MST, Ma_Dai_Dien = @Ma_Dai_Dien, Ten_Dai_Dien = @Ten_Dai_Dien, So_Dien_Thoai = @So_Dien_Thoai, Ngay_Ky = @Ngay_Ky, So_Hop_Dong = @So_Hop_Dong, Ky_Hieu_HD = @Ky_Hieu_HD, Hop_Dong_VIP = @Hop_Dong_VIP, Doanh_Thu_Nam = @Doanh_Thu_Nam, Doanh_Thu_Q1 = @Doanh_Thu_Q1, Doanh_Thu_Q2 = @Doanh_Thu_Q2, Doanh_Thu_Q3 = @Doanh_Thu_Q3, Doanh_Thu_Q4 = @Doanh_Thu_Q4, TG_Ky_HD = @TG_Ky_HD, TG_Th_HD = @TG_Th_HD, Isactive = @Isactive WHERE Id = @Id", conn))
-                        {
-                            cmd.Parameters.AddWithValue("@Id", model.Id);
-                            cmd.Parameters.AddWithValue("@Ma_Dvcs", (object)model.Ma_Dvcs ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Ma_Dt", (object)model.Ma_Dt ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Ten_Dt", (object)model.Ten_Dt ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Dia_Chi", (object)model.Dia_Chi ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Ma_TDV", (object)model.Ma_TDV ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Ten_TDV", (object)model.Ten_TDV ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Loai_KH", (object)model.Loai_KH ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Payment_ID", (object)model.Payment_ID ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Payment_Text", (object)model.Payment_Text ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@CK", (object)model.CK ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@MST", (object)model.MST ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Ma_Dai_Dien", (object)model.Ma_Dai_Dien ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Ten_Dai_Dien", (object)model.Ten_Dai_Dien ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@So_Dien_Thoai", (object)model.So_Dien_Thoai ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Ngay_Ky", model.Ngay_Ky);
-                            cmd.Parameters.AddWithValue("@So_Hop_Dong", (object)model.So_Hop_Dong ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Ky_Hieu_HD", (object)model.Ky_Hieu_HD ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Hop_Dong_VIP", model.Hop_Dong_VIP);
-                            cmd.Parameters.AddWithValue("@Doanh_Thu_Nam", model.Doanh_Thu_Nam);
-                            cmd.Parameters.AddWithValue("@Doanh_Thu_Q1", model.Doanh_Thu_Q1);
-                            cmd.Parameters.AddWithValue("@Doanh_Thu_Q2", model.Doanh_Thu_Q2);
-                            cmd.Parameters.AddWithValue("@Doanh_Thu_Q3", model.Doanh_Thu_Q3);
-                            cmd.Parameters.AddWithValue("@Doanh_Thu_Q4", model.Doanh_Thu_Q4);
-                            cmd.Parameters.AddWithValue("@TG_Ky_HD", (object)model.TG_Ky_HD ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@TG_Th_HD", (object)model.TG_Th_HD ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Isactive", model.Isactive);
-
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-
-                    TempData["SuccessMessage"] = "Hợp đồng đã được cập nhật thành công!";
-                    return RedirectToAction("Index");
+                    System.Diagnostics.Debug.WriteLine($"Error: {error.ErrorMessage}");
                 }
-                catch (Exception ex)
-                {
-                    TempData["ErrorMessage"] = "Error: " + ex.Message;
-                }
+
+                // Populate dropdown data again
+                string branchCodeForDropdowns = GetBranchCodeFromCookie();
+                model.DataItemsDt = await LoadDmDtAsync (branchCodeForDropdowns);
+                model.DataItemsTdv = await LoadDmTDVAsync(branchCodeForDropdowns);
+                model.PaymentData = GetPaymentData();
+                model.CKData = GetCKData();
+                return Json(new { success = false, message = "ModelState is invalid", modelState = ModelState });
             }
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(con.ConnectionString))
+                {
+                    await conn.OpenAsync();
+                    using (SqlCommand cmd = new SqlCommand("UPDATE B20HopDongMuaBan SET Ma_Dvcs = @Ma_Dvcs, Ma_Dt = @Ma_Dt, Ten_Dt = @Ten_Dt, Dia_Chi = @Dia_Chi, Ma_TDV = @Ma_TDV, Ten_TDV = @Ten_TDV, Loai_KH = @Loai_KH, Payment_ID = @Payment_ID, Payment_Text = @Payment_Text, CK = @CK, MST = @MST, Ma_Dai_Dien = @Ma_Dai_Dien, Ten_Dai_Dien = @Ten_Dai_Dien, So_Dien_Thoai = @So_Dien_Thoai, Ngay_Ky = @Ngay_Ky, So_Hop_Dong = @So_Hop_Dong, Ky_Hieu_HD = @Ky_Hieu_HD, Hop_Dong_VIP = @Hop_Dong_VIP, Doanh_Thu_Nam = @Doanh_Thu_Nam, Doanh_Thu_Q1 = @Doanh_Thu_Q1, Doanh_Thu_Q2 = @Doanh_Thu_Q2, Doanh_Thu_Q3 = @Doanh_Thu_Q3, Doanh_Thu_Q4 = @Doanh_Thu_Q4, TG_Ky_HD = @TG_Ky_HD, TG_Th_HD = @TG_Th_HD, Isactive = @Isactive WHERE Id = @Id", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", model.Id);
+                        cmd.Parameters.AddWithValue("@Ma_Dvcs", (object)model.Ma_Dvcs ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Ma_Dt", (object)model.Ma_Dt ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Ten_Dt", (object)model.Ten_Dt ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Dia_Chi", (object)model.Dia_Chi ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Ma_TDV", (object)model.Ma_TDV ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Ten_TDV", (object)model.Ten_TDV ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Loai_KH", (object)model.Loai_KH ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Payment_ID", (object)model.Payment_ID ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Payment_Text", (object)model.Payment_Text ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@CK", (object)model.CK ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@MST", (object)model.MST ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Ma_Dai_Dien", (object)model.Ma_Dai_Dien ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Ten_Dai_Dien", (object)model.Ten_Dai_Dien ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@So_Dien_Thoai", (object)model.So_Dien_Thoai ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Ngay_Ky", model.Ngay_Ky.HasValue ? (object)model.Ngay_Ky.Value : DBNull.Value);
+                        cmd.Parameters.AddWithValue("@So_Hop_Dong", (object)model.So_Hop_Dong ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Ky_Hieu_HD", (object)model.Ky_Hieu_HD ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Hop_Dong_VIP", model.Hop_Dong_VIP);
+                        cmd.Parameters.AddWithValue("@Doanh_Thu_Nam", model.Doanh_Thu_Nam);
+                        cmd.Parameters.AddWithValue("@Doanh_Thu_Q1", model.Doanh_Thu_Q1);
+                        cmd.Parameters.AddWithValue("@Doanh_Thu_Q2", model.Doanh_Thu_Q2);
+                        cmd.Parameters.AddWithValue("@Doanh_Thu_Q3", model.Doanh_Thu_Q3);
+                        cmd.Parameters.AddWithValue("@Doanh_Thu_Q4", model.Doanh_Thu_Q4);
+                        cmd.Parameters.AddWithValue("@TG_Ky_HD", (object)model.TG_Ky_HD ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@TG_Th_HD", (object)model.TG_Th_HD ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Isactive", model.Isactive);
+                        int rowsAffected = await cmd.ExecuteNonQueryAsync();
+                        System.Diagnostics.Debug.WriteLine($"Rows Affected: {rowsAffected}");
+                    }
+                }
+
+                TempData["SuccessMessage"] = "Hợp đồng đã được cập nhật thành công!";
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Error: " + ex.Message;
+                System.Diagnostics.Debug.WriteLine($"Exception: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Stack Trace: {ex.StackTrace}");
+            }
+
+            // Populate dropdown data again
+            string branchCodeForDropdownsAgain = GetBranchCodeFromCookie();
+            model.DataItemsDt = await LoadDmDtAsync(branchCodeForDropdownsAgain);
+            model.DataItemsTdv = await LoadDmTDVAsync(branchCodeForDropdownsAgain);
+            model.PaymentData = GetPaymentData();
+            model.CKData = GetCKData();
 
             return View(model);
         }
 
+
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            var model = GetB20HopDongMuaBanData().FirstOrDefault(x => x.Id == id);
+            string branchCode = GetBranchCodeFromCookie();
+            var model = GetB20HopDongMuaBanData(branchCode).FirstOrDefault(x => x.Id == id);
 
             if (model == null)
             {
                 return HttpNotFound();
             }
 
-            model.DataItemsDt = LoadData.LoadDmDt(model.Ma_Dvcs,Request);
-            model.DataItemsTdv = LoadDmTDV(model.Ma_Dvcs);
+            // Kiểm tra điều kiện số hợp đồng
+            if (model.So_Hop_Dong != "HDMB_OTC_TAM")
+            {
+                TempData["ErrorMessage"] = "Bạn không được phép xóa hợp đồng này.";
+                return RedirectToAction("Index");
+            }
+
+            model.DataItemsDt = LoadDmDt(branchCode);
+            model.DataItemsTdv = LoadDmTDV(branchCode);
             model.PaymentData = GetPaymentData();
             model.CKData = GetCKData();
 
             return View("Delete", model);
         }
+
 
         public ActionResult DeleteConfirmed(int id)
         {
@@ -487,9 +785,11 @@ namespace web4.Controllers
                 using (SqlConnection conn = new SqlConnection(con.ConnectionString))
                 {
                     conn.Open();
-                    using (SqlCommand cmd = new SqlCommand("DELETE FROM B20HopDongMuaBan WHERE Id = @Id", conn))
+                    using (SqlCommand cmd = new SqlCommand("DELETE FROM B20HopDongMuaBan WHERE Id = @Id AND Ma_Dvcs = @Ma_Dvcs", conn))
                     {
+                        string branchCode = GetBranchCodeFromCookie();
                         cmd.Parameters.AddWithValue("@Id", id);
+                        cmd.Parameters.AddWithValue("@Ma_Dvcs", branchCode);
                         int rowsAffected = cmd.ExecuteNonQuery();
                         System.Diagnostics.Debug.WriteLine($"Rows affected: {rowsAffected}");
                         if (rowsAffected > 0)

@@ -4,8 +4,8 @@
     ViewBag.Title = "Sửa Hợp Đồng";
     var dataItemsDtJson = Json.Encode(Model.DataItemsDt);
     var dataItemsTdvJson = Json.Encode(Model.DataItemsTdv);
-    var paymentDataJson = Json.Encode(Model.PaymentData); // Add this line
-    var ckDataJson = Json.Encode(Model.CKData); // Add this line
+    var paymentDataJson = Json.Encode(Model.PaymentData);
+    var ckDataJson = Json.Encode(Model.CKData);
 }
 
 <h2 class="text-center mt-4 mb-4">@ViewBag.Title</h2>
@@ -34,8 +34,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
-            font-family: 'Roboto',sans-serif;
+            font-family: 'Roboto', sans-serif;
         }
+
         .form-group.auto-width input {
             width: auto;
             min-width: 150px;
@@ -189,7 +190,7 @@
         </div>
         <div class="form-group">
             <label for="Ngay_Ky">Ngày Ký:</label>
-            <input type="text" id="Ngay_Ky" name="Ngay_Ky" class="form-control auto-width" value="@Model.Ngay_Ky.ToString("yyyy/MM/dd")" />
+            <input type="text" id="Ngay_Ky" name="Ngay_Ky" class="form-control" value="@(Model.Ngay_Ky.HasValue && Model.Ngay_Ky != DateTime.MinValue ? Model.Ngay_Ky.Value.ToString("yyyy/MM/dd") : string.Empty)" />
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
@@ -203,7 +204,7 @@
         </div>
         <div class="form-row">
             <div class="col-md-6">
-                <input type="submit" value="Cập Nhật Hợp Đồng" class="btn btn-primary btn-block" />
+                <button type="submit" id="editButton" class="btn btn-primary btn-block">Cập Nhật Hợp Đồng</button>
             </div>
             <div class="col-md-6">
                 <a href="@Url.Action("Index", "B20HopDongMuaBan")" class="btn btn-secondary btn-block">Quay lại</a>
@@ -213,11 +214,11 @@
 </div>
 
 <script>
-$(document).ready(function () {
-    var dataItemsDt = @Html.Raw(dataItemsDtJson);
-    var dataItemsTdv = @Html.Raw(dataItemsTdvJson);
-    var paymentData = @Html.Raw(paymentDataJson); // Add this line
-    var ckData = @Html.Raw(ckDataJson); // Add this line
+    $(document).ready(function () {
+    var dataItemsDt = @Html.Raw(Json.Encode(Model.DataItemsDt));
+    var dataItemsTdv = @Html.Raw(Json.Encode(Model.DataItemsTdv));
+    var paymentData = @Html.Raw(Json.Encode(Model.PaymentData));
+    var ckData = @Html.Raw(Json.Encode(Model.CKData));
 
     function setupAutocomplete(inputId, data, onSelectCallback) {
         $("#" + inputId).autocomplete({
@@ -260,7 +261,7 @@ $(document).ready(function () {
                 }).map(function (item) {
                     return {
                         label: item.Ma_CbNv + " - " + item.hoten,
-                        value: item.Ma_CbNv ,
+                        value: item.Ma_CbNv,
                         maCbNv: item.Ma_CbNv,
                         hoTen: item.hoten
                     };
@@ -291,7 +292,7 @@ $(document).ready(function () {
                 }).map(function (item) {
                     return {
                         label: item.PaymentId + " - " + item.PaymentText,
-                        value: item.PaymentId ,
+                        value: item.PaymentId,
                         paymentId: item.PaymentId,
                         paymentText: item.PaymentText
                     };
@@ -314,14 +315,9 @@ $(document).ready(function () {
         };
     }
 
-    console.log('ckData:', ckData);
-
-    // Correct the mapping logic
     var ckDataArray = ckData.map(function (item) {
         return { key: item.Key.toString(), value: item.Value.toString() };
     });
-
-    console.log('ckDataArray:', ckDataArray);
 
     function setupAutocompleteCK(inputId, data, onSelectCallback) {
         $("#" + inputId).autocomplete({
@@ -360,12 +356,12 @@ $(document).ready(function () {
     });
 
     setupAutocompleteTdv("Ma_TDV", dataItemsTdv, function (selectedItem) {
-        $("#Ten_TDV").val(selectedItem.hoTen); // Update this line to set Ten_TDV
+        $("#Ten_TDV").val(selectedItem.hoTen);
     });
 
-    setupAutocompletePayment("Payment_ID_Text", paymentData); // Add this line
+    setupAutocompletePayment("Payment_ID_Text", paymentData);
 
-    setupAutocompleteCK("CK_Display", ckDataArray); // Add this line
+    setupAutocompleteCK("CK_Display", ckDataArray);
 
     // Custom Datepicker for TG_Ky_HD and TG_Th_HD
     $("#TG_Ky_HD, #TG_Th_HD").datepicker({
@@ -383,12 +379,67 @@ $(document).ready(function () {
         $(".ui-datepicker-current").hide();
     });
 
-    $("#Ngay_Ky").datepicker({
-        dateFormat: 'yy/mm/dd',
-        changeMonth: true,
-        changeYear: true,
-        defaultDate: new Date()
-    }).datepicker("setDate", new Date());
+    var ngayKy = "@(Model.Ngay_Ky.HasValue ? Model.Ngay_Ky.Value.ToString("yyyy/MM/dd") : "")";
+    if (ngayKy !== "") {
+        $("#Ngay_Ky").datepicker({
+            dateFormat: 'yy/mm/dd',
+            changeMonth: true,
+            changeYear: true
+        }).datepicker("setDate", ngayKy);
+    } else {
+        $("#Ngay_Ky").datepicker({
+            dateFormat: 'yy/mm/dd',
+            changeMonth: true,
+            changeYear: true
+        });
+    }
 
+    // Client-side validation with custom messages
+    $("#editForm").on("submit", function(event) {
+        let isValid = true;
+
+        if ($("#Ma_Dt").val().trim() === "") {
+            $("#maDoiTuongError").text("Vui Lòng Chọn Mã Đối Tượng");
+            isValid = false;
+        } else {
+            $("#maDoiTuongError").text("");
+        }
+
+        if ($("#Ma_TDV").val().trim() === "") {
+            $("#maTdvError").text("Vui Lòng Chọn Mã Trình Dược Viên");
+            isValid = false;
+        } else {
+            $("#maTdvError").text("");
+        }
+
+        if ($("#Payment_ID_Text").val().trim() === "") {
+            $("#paymentIdError").text("Vui Lòng Chọn Payment ID");
+            isValid = false;
+        } else {
+            $("#paymentIdError").text("");
+        }
+
+        if ($("#CK_Display").val().trim() === "") {
+            $("#ckError").text("Vui Lòng Chọn Chiết Khấu");
+            isValid = false;
+        } else {
+            $("#ckError").text("");
+        }
+
+        if ($("#So_Hop_Dong").val().trim() === "") {
+            $("#soHopDongError").text("Vui Lòng Nhập Số Hợp Đồng");
+            isValid = false;
+        } else {
+            $("#soHopDongError").text("");
+        }
+        // Xóa giá trị của Ngay_Ky nếu nó để trống
+        if ($("#Ngay_Ky").val().trim() === "") {
+            $("#Ngay_Ky").val(null);
+        }
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
 });
+
 </script>

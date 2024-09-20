@@ -182,7 +182,7 @@
                 <datalist id="dropdownList">
                     @foreach (var item in ViewBag.DataTDV)
                     {
-                        <option value="@item.Ma_NVGH" data-ten="@item.Ten_NVGH">@item.Ten_NVGH</option>
+                        <option value="@item.Ma_NVGH" data-ten="@item.Ten_NVGH">@item.Ten_NVGH</option> 
                     }
                 </datalist>
                 <input name="Ten_NVGH" id="selectedOption" readonly>
@@ -601,7 +601,7 @@
                 '&Ten_NVGH=' + encodeURIComponent(tenNVGH);            // Redirect or submit form after a short delay
             '&Ten_NVPhuKho=' + encodeURIComponent(TenGH);
             setTimeout(function () {
-                window.location.href = 'InsetGiaoHangLoadHD?' + queryParams;
+                window.location.href = 'InsertGiaoHangLoadHD?' + queryParams;
             }, 1000); // Adjust the time as needed
         });
 
@@ -702,7 +702,7 @@
                     '&Ten_NVGH=' + encodeURIComponent(tenNVGH);            // Redirect or submit form after a short delay
                 queryParams += '&Ten_NVPhuKho=' + encodeURIComponent(TenGH);
                 setTimeout(function () {
-                    window.location.href = 'InsetGiaoHangLoadHD?' + queryParams;
+                    window.location.href = 'InsertGiaoHangLoadHD?' + queryParams;
                 }, 1000); // Adjust the time as needed
             });
 

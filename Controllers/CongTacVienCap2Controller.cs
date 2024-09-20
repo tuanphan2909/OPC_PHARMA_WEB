@@ -53,12 +53,48 @@ namespace web4.Controllers
 
             return View(ds);
         }
-       
-       
+        public List<CTV> LoadDmVt()
+        {
+            SqlConnectionHelper.ConnectSQL(con);
+
+            //Ma_dvcs = Request.Cookies["ma_dvcs"].Value;
+            List<CTV> dataItems = new List<CTV>();
+            //string appendedString = Ma_dvcs == "OPC_B1" ? "_010203" : "_01"; // Dòng này cộng chuỗi dựa trên giá trị của Ma_dvcs
+            using (SqlConnection connection = new SqlConnection(con.ConnectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand("[usp_DanhMucVt_SAP]", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    // command.Parameters.AddWithValue("@_Ma_Dvcs", "OPC_HN_01");
+                    command.CommandTimeout = 950;
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            CTV dataItem = new CTV
+                            {
+
+                                Ma_vt = reader["Ma_Vt"].ToString(),
+                                Ten_Vt = reader["Ten_Vt"].ToString()
+
+
+
+                            };
+                            dataItems.Add(dataItem);
+                        }
+                    }
+                }
+            }
+
+            return dataItems;
+        }
+
         public ActionResult InputCTVCap2()
         {
             List<CTVCap2> dmDlist = LoadData.LoadDmDtCap2("",Request);
-            List<BKHoaDonGiaoHang> DmVt = LoadData.LoadDmVt();
+            List<CTV> DmVt = LoadDmVt();
 
             ViewBag.DataItems = dmDlist;
             ViewBag.DataItems2 = DmVt;

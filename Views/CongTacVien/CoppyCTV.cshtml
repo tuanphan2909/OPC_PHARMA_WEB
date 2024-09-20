@@ -76,15 +76,13 @@
                 @foreach (DataRow row2 in Model.Tables[0].Rows)
                 {
 
-                    DateTime ngayCt = (DateTime)row2["Ngay_Ct"];
-                    string formattedNgayCt = ngayCt.ToString("dd/MM/yyyy");
-
-
                     <div class="form-group mb-3">
                         <div class="row">
                             <div class="col">
-                                <p><strong>1. Ngày</strong>&nbsp;<span class="text-danger">*</span></p>
-                                <input class="form-control datepicker" type="text" required="" name="Ngay_Ct" id="Ngay_Ct" value="@formattedNgayCt" />
+
+                                <p><strong>1. Ngày(MM/DD/YYYY)</strong>&nbsp;<span class="text-danger">*</span></p>
+                                <input class="form-control datepicker" type="text" required="" name="Ngay_Ct" id="Ngay_Ct" value="@row2["Ngay_Ct"]" />
+
                             </div>
                             <div class="col">
                                 <p><strong>2. SỐ</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="So_Ct" id="So_Ct" value="@row2["So_Ct"]">
@@ -139,7 +137,7 @@
                                     <datalist id="dropdownListVT">
                                         @foreach (var item in ViewBag.DataItems2)
                                         {
-                                            <option value="@item.Ma_Vt" data-ten="@item.Ten_Vt">@item.Ten_Vt</option>
+                                            <option value="@item.Ma_vt" data-ten="@item.Ten_Vt">@item.Ten_Vt</option>
                                         }
                                     </datalist>
                                 </td>
@@ -327,11 +325,16 @@
         var maVt = $(this).find('input[name="Ma_vt"]').val();
         var tenVt = $(this).find('input[name="Ten_Vt"]').val();
         var hanMuc = $(this).find('input[name="Han_Muc"]').val();
-
+               var maDt = $("#dropdownInput").val();
+               var ngayCt = $("#Ngay_Ct").val();
+               var dvcs = $("#Dvcs").val();
         orderArr.push({
             Ma_vt: maVt,
             Ten_Vt: tenVt,
-            Han_Muc: hanMuc
+            Han_Muc: hanMuc,
+            Ngay_Ct1: ngayCt,
+            Ma_dvcs: dvcs,
+            Ma_Dt: maDt
         });
 
            });

@@ -5,7 +5,7 @@
     string Dia_Chi = Request.Cookies["Dia_Chi"] != null ? HttpUtility.UrlDecode(Request.Cookies["Dia_Chi"].Value) : "";
     string Dvcs = Request.Cookies["Dvcs"] != null ? HttpUtility.UrlDecode(Request.Cookies["Dvcs"].Value) : "";
     string Dvcs1 = Request.Cookies["Dvcs"] != null ? HttpUtility.UrlDecode(Request.Cookies["Dvcs1"].Value) : "";}
-
+@using System.Globalization;
 @using System.Data;
 <!DOCTYPE html>
 <html>
@@ -534,7 +534,8 @@
                         </tr>
                     <th style="width:150px;font-size:16px">SỐ</th>
                     <th style="width: 150px; font-size: 16px">NGÀY</th>
-                    <th style="width: 150px; font-size: 16px">SỐ TIỀN</th>
+                    <th style="width: 150px; font-size: 16px">TIỀN HĐ</th>
+                     @*<th style="width: 150px; font-size: 16px">TIỀN TT</th>*@
 
                     <th style="width: 180px; font-size: 16px">SỐ</th>
                     <th style="width: 130px; font-size: 16px">NGÀY</th>
@@ -545,24 +546,115 @@
 
                     </thead>
                     <tbody>
+                        @*@{ string currentClear = null;
+                            int totalTienHD = 0;
+                            int totalTienTT = 0;
+                            //bool firstClearId = true;
+                            int stt = 1;
+                            foreach (DataRow row3 in Model.Tables[1].Rows)
+                            {
+                                if (currentClear == null || currentClear != row3["Clear_ID"].ToString())
+                                {
+                                    if (currentClear != null)
+                                    {
+                                        <tr style="font-weight:bold">
+                                            <td colspan="3"style="text-align:center">Tổng cộng:</td>
+                                            <td style='text-align:right;font-weight:bold;mso-number-format:" #,##0.00";padding-right:5px'>@string.Format("{0:n0}", totalTienHD.ToString("N0")).Replace(",", ".")</td>
+                                            <td style='text-align: right; font-weight: bold; mso-number-format: " #,##0.00"; padding-right: 5px'>@string.Format("{0:n0}", totalTienTT.ToString("N0")).Replace(",", ".")</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        totalTienHD = 0;
+                                        totalTienTT = 0;
+                                    }
+                                    currentClear = row3["Clear_ID"].ToString();
+                                    //firstClearId = true;
+                                }
 
-                        @foreach (DataRow row3 in Model.Tables[1].Rows)
-                        {
-                            <tr class="table2-data hidden-row">
-                                <td style="text-align:center;font-size:14px">@row3["Stt1"]</td>
-                                <td style="text-align: center; font-size: 14px">@row3["So_Ct_hd"]</td>
-                                <td style="text-align: center; font-size: 14px">@row3["Ngay_Ct_hd"]</td>
-                                <td class="num" style="text-align: right; font-size: 14px; padding-right: 5px">@row3["Tien_HD"]</td>
-                                <td style="text-align: center; font-size: 14px">@row3["So_Ct_Tt"]</td>
-                                <td style="text-align: center; font-size: 14px">@row3["Ngay_Ct_Tt"]</td>
-                                <td class="num" style="text-align: right; font-size: 14px; padding-right: 5px">@row3["Tien_TT"]</td>
-                                <td class="num" style="text-align: center; font-size: 14px; padding-right: 5px">@row3["CKTT1"]</td>
-                                <td class="num" style="text-align: right; font-size: 14px;padding-right:5px">@row3["Tong_tien"]</td>
-                                <td style="text-align: center; font-size: 14px">@row3["Ghi_Chu1"]</td>
+                                <tr class="table2-data hidden-row">
+                                    <td style="text-align:center;font-size:14px">@stt</td>
+                                    <td style="text-align: center; font-size: 14px">@row3["So_Ct_hd"]</td>
+                                    <td style="text-align: center; font-size: 14px">@row3["Ngay_Ct_hd"]</td>
+                                    <td class="num" style="text-align: right; font-size: 14px; padding-right: 5px">@string.Format("{0:#,###}", row3["Tien_HD"]).Replace(",", ".")</td>
+                                    <td class="num" style="text-align: right; font-size: 14px; padding-right: 5px">@string.Format("{0:#,###}", row3["Gia_Tri"]).Replace(",", ".")</td>
+                                    <td style="text-align: center; font-size: 14px">@row3["So_Ct_Tt"]</td>
+                                    <td style="text-align: center; font-size: 14px">@row3["Ngay_Ct_Tt"]</td>
+                                    <td class="num" style="text-align: right; font-size: 14px; padding-right: 5px">@row3["Tien_TT"]</td>
+                                    <td class="num" style="text-align: center; font-size: 14px; padding-right: 5px">@row3["CKTT1"]</td>
+                                    <td class="num" style="text-align: right; font-size: 14px;padding-right:5px">@row3["Tong_tien"]</td>
+                                    <td style="text-align: center; font-size: 14px">@row3["Ghi_Chu1"]</td>
 
-                            </tr>
-                        }
+                                </tr>
+                                stt++;
+                                var tienHDFirst = string.Format("{0:#,###}", row3["Tien_HD"]);
+                                var giaTriFirst = string.Format("{0:#,###}", row3["Gia_Tri"]);
 
+                                string tienHDString = tienHDFirst.Replace(".", "");
+                                string giaTriString = giaTriFirst.Replace(".", "");
+                                //totalTienHD += tienHDFirst;
+                                // Kiểm tra nếu giá trị trong row3["Tien_HD"] không phải là DBNull trước khi thực hiện chuyển đổi
+                                if (row3["Tien_HD"] != DBNull.Value)
+                                {
+                                    totalTienHD += Convert.ToInt32(row3["Tien_HD"]);
+                                }
+                                else
+                                {
+                                    // Nếu giá trị là DBNull, bạn có thể quyết định bỏ qua hoặc gán một giá trị mặc định, ví dụ 0
+                                    totalTienHD += 0;
+                                }
+                                // Kiểm tra nếu giá trị trong row3["Tien_HD"] không phải là DBNull trước khi thực hiện chuyển đổi
+                                if (row3["Gia_Tri"] != DBNull.Value)
+                                {
+                                    totalTienTT += Convert.ToInt32(row3["Gia_Tri"]);
+                                }
+                                else
+                                {
+                                    // Nếu giá trị là DBNull, bạn có thể quyết định bỏ qua hoặc gán một giá trị mặc định, ví dụ 0
+                                    totalTienTT += 0;
+                                }
+
+                            
+                            }
+                            if (currentClear != null)
+                            {
+                                <tr style="font-weight:bold">
+                                    <td colspan="3"style="text-align:center">Tổng cộng:</td>
+                                    <td style='text-align: right; font-weight: bold; mso-number-format: " #,##0.00"; padding-right: 5px'>@string.Format("{0:n0}", totalTienHD.ToString("N0")).Replace(",", ".")</td>
+                                    <td style='text-align: right; font-weight: bold; mso-number-format: " #,##0.00"; padding-right: 5px'>@string.Format("{0:n0}", totalTienTT.ToString("N0")).Replace(",", ".")</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            }
+                        }*@
+                        @{
+            var stt = 1;
+            foreach (DataRow row3 in Model.Tables[1].Rows)
+            {
+                <tr class="table2-data hidden-row">
+                    <td style="text-align:center;font-size:14px">@stt</td>
+                    <td style="text-align: center; font-size: 14px">@row3["So_Ct_hd"]</td>
+                    <td style="text-align: center; font-size: 14px">@row3["Ngay_Ct_hd"]</td>
+                    <td class="num" style="text-align: right; font-size: 14px; padding-right: 5px">@row3["Tien_HD"]</td>
+                    @*<td class="num" style="text-align: right; font-size: 14px; padding-right: 5px">@string.Format("{0:#,###}", row3["Gia_Tri"]).Replace(",", ".")</td>*@
+                    <td style="text-align: center; font-size: 14px">@row3["So_Ct_Tt"]</td>
+                    <td style="text-align: center; font-size: 14px">@row3["Ngay_Ct_Tt"]</td>
+                    <td class="num" style="text-align: right; font-size: 14px; padding-right: 5px">@row3["Tien_TT"]</td>
+                    <td class="num" style="text-align: center; font-size: 14px; padding-right: 5px">@row3["CKTT1"]</td>
+                    <td class="num" style="text-align: right; font-size: 14px;padding-right:5px">@row3["Tong_tien"]</td>
+                    <td style="text-align: center; font-size: 14px">@row3["Ghi_Chu1"]</td>
+
+                </tr>
+                stt++;
+            }
+        }
                     </tbody>
 
                     <tr>
@@ -579,6 +671,7 @@
 
                             }
                         </td>
+                 
                         <td style="font-weight:bold;color:black;text-align:right;font-size:15px"></td>
                         <td style="font-weight:bold;color:black;text-align:right;font-size:15px"></td>
                         <td style="font-weight:bold;color:black;text-align:right;font-size:15px;padding-right:5px">

@@ -388,7 +388,6 @@ namespace web4.Controllers
                             {
                                 GetData dataItem = new GetData
                                 {
-
                                     So = row["So_Ct_hd"].ToString(),
                                     Ngay = row["Ngay_Ct_hd"].ToString(),
                                     TienHD = row["Tien_HD"].ToString(),
@@ -398,14 +397,8 @@ namespace web4.Controllers
                                     CKTT = row["CKTT1"].ToString(),
                                     TongTien = row["Tong_tien"].ToString(),
                                     GhiChu1 = row["Ghi_Chu1"].ToString(),
-
-
-
-
-
-
-
                                 };
+
 
                                 dataItems.Add(dataItem);
                             }
@@ -502,8 +495,8 @@ namespace web4.Controllers
                                     NgayXuat = row["Ngay_Ct1"].ToString(),
                                     HanTT = row["Han_Thanh_Toan"].ToString(),
 
-                                    NgayQH = Convert.ToInt32(row["So_Ngay_Qua_Han"].ToString()),
-                                    TienNo = Convert.ToDecimal(row["Tong_No"].ToString()),
+                                    NgayQH = row["So_Ngay_Qua_Han"].ToString(),
+                                    TienNo = row["Tong_No"].ToString(),
 
 
 
@@ -1121,10 +1114,10 @@ namespace web4.Controllers
                 worksheet.Cells[endRowIII + 9, startColumn + 7].Value = "ĐẠI DIỆN CHI NHÁNH";
                 worksheet.Cells[endRowIII + 9, startColumn + 7].Style.Font.Bold = true;
                 worksheet.Cells[endRowIII + 9, startColumn + 7].Style.Indent = 2;
-                worksheet.Cells[endRowIII + 10, startColumn +7].Value = "(GIÁM ĐỐC/ỦY QUYỀN)";
-                worksheet.Cells[endRowIII + 10, startColumn+7].Style.Font.Bold = true;
-                worksheet.Cells[endRowIII + 11, startColumn+7].Value = "(Ký, ghi rõ họ tên, chức vụ, đóng dấu)";
-                worksheet.Cells[endRowIII + 11, startColumn+7].Style.Font.Bold = true;
+                worksheet.Cells[endRowIII + 10, startColumn + 7].Value = "(GIÁM ĐỐC/ỦY QUYỀN)";
+                worksheet.Cells[endRowIII + 10, startColumn + 7].Style.Font.Bold = true;
+                worksheet.Cells[endRowIII + 11, startColumn + 7].Value = "(Ký, ghi rõ họ tên, chức vụ, đóng dấu)";
+                worksheet.Cells[endRowIII + 11, startColumn + 7].Style.Font.Bold = true;
 
 
 
@@ -3101,6 +3094,12 @@ namespace web4.Controllers
                 }
             }
             return View(ds);
+        }
+
+
+        public ActionResult BangDoiChieuCongNo_MauIn()
+        {
+            return View();
         }
     }
 

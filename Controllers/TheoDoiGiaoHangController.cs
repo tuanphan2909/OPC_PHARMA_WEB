@@ -205,7 +205,7 @@ namespace web4.Controllers
 
             return View();
         }
-        public ActionResult InsetGiaoHangLoadHD()
+        public ActionResult InsertGiaoHangLoadHD()
         {
             List<TheoDoiGiaoHang> dmDlistTDV = LoadDmTDV();
             List<TheoDoiGiaoHang> dmListHD = LoadHD();
@@ -457,7 +457,7 @@ namespace web4.Controllers
                             command.Parameters.AddWithValue("@_so_Ct", TDGH.So_Ct);
                             command.Parameters.AddWithValue("@_NV_GiaoHang", TDGH.Ma_NVGH);
                             command.Parameters.AddWithValue("@_Ten_NVGiaoHang", TDGH.Ten_NVGH);
-                            command.Parameters.AddWithValue("@_Ten_NVPhuKho", TDGH.NV_GiaoNhan);
+                            command.Parameters.AddWithValue("@_Ten_NVPhuKho", TDGH.Ten_NVPhuKho);
                             command.Parameters.AddWithValue("@_Ly_Do", TDGH.Ly_do);
                             command.Parameters.AddWithValue("@_Stt", TDGH.Stt);
 

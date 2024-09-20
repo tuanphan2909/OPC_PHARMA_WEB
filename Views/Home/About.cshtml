@@ -371,6 +371,10 @@ string.Equals(ViewBag.UserName, "opcmar001", StringComparison.OrdinalIgnoreCase)
                                                       )">
                             4.2.2 BC Doanh Thu Giá Vốn Lãi Gộp
                         </a>
+                        <a href="#" style="display:flex" onclick="runReport('@Url.Action("BCQT_LaiGopTheoGam_Fill", "BaoCaoLaiGopTheoGam")'
+                                                      )">
+                            4.2.3 BC Lãi Gộp Theo Gam Hàng
+                        </a>
                     </div>
 
                 </div>
@@ -679,14 +683,17 @@ string.Equals(ViewBag.UserName, "opcmar001", StringComparison.OrdinalIgnoreCase)
                                           )">2.Theo Dõi Giao Hàng</a>
                 <a href="#" onclick="runReport('@Url.Action("Index", "SPTrungBay")'
                                           )">3.Sản Phẩm Trưng Bày</a>
-                <a href="#" onclick="runReport('@Url.Action("Index1", "FormBKNopTien")'
-                                          )">4.Bảng Kê Nộp Tiền</a>
+                <a href="#"id="addNewBtn2">4.Bảng Kê Nộp Tiền</a>
+                @*<a href="#" onclick="runReport('@Url.Action("Index", "FormBKNopTien")'
+                                          )">4.Bảng Kê Nộp Tiền</a>*@
                 <a href="#" onclick="runReport('@Url.Action("Index", "FormBKNopTienNH")'
                                           )">5.Bảng Kê Nộp Tiền NH</a>
                 <a href="#" onclick="runReport('@Url.Action("Index", "CongTacVienCap2")'
                                           )">6.Hóa Đơn Khách Hàng Cấp 2</a>
                 <a href="#" onclick="runReport('@Url.Action("Index", "B20HopDongMuaBan")'
                                           )">7.Hợp Đồng Mua Bán</a>
+                <a href="#" onclick="runReport('@Url.Action("Index", "FormDTChiPhiKM")'
+                                          )">8.Kế Hoạch Doanh Thu Chi Phí KM</a>
                 @*<a href="#" onclick="runReport('@Url.Action("Index1", "FormBKNopTien")'
         )">7.Bảng Kê Nộp Tiền - Test</a>*@
             </div>
@@ -899,7 +906,7 @@ string.Equals(ViewBag.UserName, "opcmar001", StringComparison.OrdinalIgnoreCase)
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
        
         function updateCompanyNameFromCookie() {
@@ -2181,6 +2188,34 @@ string.Equals(ViewBag.UserName, "opcmar001", StringComparison.OrdinalIgnoreCase)
                 series: seriesData
             });
         });
+    </script>
+    <script>
+            $('#addNewBtn2').click(function () {
+                sessionStorage.clear();
+
+                // Lấy giá trị từ cookie MA_DVCS
+                var dvcs = getCookie("MA_DVCS");
+
+                if (dvcs) {
+                    // Mở một cửa sổ mới và chuyển hướng đến URL mong muốn với dvcs từ cookie
+                    var newWindow = window.open('', '_blank');
+                    newWindow.location.href = `https://frontend-lake-nu-54.vercel.app/opc/form/bang-ke-nop-tien?maDvcs=${dvcs}`;
+                } else {
+                    alert("Không tìm thấy MA_DVCS trong cookie");
+                }
+            });
+
+            // Hàm để lấy giá trị của cookie
+            function getCookie(name) {
+                var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+                if (match) {
+                    return match[2];
+                } else {
+                    return null;
+                }
+            }
+
+
     </script>
 </body>
 </html>

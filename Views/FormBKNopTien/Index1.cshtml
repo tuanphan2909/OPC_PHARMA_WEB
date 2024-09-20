@@ -209,7 +209,10 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <button type="button" id="addNewBtn" class="add-new-button">Thêm mới</button>
+              
+                    @*<button type="button" id="addNewBtn" class="add-new-button">Thêm mới</button>*@
+                    <button type="button" id="addNewBtn2" class="add-new-button">Thêm mới</button>
+                
 
                 <div class="data_table">
                     <table id="example" class="table table-striped table-bordered">
@@ -235,31 +238,31 @@
                             @foreach (DataRow row2 in Model.Tables[0].Rows)
                             {
                                 var currentSoCt = row2["Stt"].ToString();
-                            
 
-                                    <tr data-soct="@currentSoCt">
-                                        <td style="text-align:right" class="Ngay_Ct">@row2["Ngay_Ct"]</td>
-                                        <td class="so-bk">@row2["So_BK"]</td>
-                                        <td class="ma-tdv">@row2["Ma_TDV"]</td>
-                                        <td class="ten-tdv">@row2["Ten_TDV"]</td>
-                                        <td class="nguoi-nop-tien">@row2["Nguoi_Nop_Tien"]</td>
-                                        <td class="noi-dung">@row2["Noi_Dung"]</td>
-                                        <td>@row2["Ma_dvcs"]</td>
-                                        <td style="text-align:right">@string.Format("{0:n0}", row2["Tong_Tien"]).Replace(",", ".")</td>
-                                        <td><a href="#" class="editBtn">EDIT</a></td>
-                                        <td>
-                                            <form action="javascript:void(0);" method="post" onsubmit="deleteRow(this, '@row2["Stt"]');">
-                                                <input type="hidden" name="stt" value="@row2["STT"]" />
-                                                <button type="submit" class="delete-button">DELETE</button>
-                                            </form>
-                                        </td>
-                                        <td><a href="#" class="print" onclick="printRow(this)">PRINT</a></td>
-                                        @*<td><a href="#" class="Coppy">In</a></td>*@
-                                        <td hidden class="ctvid">@row2["Stt"]</td>
-                                        <td><button onclick="scrollToBottom()">SEE DETAIL</button></td>
-                                      
-                                    </tr>
-                                
+
+                                <tr data-soct="@currentSoCt">
+                                    <td style="text-align:right" class="Ngay_Ct">@row2["Ngay_Ct"]</td>
+                                    <td class="so-bk">@row2["So_BK"]</td>
+                                    <td class="ma-tdv">@row2["Ma_TDV"]</td>
+                                    <td class="ten-tdv">@row2["Ten_TDV"]</td>
+                                    <td class="nguoi-nop-tien">@row2["Nguoi_Nop_Tien"]</td>
+                                    <td class="noi-dung">@row2["Noi_Dung"]</td>
+                                    <td>@row2["Ma_dvcs"]</td>
+                                    <td style="text-align:right">@string.Format("{0:n0}", row2["Tong_Tien"]).Replace(",", ".")</td>
+                                    <td><a href="#" class="editBtn">EDIT</a></td>
+                                    <td>
+                                        <form action="javascript:void(0);" method="post" onsubmit="deleteRow(this, '@row2["Stt"]');">
+                                            <input type="hidden" name="stt" value="@row2["STT"]" />
+                                            <button type="submit" class="delete-button">DELETE</button>
+                                        </form>
+                                    </td>
+                                    <td><a href="#" class="print" onclick="printRow(this)">PRINT</a></td>
+                                    @*<td><a href="#" class="Coppy">In</a></td>*@
+                                    <td hidden class="ctvid">@row2["Stt"]</td>
+                                    <td><button onclick="scrollToBottom()">SEE DETAIL</button></td>
+
+                                </tr>
+
                             }
                         </tbody>
                     </table>
@@ -325,14 +328,25 @@
     <script src="~/assets/js/jquery-3.6.0.min.js"></script>
     <script src="~/assets/js/datatables.min.js"></script>
     <script>
-
         $(document).ready(function () {
             $('#example').DataTable({
-                "order": [[0, "desc"]] // Cột đầu tiên (Ngày Chứng từ) và sắp xếp giảm dần
+                "order": [[0, "desc"]], // Sắp xếp theo cột đầu tiên (Ngày Chứng từ) giảm dần
+                "columnDefs": [
+                    {
+                        "targets": 0,  // Chỉ định cột Ngày Chứng từ
+                        "render": function (data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                var parts = data.split('/');
+                                return new Date(parts[2], parts[1] - 1, parts[0]);
+                            }
+                            return data;
+                        }
+                    }
+                ]
             });
         });
-
     </script>
+
     <script>
         function printRow(element) {
             // Lấy hàng hiện tại
@@ -374,6 +388,31 @@
                 //window.location.href = '/congtacvien/InputCTV';
                 newWindow.location.href = '/FormBKNopTien/InsertBangKe1';
             });
+            $('#addNewBtn2').click(function () {
+                sessionStorage.clear();
+
+                // Lấy giá trị từ cookie MA_DVCS
+                var dvcs = getCookie("MA_DVCS");
+
+                if (dvcs) {
+                    // Mở một cửa sổ mới và chuyển hướng đến URL mong muốn với dvcs từ cookie
+                    var newWindow = window.open('', '_blank');
+                    newWindow.location.href = `https://frontend-lake-nu-54.vercel.app/opc/form/bang-ke-nop-tien?maDvcs=${dvcs}`;
+                } else {
+                    alert("Không tìm thấy MA_DVCS trong cookie");
+                }
+            });
+
+            // Hàm để lấy giá trị của cookie
+            function getCookie(name) {
+                var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+                if (match) {
+                    return match[2];
+                } else {
+                    return null;
+                }
+            }
+
         });
 
         $('.editBtn').click(function () {

@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
-            font-family: 'Roboto',sans-serif;
+            font-family: 'Roboto', sans-serif;
         }
     </style>
 </head>
@@ -41,7 +41,7 @@
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-md-6"><strong>Mã Trình Dược Viên:</strong></div>
+                        <div class="col-md{6}"><strong>Mã Trình Dược Viên:</strong></div>
                         <div class="col-md-6 @(string.IsNullOrEmpty(Model.Ma_TDV) ? "" : "text-danger")">@Model.Ma_TDV</div>
                     </div>
                     <hr>
@@ -94,7 +94,9 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-6"><strong>Ngày Ký:</strong></div>
-                        <div class="col-md-6 @(string.IsNullOrEmpty(Model.Ngay_Ky.ToString("yyyy/MM/dd")) ? "" : "text-danger")">@Model.Ngay_Ky.ToString("yyyy/MM/dd")</div>
+                        <div class="col-md-6 @(Model.Ngay_Ky.HasValue && Model.Ngay_Ky.Value != DateTime.MinValue ? "text-danger" : "")">
+                            @(Model.Ngay_Ky.HasValue && Model.Ngay_Ky.Value != DateTime.MinValue ? Model.Ngay_Ky.Value.ToString("yyyy/MM/dd") : "")
+                        </div>
                     </div>
                     <hr>
                     <div class="row">
@@ -165,7 +167,7 @@
             </div>
         </div>
         <div class="card-footer text-center">
-            <button id="deleteButton" class="btn btn-danger mr-2">Xóa</button>
+            <button type="button" id="deleteButton" class="btn btn-danger mr-2">Xóa</button>
             <a href="@Url.Action("Index", "B20HopDongMuaBan")" class="btn btn-secondary">Hủy</a>
         </div>
     </div>
@@ -174,6 +176,11 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.getElementById('deleteButton').addEventListener('click', function () {
+        var soHopDong = '@Model.So_Hop_Dong';
+        if (soHopDong !== 'HDMB_OTC_TAM') {
+            alert('Không được phép xóa hợp đồng này');
+            return false;
+        }
         Swal.fire({
             title: 'Bạn có chắc chắn muốn xóa hợp đồng này không?',
             icon: 'warning',

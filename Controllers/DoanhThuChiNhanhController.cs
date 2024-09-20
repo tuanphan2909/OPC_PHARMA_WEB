@@ -180,26 +180,49 @@ namespace web4.Controllers
             string Pname = "[usp_KetQuaKinhDoanhCN_SAP]";
             ViewBag.ProcedureName = Pname;
 
-            using (SqlCommand cmd = new SqlCommand(Pname, con))
+            try
             {
-                cmd.CommandTimeout = 950;
-                cmd.Connection = con;
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                string fromDate = Request.Form["From_date"] ?? Acc.From_date;
-                string toDate = Request.Form["To_date"] ?? Acc.To_date;
-
-                // Log to check date values
-                Console.WriteLine($"From Date: {fromDate}");
-                Console.WriteLine($"To Date: {toDate}");
-
-                cmd.Parameters.AddWithValue("@_Tu_Ngay", fromDate);
-                cmd.Parameters.AddWithValue("@_Den_Ngay", toDate);
-                cmd.Parameters.AddWithValue("@_ma_dvcs", Acc.Ma_DvCs_1);
-
-                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                using (SqlCommand cmd = new SqlCommand(Pname, con))
                 {
-                    sda.Fill(ds);
+                    cmd.CommandTimeout = 950;
+                    cmd.Connection = con;
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    string fromDate = Request.Form["From_date"] ?? Acc.From_date;
+                    string toDate = Request.Form["To_date"] ?? Acc.To_date;
+
+                    // Log to check date values
+                    Console.WriteLine($"From Date: {fromDate}");
+                    Console.WriteLine($"To Date: {toDate}");
+
+                    cmd.Parameters.AddWithValue("@_Tu_Ngay", fromDate);
+                    cmd.Parameters.AddWithValue("@_Den_Ngay", toDate);
+                    cmd.Parameters.AddWithValue("@_ma_dvcs", Acc.Ma_DvCs_1);
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                    {
+                        sda.Fill(ds);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error
+                Console.WriteLine($"Error: {ex.Message}");
+                return new HttpStatusCodeResult(500, "Internal Server Error");
+            }
+
+            if (ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+            {
+                // Log the issue
+                Console.WriteLine("No data returned from stored procedure.");
+            }
+            else
+            {
+                // Log dữ liệu trả về
+                foreach (DataRow row in ds.Tables[0].Rows)
+                {
+                    Console.WriteLine($"Row: {string.Join(", ", row.ItemArray)}");
                 }
             }
 

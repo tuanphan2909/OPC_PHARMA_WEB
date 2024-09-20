@@ -587,7 +587,7 @@
                 <div class="search"></div>
             </div>*@
         <div class="row">
-            <div class="col-12">
+            <div class="col-12" style="margin-left:150px">
 
                 <div class="data_table">
                     <table id="example" class="table table-striped table-bordered" style="width:100%">
@@ -840,7 +840,33 @@
         //    window.location.href = actionUrl;
         //}
 
+        function saveSelectedValueToCookie2() {
+            var select = document.getElementById("nhomtheoselect2");
+            var input = document.getElementById("searchInput");
 
+            // Lấy giá trị đã chọn từ select
+            var selectedValue = select.value;
+            var selectedBankName = select.options[select.selectedIndex].text; // Lấy tên ngân hàng từ option đã chọn
+
+            // Kiểm tra nếu không có giá trị nào được chọn, thì cập nhật biến Ma_Dv thành rỗng
+            var Ma_Dv = selectedValue.trim() !== '' ? selectedValue : '';
+
+            // Cập nhật giá trị của ô input
+            input.value = Ma_Dv;
+
+            // Đặt giá trị vào cookie
+            document.cookie = 'Ma_Dv=' + Ma_Dv;
+            document.cookie = 'Ten_Dv=' + (selectedBankName != null ? encodeURIComponent(selectedBankName) : ''); // Thêm biến cookie với tên ngân hàng đã chọn
+
+            // Ẩn dropdown select
+            select.style.display = "none";
+
+            // Thực hiện các bước khác theo yêu cầu của bạn.
+            console.log("Đã chọn giá trị: " + Ma_Dv);
+            console.log("Tên ngân hàng: " + selectedBankName);
+
+            // Gọi hàm để nhóm dữ liệu dựa trên giá trị đã chọn
+        }
         function showLoader() {
             const loader = document.querySelector(".loader");
             loader.classList.remove("loader-hidden");

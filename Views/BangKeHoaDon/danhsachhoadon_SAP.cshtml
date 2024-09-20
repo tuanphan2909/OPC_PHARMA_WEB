@@ -676,8 +676,8 @@
                             {
                                 <tr style="background-color: burlywood">
                                     <td colspan="14" style="font-weight:bold">Tổng cộng:</td>
-                                    <td>@row["Tong_Truoc_Thue"]</td>
-                                    <td>@row["Tong_Sau_Thue"]</td>
+                                    <td style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row["Tong_Truoc_Thue"])).Replace(",", ".")</td>
+                                    <td style="text-align:right"> @String.Format("{0:n0}", Convert.ToDecimal(row["Tong_Sau_Thue"])).Replace(",", ".")</td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -766,7 +766,7 @@
 
             // Hàm định dạng số tiền thành chuỗi có dấu phẩy
             function formatCurrency(amount) {
-                return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             }
 
             // Thêm sự kiện cho việc thay đổi trang

@@ -1,7 +1,4 @@
 ﻿
-
-
-
 @{ ViewBag.Title = "QUẢN LÝ TRƯNG BÀY";
     var fromDate = Request.Cookies["From_date"].Value;
     var toDate = Request.Cookies["To_date"].Value;
@@ -10,20 +7,43 @@
 
     var formattedFromDate = fromDateValue.ToString("dd/MM/yyyy");
     var formattedToDate = toDateValue.ToString("dd/MM/yyyy");
+
     string dvcs = "";
-    switch (Request.Cookies["Ma_Dvcs_2"].Value)
+    HttpCookie cookie = Request.Cookies["Ma_Dvcs_2"];
+
+    if (cookie != null)
     {
-        case "OPC_CT": dvcs = "Chi Nhánh Cần Thơ"; break;
-        case "OPC_TG": dvcs = "Chi Nhánh Tiền Giang"; break;
-        case "OPC_MD": dvcs = "Chi Nhánh Miền Đông"; break;
-        case "OPC_VT": dvcs = "Chi Nhánh Vũng Tàu"; break;
-        case "OPC_TP": dvcs = "Chi Nhánh Hồ Chí Minh"; break;
-        case "OPC_NT": dvcs = "Chi Nhánh Nha Trang"; break;
-        case "OPC_DN": dvcs = "Chi Nhánh Đà Nẵng"; break;
-        case "OPC_NA": dvcs = "Chi Nhánh Nghệ An"; break;
-        case "OPC_HN": dvcs = "Chi Nhánh Hà Nội"; break;
-        case "": dvcs = "Công Ty"; break;
+      
+        switch (cookie.Value)
+        {
+            case "OPC_CT": dvcs = "Chi Nhánh Cần Thơ"; break;
+            case "OPC_TG": dvcs = "Chi Nhánh Tiền Giang"; break;
+            case "OPC_MD": dvcs = "Chi Nhánh Miền Đông"; break;
+            case "OPC_VT": dvcs = "Chi Nhánh Vũng Tàu"; break;
+            case "OPC_TP": dvcs = "Chi Nhánh Hồ Chí Minh"; break;
+            case "OPC_NT": dvcs = "Chi Nhánh Nha Trang"; break;
+            case "OPC_DN": dvcs = "Chi Nhánh Đà Nẵng"; break;
+            case "OPC_NA": dvcs = "Chi Nhánh Nghệ An"; break;
+            case "OPC_HN": dvcs = "Chi Nhánh Hà Nội"; break;
+            case "": dvcs = "Công Ty"; break;
+        }
     }
+    else
+    {
+        dvcs = ""; // Giá trị mặc định nếu cookie không tồn tại
+    }
+
+
+
+    string Ten_SP = "";
+    var Ma_VtFromCookie = Request.Cookies["Ma_Vt"]!=null?Request.Cookies["Ma_Vt"].Value:"";
+    switch (Ma_VtFromCookie)
+    {
+        case "1006506": Ten_SP = "HoAstex-S";break;
+        case "1003671": Ten_SP = "MIMOSA";break;
+        case "": Ten_SP = "";break;
+    }
+
             }
             @using System.Data;
             @using System.Globalization;
@@ -700,13 +720,13 @@ background: white;
     filter: brightness(90%);
     }
         .search-container {
-            display: flex;
-            margin-left: 300px;
-        }
+    display: flex;
+        margin-left: 300px;
+    }
         .data_table {
-            max-height: 100%; /* Đặt chiều cao tối đa của container để có thanh cuộn */
-            overflow: auto;
-        }
+        max-height: 100%; /* Đặt chiều cao tối đa của container để có thanh cuộn */
+    overflow: auto;
+    }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -775,6 +795,15 @@ background: white;
                             </select>
                         </div>
                     }
+                    <h6>Sản Phẩm Trưng Bày</h6>
+                    <div class="select-btn" style="width:100px;margin-top:10px">
+                        <select name="Sanpham" id="sanphamselect" onchange="saveSelectedValueSPToCookie()">
+                            <option value="" style="background-color: #020024;color:white">Chọn giá trị</option>
+                            <option value="1006506">1006506 - HoAstex-S</option>
+                            <option value="1003671">1003671 - MIMOSA</option>
+
+                        </select>
+                    </div>
                     <div>
                         <button class="submit" type="submit" id="runReportButton" onclick="runReport(); saveNgay();runReportAndSaveCookie()">
                             Chạy Báo Cáo
@@ -834,9 +863,10 @@ background: white;
                                 <th>Tên TDV</th>
                                 <th>Ngày bắt đầu</th>
                                 <th>Ngày kết thúc</th>
+                                <th>Sản Phẩm Trưng Bày </th>
                                 <th>Thời Lượng Trưng Bày(Tháng)</th>
                                 <th>Mức Thưởng</th>
-                                <th>Số lượng mua HoAstex-S</th>
+                                <th>Số lượng mua @Ten_SP</th>
                                 <th>Doanh Thu</th>
                                 <th>Option 1</th>
                                 <th>Option 2</th>
@@ -889,6 +919,7 @@ background: white;
                                 <td style="text-align:left">@row["hoten"]</td>
                                 <td>@row["Ngay_bat_dau"]</td>
                                 <td>@row["Ngay_ket_thuc"]</td>
+                                <td>@row["Ten_SP"]</td>
                                 <td>@row["Thoi_Luong_trung_bay"]</td>
                                 <td style="text-align:right">@String.Format("{0:n0}", row["Muc_thuong"]).Replace(",", ".")</td>
                                 <td style="text-align:right">@String.Format("{0:n0}", row["So_Luong_HD"]).Replace(",", ".")</td>
@@ -998,7 +1029,51 @@ background: white;
     <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
 
+    <script>
+        function getCookieValue(cookieName) {
+            const name = cookieName + "=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const cookieArray = decodedCookie.split(";");
+            for (let i = 0; i < cookieArray.length; i++) {
+                let cookie = cookieArray[i];
+                while (cookie.charAt(0) === " ") {
+                    cookie = cookie.substring(1);
+                }
+                if (cookie.indexOf(name) === 0) {
+                    return cookie.substring(name.length, cookie.length);
+                }
+            }
+            return "";
+        }
+         window.onload = function () {
+            // Trích xuất giá trị từ cookie
+           
 
+            // Lấy giá trị từ cookie "Dvcs3"
+            const Ma_CN = getCookieValue("Ma_Dvcs_2");
+            const Ma_SP = getCookieValue("Ma_Vt");
+
+            // Tìm phần tử select
+             const selectCNElement = document.getElementById("chitietselect");
+             const selectSPElement = document.getElementById("sanphamselect");
+
+            // Thiết lập giá trị cho select nếu có giá trị từ cookie
+             if (Ma_SP != "") {
+                 selectSPElement.value = Ma_SP;
+             }
+             if (Ma_CN != "" ) {
+                 selectCNElement.value = Ma_CN;
+             }
+          
+
+
+             
+
+          
+
+
+        };
+    </script>
     <script>
 
         function searchFun() {
@@ -1035,7 +1110,7 @@ background: white;
             var selectedValue = $("#chitietselect").val();
 
             // Lấy giá trị của cookie hiện tại
-            var existingCookieValue = getCookie('Ma_Dvcs_2');
+
 
             // Thời gian sống của cookie (đơn vị là giây, 30 ngày trong ví dụ này)
             var expirationTime = 30 * 24 * 60 * 60;
@@ -1044,31 +1119,41 @@ background: white;
             var expirationDate = new Date();
             expirationDate.setTime(expirationDate.getTime() + (expirationTime * 1000));
 
-            if (existingCookieValue) {
-                // Nếu cookie đã tồn tại, cập nhật giá trị của nó và thiết lập thời gian hết hạn
-                document.cookie = 'Ma_Dvcs_2=' + selectedValue;
-            } else {
-                // Nếu cookie chưa tồn tại, tạo một cookie mới với thời gian hết hạn
-                document.cookie = 'Ma_Dvcs_2=' + selectedValue;
-            }
+            var cookieString = 'Ma_Dvcs_2=' + selectedValue + ';expires=' + expirationDate.toUTCString() + ';path=/';
+            document.cookie = cookieString;
+
         }
+        function saveSelectedValueSPToCookie() {
+            var selectedValue = $("#sanphamselect").val();
+
+            // Thời gian sống của cookie (đơn vị là giây, 30 ngày trong ví dụ này)
+            var expirationTime = 30 * 24 * 60 * 60;
+
+            // Tạo một object Date để thiết lập thời gian hết hạn của cookie
+            var expirationDate = new Date();
+            expirationDate.setTime(expirationDate.getTime() + (expirationTime * 1000));
+
+            // Tạo giá trị chuỗi cookie với thời gian hết hạn
+            var cookieString = 'Ma_Vt=' + selectedValue + ';expires=' + expirationDate.toUTCString() + ';path=/';
+
+            // Cập nhật hoặc tạo cookie mới
+            document.cookie = cookieString;
+        }
+
         function runReportAndSaveCookie() {
-            var selectedValue = $("#chitietselect").val();
+            //var selectedValue = $("#chitietselect").val();
+            //var selectedSPValue = $("#sanphamselect").val();
             var maDvcsValue = getCookie('MA_DVCS');
 
             if (!selectedValue) {
                 selectedValue = maDvcsValue;
             }
 
-            // Thời gian sống của cookie (đơn vị là giây, 30 ngày trong ví dụ này)
-            var expirationTime = 30 * 24 * 60 * 60;
-
-            // Tạo một object Date để thiết lập thời gian hết hạn của cookie
-            var expirationDate = new Date();
-            expirationDate.setTime(expirationDate.getTime() + (expirationTime * 1000));
+          
 
             // Cập nhật hoặc tạo cookie mới với thời gian hết hạn
-            document.cookie = 'Ma_Dvcs_2=' + selectedValue + '; expires=' + expirationDate.toUTCString() + '; path=/';
+            //document.cookie = 'Ma_Dvcs_2=' + selectedValue + '; path=/';
+            //document.cookie = 'Ma_Vt=' + selectedSPValue + '; path=/';
 
             // Gọi hàm runReport nếu có định nghĩa
             if (typeof runReport === 'function') {

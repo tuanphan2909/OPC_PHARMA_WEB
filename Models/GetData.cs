@@ -26,9 +26,9 @@ namespace web4.Models
         //Mau Thong Bao No QH
         public string  SoHD { get; set; }
         public string NgayXuat { get; set; }
-        public decimal TienNo { get; set; }
+        public string TienNo { get; set; }
         public string HanTT { get; set; }
-        public int NgayQH { get; set; }
+        public string NgayQH { get; set; }
         //Mau Doi Chieu Cong No - Doi Chieu Doanh Thu Cong No
          public string So { get; set; }
         public string Ngay { get; set; }
@@ -42,7 +42,8 @@ namespace web4.Models
         public string CKTT { get; set; }
         public string TongTien { get; set; }
        public string GhiChu1 { get; set; }
-
+        public string GiaTri { get; set; }
+        public string SumGiaTri { get; set; }
 
         public string So3 { get; set; }
         public string Ngay3 { get; set; }
@@ -52,6 +53,7 @@ namespace web4.Models
         public string NgayHD { get; set; }
         public string TienTT { get; set; }
         public string TienThanhToan { get; set; }
+        public string ClearID { get; set; }
       
         
 

@@ -670,6 +670,7 @@
                                 <th>Số Hợp Đồng Ex</th>
                                 <th>Ngày Hóa Đơn</th>
                                 <th>Ngày Đến Hạn</th>
+                                <th>Tiền Trước Thuế</th>
                                 <th>Tiền Hóa Đơn</th>
                                 <th>Số Phiếu Thu</th>
                                 <th>Số External</th>
@@ -689,26 +690,27 @@
                             {
 
 
-                                <tr>
-                                    <td>@row2["Ten_Dt"]</td>
-                                    <td>@row2["Ma_Dt"]</td>
-                                    <td>@row2["So_HD_InV"]</td>
-                                    <td>@row2["So_Hop_Dong_Ex"]</td>
-                                    <td>@row2["Ngay_HD_InV"]</td>
-                                    <td>@row2["Ngay_Den_Han_InV"]</td>
-                                    <td style="text-align:right"> @String.Format("{0:n0}", Convert.ToDecimal(row2["Tien_HD_InV"])).Replace(".", ",")</td>
-                                    <td>@row2["So_PT"]</td>
-                                    <td>@row2["So_External_Sap"]</td>
-                                    <td>@row2["Ngay_PT"]</td>
-                                    <td style="text-align:right">@String.Format("{0:#,###}", row2["Tien_Clear"]).Replace(".", ",")</td>
-                                    <td style="text-align:right">@String.Format("{0:#,###}", row2["Tien_CKTT"]).Replace(".", ",")</td>
-                                    <td>@row2["Loai_Ct"]</td>
-                                    <td>@row2["So_Ct"]</td>
-                                    <td>@row2["Ma_TDV"]</td>
-                                    <td>@row2["Ten_TDV"]</td>
-                                    <td>@row2["Ma_LKH"]</td>
-                                    <td>@row2["Ten_LKH"]</td>
-                                </tr>
+                            <tr>
+                                <td>@row2["Ten_Dt"]</td>
+                                <td>@row2["Ma_Dt"]</td>
+                                <td>@row2["So_HD_InV"]</td>
+                                <td>@row2["So_Hop_Dong_Ex"]</td>
+                                <td>@row2["Ngay_HD_InV"]</td>
+                                <td>@row2["Ngay_Den_Han_InV"]</td>
+                                <td style="text-align:right"> @String.Format("{0:n0}", Convert.ToDecimal(row2["Tien_Truoc_Thue"])).Replace(".", ",")</td>
+                                <td style="text-align:right"> @String.Format("{0:n0}", Convert.ToDecimal(row2["Tien_HD_InV"])).Replace(".", ",")</td>
+                                <td>@row2["So_PT"]</td>
+                                <td>@row2["So_External_Sap"]</td>
+                                <td>@row2["Ngay_PT"]</td>
+                                <td style="text-align:right">@String.Format("{0:#,###}", row2["Tien_Clear"]).Replace(".", ",")</td>
+                                <td style="text-align:right">@String.Format("{0:#,###}", row2["Tien_CKTT"]).Replace(".", ",")</td>
+                                <td>@row2["Loai_Ct"]</td>
+                                <td>@row2["So_Ct"]</td>
+                                <td>@row2["Ma_TDV"]</td>
+                                <td>@row2["Ten_TDV"]</td>
+                                <td>@row2["Ma_LKH"]</td>
+                                <td>@row2["Ten_LKH"]</td>
+                            </tr>
 
 
 

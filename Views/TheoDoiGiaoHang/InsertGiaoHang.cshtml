@@ -20,7 +20,7 @@
             width: 18%; /* Adjust width as needed */
         }
 
-        #selectedOption ,#Ten_NVPhuKho {
+        #selectedOption, #Ten_NVPhuKho {
             width: 80%; /* Adjust width as needed */
         }
 
@@ -58,27 +58,29 @@
             cursor: pointer;
             background-color: #218838; /* Darker green on hover */
         }
-        .loader-container {
-    position: fixed; /* Full screen */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
-    z-index: 9999; /* Make sure it's on top */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
-.spinner {
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #3498db;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 2s linear infinite;
-}
+        .loader-container {
+            position: fixed; /* Full screen */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+            z-index: 9999; /* Make sure it's on top */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+        }
+
         #Ly_do {
             height: 100px;
             width: 100%;
@@ -88,11 +90,15 @@
             display: inline-block; /* Adjust this value as needed */
         }
 
-@@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+        @@keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
 
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
@@ -457,7 +463,7 @@
                 '&Ten_NVGH=' + encodeURIComponent(tenNVGH)+            // Redirect or submit form after a short delay
                 '&Ten_NVPhuKho=' + encodeURIComponent(TenGH);
             setTimeout(function () {
-                window.location.href = 'InsetGiaoHangLoadHD?' + queryParams;
+                window.location.href = 'InsertGiaoHangLoadHD?' + queryParams;
             }, 1000); // Adjust the time as needed
         });
 
@@ -479,7 +485,21 @@
             var today = new Date();
             var year = today.getFullYear().toString().slice(-2); // Lấy 2 chữ số cuối của năm
             var month = ('0' + (today.getMonth() + 1)).slice(-2); // Thêm số 0 vào trước tháng nếu là 1 chữ số
-            var orderPrefix = 'GHCT' + year + month + '-';
+            var dvcs = getCookie("MA_DVCS");
+            switch (dvcs) {
+                case "OPC_CT":
+                    dvcs = "GHCT";
+                    break;
+                case "OPC_TG": dvcs = "GHTG"; break;
+                case "OPC_MD": dvcs = "GHMD"; break;
+                case "OPC_TP": dvcs = "PDP"; break;
+                case "OPC_VT": dvcs = "GHVT"; break;
+                case "OPC_NT": dvcs = "GHNT"; break;
+                case "OPC_DN": dvcs = "GHDN"; break;
+                case "OPC_NA": dvcs = "GHNA"; break;
+                case "OPC_HN": dvcs = "GHHN"; break;
+                }
+            var orderPrefix = dvcs + year + month + '-';
 
             // Lấy số đơn hàng hiện tại từ Local Storage
             //var currentOrderNumber = localStorage.getItem('currentOrderNumber') || '0000';
@@ -494,6 +514,11 @@
     </script>
 
     <script>
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
         function saveValueToCookie() {
             var inputField = document.getElementById('Ly_do');
             var value = inputField.value;

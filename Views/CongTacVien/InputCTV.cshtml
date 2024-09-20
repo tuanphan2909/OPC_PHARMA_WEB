@@ -37,12 +37,15 @@
         .han-muc-input {
             width: 20%; /* Adjust width as needed */
         }
-        .ten-vt-input{
-            width:80%;
+
+        .ten-vt-input {
+            width: 80%;
         }
-        .ma-vt-input{
+
+        .ma-vt-input {
             width: 20%;
         }
+
         #SaveCtV {
             display: block;
             margin: 10px auto; /* Center the buttons and add some spacing */
@@ -55,7 +58,6 @@
             cursor: pointer;
             background-color: #218838; /* Darker green on hover */
         }
-            
     </style>
 </head>
 
@@ -118,7 +120,7 @@
                                 <datalist id="dropdownListVT">
                                     @foreach (var item in ViewBag.DataItems2)
                                     {
-                                        <option value="@item.Ma_Vt" data-ten="@item.Ten_Vt">@item.Ten_Vt</option>
+                                        <option value="@item.Ma_vt" data-ten="@item.Ten_Vt">@item.Ten_Vt</option>
                                     }
                                 </datalist>
                             </td>

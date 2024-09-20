@@ -334,6 +334,7 @@
     <Compile Include="Controllers\BaoCaoDoanhThuSPController.cs" />
     <Compile Include="Controllers\BaoCaoDTGVLGController.cs" />
     <Compile Include="Controllers\BaoCaoKetQuaKinhDoanhController.cs" />
+    <Compile Include="Controllers\BaoCaoLaiGopTheoGamController.cs" />
     <Compile Include="Controllers\BaoCaoLaiLoController.cs" />
     <Compile Include="Controllers\BaoCaoMARController.cs" />
     <Compile Include="Controllers\BaoCaoTHVIPController.cs" />
@@ -350,6 +351,7 @@
     <Compile Include="Controllers\DashBoardController.cs" />
     <Compile Include="Controllers\FormBKNopTienController.cs" />
     <Compile Include="Controllers\FormBkNopTienNHController.cs" />
+    <Compile Include="Controllers\FormDTChiPhiKMController.cs" />
     <Compile Include="Controllers\GiamSatViengThamKHController.cs" />
     <Compile Include="Controllers\LoadDataController.cs" />
     <Compile Include="Controllers\PhanTichBanHangController.cs" />
@@ -384,6 +386,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BienBanKiemNhapHang.cs" />
+    <Compile Include="Models\DT_ChiPhi_KM.cs" />
     <Compile Include="Models\Kho.cs" />
     <Compile Include="Models\B20HDMuaBan.cs" />
     <Compile Include="Models\B20SPT.cs">
@@ -1153,6 +1156,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\jsrender.min.js" />
     <Content Include="Scripts\lightbox-min.js" />
+    <Content Include="Scripts\Loading_Fix.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\multi-select-tag.js" />
     <Content Include="Scripts\table2excel.js" />
@@ -1307,7 +1311,7 @@
     <Content Include="Views\CongTacVien\CoppyCTV.cshtml" />
     <Content Include="Views\DashBoard\Index.cshtml" />
     <Content Include="Views\TheoDoiGiaoHang\InsertGiaoHang.cshtml" />
-    <Content Include="Views\TheoDoiGiaoHang\InsetGiaoHangLoadHD.cshtml" />
+    <Content Include="Views\TheoDoiGiaoHang\InsertGiaoHangLoadHD.cshtml" />
     <Content Include="Views\BaoCaoBanHangCTV\BaoCaoDTTinhLuongCTV_Fill_CongTy.cshtml" />
     <Content Include="Views\BaoCaoBanHangCTV\BaoCaoDTTinhLuongCTV_CongTy.cshtml" />
     <Content Include="Views\TheoDoiGiaoHang\index.cshtml" />
@@ -1455,6 +1459,12 @@
     <Content Include="Views\FormBkNopTienNH\UpdateBangKeNH.cshtml" />
     <Content Include="Views\FormBkNopTienNH\UpdateBangKeNHLoadHD.cshtml" />
     <Content Include="Views\FormBkNopTienNH\MauInBangKe.cshtml" />
+    <Content Include="Views\FormDTChiPhiKM\Insert.cshtml" />
+    <Content Include="Views\FormDTChiPhiKM\Index.cshtml" />
+    <Content Include="Views\FormDTChiPhiKM\Edit.cshtml" />
+    <Content Include="Views\BaoCaoLaiGopTheoGam\BCQT_LaiGopTheoGam_Fill.cshtml" />
+    <Content Include="Views\BaoCaoLaiGopTheoGam\BCQT_LaiGopTheoGam.cshtml" />
+    <Content Include="Views\MauInChungTu\BangDoiChieuCongNo_MauIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

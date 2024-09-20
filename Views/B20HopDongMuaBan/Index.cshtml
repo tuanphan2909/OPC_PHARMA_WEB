@@ -251,7 +251,7 @@
 <div class="custom-header">
     <div></div>
     <div class="custom-search">
-        <button class="btn-add-contract" onclick="addContract()">Thêm Hợp Đồng</button>
+        <button class="btn-add-contract" id="btnAddContract">Thêm Hợp Đồng</button>
     </div>
     <div></div>
 </div>
@@ -279,27 +279,27 @@
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
-                <td>@item.Ma_Dvcs</td>
-                <td>@item.Ma_Dt</td>
-                <td>@item.Ten_Dt</td>
-                <td>@item.Ma_TDV</td>
-                <td>@item.Ten_TDV</td>
-                <td>@item.Payment_ID</td>
-                <td>@item.Payment_Text</td>
-                <td>@item.CK</td>
-                <td>@item.MST</td>
-                <td>@item.Ngay_Ky.ToString("dd/MM/yyyy")</td>
-                <td>@item.So_Hop_Dong</td>
-                <td>@item.TG_Ky_HD</td>
-                <td>@item.TG_Th_HD</td>
-                <td>
-                    <div class="action-buttons">
-                        <button class="btn-edit" onclick="editContract('@item.Id')">Sửa</button>
-                        <button class="btn-delete" onclick="deleteContract('@item.Id')">Xóa</button>
-                    </div>
-                </td>
-            </tr>
+                <tr data-id="@item.Id">
+                    <td>@item.Ma_Dvcs</td>
+                    <td>@item.Ma_Dt</td>
+                    <td>@item.Ten_Dt</td>
+                    <td>@item.Ma_TDV</td>
+                    <td>@item.Ten_TDV</td>
+                    <td>@item.Payment_ID</td>
+                    <td>@item.Payment_Text</td>
+                    <td>@item.CK</td>
+                    <td>@item.MST</td>
+                    <td>@(item.Ngay_Ky.HasValue ? item.Ngay_Ky.Value.ToString("dd/MM/yyyy") : "")</td>
+                    <td>@item.So_Hop_Dong</td>
+                    <td>@item.TG_Ky_HD</td>
+                    <td>@item.TG_Th_HD</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-edit" onclick="editContract('@item.Id')">Sửa</button>
+                            <button class="btn-delete" onclick="deleteContract('@item.Id')">Xóa</button>
+                        </div>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
@@ -307,32 +307,38 @@
 
 <script>
 function addContract() {
-    var branchCodes = ["OPC_CT", "OPC_TP", "OPC_HN", "OPC_MD", "OPC_VT", "OPC_TG", "OPC_NT", "OPC_DN", "OPC_NA"];
+    var branchCodes = ["OPC_CT", "OPC_TP", "OPC_HN", "OPC_MD", "OPC_VT", "OPC_TG", "OPC_NT", "OPC_DN", "OPC_NA","OPC_KD-CNT","OPC_KD-CH"];
+    var currentBranchCode = '@ViewBag.CurrentBranchCode';
 
-    $('<div id="branchCodeDialog" title="Nhập mã chi nhánh">' +
-        '<input id="branchCodeInput" type="text" class="form-control">' +
-        '</div>').dialog({
-            modal: true,
-            buttons: {
-                "OK": function () {
-                    var branchCode = $('#branchCodeInput').val();
-                    if (branchCode) {
-                        location.href = '@Url.Action("Create", "B20HopDongMuaBan")?branch=' + branchCode;
+    // Nếu mã chi nhánh hiện tại có giá trị, tự động chuyển hướng
+    if (branchCodes.includes(currentBranchCode)) {
+        window.location.href = '@Url.Action("Create", "B20HopDongMuaBan")?branch=' + currentBranchCode;
+    } else {
+        $('<div id="branchCodeDialog" title="Nhập mã chi nhánh">' +
+            '<input id="branchCodeInput" type="text" class="form-control">' +
+            '</div>').dialog({
+                modal: true,
+                buttons: {
+                    "OK": function () {
+                        var branchCode = $('#branchCodeInput').val();
+                        if (branchCode) {
+                            location.href = '@Url.Action("Create", "B20HopDongMuaBan")?branch=' + branchCode;
+                        }
+                        $(this).dialog("close");
+                    },
+                    "Cancel": function () {
+                        $(this).dialog("close");
                     }
-                    $(this).dialog("close");
                 },
-                "Cancel": function () {
-                    $(this).dialog("close");
+                close: function () {
+                    $(this).remove();
                 }
-            },
-            close: function () {
-                $(this).remove();
-            }
-        });
+            });
 
-    $("#branchCodeInput").autocomplete({
-        source: branchCodes
-    });
+        $("#branchCodeInput").autocomplete({
+            source: branchCodes
+        });
+    }
 }
 
 $(document).ready(function () {
@@ -357,13 +363,42 @@ $(document).ready(function () {
             }
         }
     });
+
+    $("#btnAddContract").on("click", addContract);
 });
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
 
 function editContract(id) {
+    var soHopDong = $('#hdMuaBanTable').find('tr[data-id="' + id + '"]').find('td:eq(10)').text();
+    var dvcs = getCookie("MA_DVCS");
+    console.log("Ma_dvcs là: ", dvcs);
+    if (soHopDong !== 'HDMB_OTC_TAM' && dvcs!=='') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: 'Không được phép sửa hợp đồng này',
+            confirmButtonText: 'OK'
+        });
+        return false;
+    }
     window.location.href = '@Url.Action("Edit", "B20HopDongMuaBan")/' + id;
 }
 
 function deleteContract(id) {
+    var soHopDong = $('#hdMuaBanTable').find('tr[data-id="' + id + '"]').find('td:eq(10)').text();
+    if (soHopDong !== 'HDMB_OTC_TAM') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: 'Không được phép xóa hợp đồng này',
+            confirmButtonText: 'OK'
+        });
+        return false;
+    }
     window.location.href = '@Url.Action("Delete", "B20HopDongMuaBan")/' + id;
 }
 </script>

@@ -580,34 +580,43 @@
                         <input class="den_ngay" id="den_ngay" placeholder=" Đến Ngày" name="To_date" type="DATE" format="YYYY-MM-DD" value="@Request.QueryString["To_date"]" /><br /><br />
                         <script>$("#den_ngay").datetimepicker({ timepicker: false, format: 'Y-m-d' });</script>
                     </div>
-                    @if(Request.Cookies["UserName"].Value== "Admin"|| Request.Cookies["UserName"].Value == "ADMIN" || Request.Cookies["UserName"].Value == "OPCMAR001" || Request.Cookies["UserName"].Value == "opcmar001" || Request.Cookies["UserName"].Value == "VPCT-cuonghd" || Request.Cookies["UserName"].Value == "VPCT-LOANTTK" || Request.Cookies["UserName"].Value == "vpct-loanttk" || Request.Cookies["UserName"].Value == "OPCHDQT001" || Request.Cookies["UserName"].Value == "opchdqt001") {
-                 <h6>Chọn chi nhánh</h6>
+                    @if (Request.Cookies["UserName"].Value == "Admin" || Request.Cookies["UserName"].Value == "ADMIN" || Request.Cookies["UserName"].Value == "OPCMAR001" || Request.Cookies["UserName"].Value == "opcmar001" || Request.Cookies["UserName"].Value == "VPCT-cuonghd" || Request.Cookies["UserName"].Value == "VPCT-LOANTTK" || Request.Cookies["UserName"].Value == "vpct-loanttk" || Request.Cookies["UserName"].Value == "OPCHDQT001" || Request.Cookies["UserName"].Value == "opchdqt001")
+                    {
+                        <h6>Chọn chi nhánh</h6>
                         <div class="select-btn" style="width:100px;margin-top:10px">
-                        <select name="Chitiet" id="chitietselect" onchange="saveSelectedValueToCookie()">
-                            <option value="" style="background-color: #020024;color:white">Chọn giá trị</option>
-                            <option value="OPC_CT">OPC_CT Chi Nhánh Cần Thơ</option>
-                            <option value="OPC_TG">OPC_TG Chi Nhánh Tiền Giang</option>
-                            <option value="OPC_MD">OPC_MD Chi Nhánh Miền Đông</option>
-                            <option value="OPC_TP">OPC_TP Chi Nhánh Hồ Chí Minh</option>
-                            <option value="OPC_VT">OPC_VT Chi Nhánh Vũng Tàu</option>
-                            <option value="OPC_NT">OPC_NT Chi Nhánh Nha Trang</option>
-                            <option value="OPC_DN">OPC_DN Chi Nhánh Đà Nẵng</option>
-                            <option value="OPC_NA">OPC_NA Chi Nhánh Nghệ An</option>
-                            <option value="OPC_HN">OPC_HN Chi Nhánh Hà Nội</option>
-                            <option value="">OPC Công Ty</option>
-                        </select>
+                            <select name="Chitiet" id="chitietselect" onchange="saveSelectedValueToCookie()">
+                                <option value="" style="background-color: #020024;color:white">Chọn giá trị</option>
+                                <option value="OPC_CT">OPC_CT Chi Nhánh Cần Thơ</option>
+                                <option value="OPC_TG">OPC_TG Chi Nhánh Tiền Giang</option>
+                                <option value="OPC_MD">OPC_MD Chi Nhánh Miền Đông</option>
+                                <option value="OPC_TP">OPC_TP Chi Nhánh Hồ Chí Minh</option>
+                                <option value="OPC_VT">OPC_VT Chi Nhánh Vũng Tàu</option>
+                                <option value="OPC_NT">OPC_NT Chi Nhánh Nha Trang</option>
+                                <option value="OPC_DN">OPC_DN Chi Nhánh Đà Nẵng</option>
+                                <option value="OPC_NA">OPC_NA Chi Nhánh Nghệ An</option>
+                                <option value="OPC_HN">OPC_HN Chi Nhánh Hà Nội</option>
+                                <option value="">OPC Công Ty</option>
+                            </select>
                         </div>
                     }
+                    <h6>Sản Phẩm Trưng Bày</h6>
+                    <div class="select-btn" style="width:100px;margin-top:10px">
+                        <select name="Sanpham" id="sanphamselect" onchange="saveSelectedValueSPToCookie()">
+                            <option value="" style="background-color: #020024;color:white">Chọn giá trị</option>
+                            <option value="1006506">1006506 - HoAstex-S</option>
+                            <option value="1003671">1003671 - MIMOSA</option>
+                    
+                        </select>
+                    </div>
 
+                    <div>
+                        <button class="submit" type="submit" id="runReportButton" onclick="runReport(); saveNgay();runReportAndSaveCookie()">
+                            Chạy Báo Cáo
+                        </button>
 
-                        <div>
-                            <button class="submit" type="submit" id="runReportButton" onclick="runReport(); saveNgay();runReportAndSaveCookie()">
-                                Chạy Báo Cáo
-                            </button>
+                    </div>
 
-                        </div>
-
-</form>
+                </form>
             </li>
         </ul>
     </div>
@@ -756,7 +765,7 @@
             var selectedValue = $("#chitietselect").val();
 
             // Lấy giá trị của cookie hiện tại
-            var existingCookieValue = getCookie('Ma_Dvcs_2');
+         
 
             // Thời gian sống của cookie (đơn vị là giây, 30 ngày trong ví dụ này)
             var expirationTime = 30 * 24 * 60 * 60;
@@ -765,31 +774,41 @@
             var expirationDate = new Date();
             expirationDate.setTime(expirationDate.getTime() + (expirationTime * 1000));
 
-            if (existingCookieValue) {
-                // Nếu cookie đã tồn tại, cập nhật giá trị của nó và thiết lập thời gian hết hạn
-                document.cookie = 'Ma_Dvcs_2=' + selectedValue;
-            } else {
-                // Nếu cookie chưa tồn tại, tạo một cookie mới với thời gian hết hạn
-                document.cookie = 'Ma_Dvcs_2=' + selectedValue;
-            }
+            var cookieString = 'Ma_Dvcs_2=' + selectedValue + ';expires=' + expirationDate.toUTCString() + ';path=/';
+            document.cookie = cookieString;
+
         }
+        function saveSelectedValueSPToCookie() {
+            var selectedValue = $("#sanphamselect").val();
+
+            // Thời gian sống của cookie (đơn vị là giây, 30 ngày trong ví dụ này)
+            var expirationTime = 30 * 24 * 60 * 60;
+
+            // Tạo một object Date để thiết lập thời gian hết hạn của cookie
+            var expirationDate = new Date();
+            expirationDate.setTime(expirationDate.getTime() + (expirationTime * 1000));
+
+            // Tạo giá trị chuỗi cookie với thời gian hết hạn
+            var cookieString = 'Ma_Vt=' + selectedValue + ';expires=' + expirationDate.toUTCString() + ';path=/';
+
+            // Cập nhật hoặc tạo cookie mới
+            document.cookie = cookieString;
+        }
+
         function runReportAndSaveCookie() {
-            var selectedValue = $("#chitietselect").val();
+            //var selectedValue = $("#chitietselect").val();
+            //var selectedSPValue = $("#sanphamselect").val();
             var maDvcsValue = getCookie('MA_DVCS');
 
             if (!selectedValue) {
                 selectedValue = maDvcsValue;
             }
 
-            // Thời gian sống của cookie (đơn vị là giây, 30 ngày trong ví dụ này)
-            var expirationTime = 30 * 24 * 60 * 60;
+      
 
-            // Tạo một object Date để thiết lập thời gian hết hạn của cookie
-            var expirationDate = new Date();
-            expirationDate.setTime(expirationDate.getTime() + (expirationTime * 1000));
-
-            // Cập nhật hoặc tạo cookie mới với thời gian hết hạn
-            document.cookie = 'Ma_Dvcs_2=' + selectedValue + '; expires=' + expirationDate.toUTCString() + '; path=/';
+            //// Cập nhật hoặc tạo cookie mới với thời gian hết hạn
+            //document.cookie = 'Ma_Dvcs_2=' + selectedValue + ';path=/';   
+            //document.cookie = 'Ma_Vt=' + selectedSPValue + ';path=/';
 
             // Gọi hàm runReport nếu có định nghĩa
             if (typeof runReport === 'function') {
@@ -920,7 +939,15 @@
             }
         });
     </script>
+    <script>
+        function deleteCookie(cookieName) {
+            document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        }
+        window.onload = function () {
+            deleteCookie('Ma_Dvcs_2');
 
+        };
+    </script>
    
 
 </body>

@@ -61,7 +61,7 @@ namespace web4.Controllers
                 switch (Acc.Ma_DvCs.ToString())
                 {
                     case "A01":
-                        Response.Cookies["MA_DVCS"].Value = "OPC_B1"; break;
+                        Response.Cookies["MA_DVCS"].Value = "OPC"; break;
                     case "A02":
                         Response.Cookies["MA_DVCS"].Value = "OPC_TP"; break;
                     case "A03":
@@ -128,8 +128,8 @@ namespace web4.Controllers
             }
             else
             {
-                ViewBag.Message = "Sai Mật Khẩu";
-                return View("Login");
+                TempData["ErrorMessage"] = "Sai Mật Khẩu";
+                return RedirectToAction("Login");
             }
         }
         public ActionResult AboutTDV() {

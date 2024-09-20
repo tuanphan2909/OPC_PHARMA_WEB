@@ -1,9 +1,11 @@
-﻿@using System.Data;
-
+﻿@{ ViewBag.Title = "BÁO CÁO LÃI GỘP THEO GAM"; }
+@using System.Data;
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
+
     <style>
         a:hover {
             background-color: lightskyblue;
@@ -252,25 +254,30 @@
             overflow-y: scroll;
         }
 
-            .options-container label {
-                display: block;
-                cursor: pointer;
-                padding: 5px;
-                margin-top: 5px;
-                user-select: none;
+        .data_table {
+            width: max-content;
+        }
+
+        .options-container label {
+            display: block;
+            cursor: pointer;
+            padding: 5px;
+            margin-top: 5px;
+            user-select: none;
+        }
+
+            .options-container label:hover {
+                background: rgb(255, 255, 255);
             }
 
-                .options-container label:hover {
-                    background: rgb(255, 255, 255);
-                }
+        .options-container::-webkit-scrollbar {
+            width: 8px;
+        }
 
-            .options-container::-webkit-scrollbar {
-                width: 8px;
-            }
+        .options-container::-webkit-scrollbar-thumb {
+            background-color: white;
+        }
 
-            .options-container::-webkit-scrollbar-thumb {
-                background-color: white;
-            }
 
         .sidebar {
             position: relative;
@@ -290,15 +297,6 @@
 
         .container {
             text-align: center;
-        }
-
-        .data_table {
-            width: max-content;
-        }
-
-        h5 {
-            text-align: center;
-            font-size: 15px;
         }
 
         .text-loading {
@@ -370,6 +368,7 @@
         .checkContainer {
             height: 300px;
             overflow: auto;
+            scrollbar-width: none;
         }
 
             .checkContainer::-webkit-scrollbar {
@@ -437,18 +436,20 @@
         }
 
         .tab-control {
-            z-index: 90000;
+            z-index: 100;
             position: fixed;
         }
 
             .tab-control ul {
                 position: absolute;
+                bottom: 0px;
                 /* left:300px;*/
             }
 
                 .tab-control ul li {
                     text-align: center;
                 }
+
         .tab.selected-tab {
             pointer-events: none;
             background-color: #3763a3; /* Màu nền của tab */
@@ -463,12 +464,20 @@
                 pointer-events: auto;
             }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="Scripts/table2excel.js"></script>
+
+
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>BÁO CÁO BẢNG KÊ CHỨNG TỪ</title>
+    <title>BÁO CÁO LÃI GỘP THEO GAM HÀNG</title>
     <meta content="" name="description">
     <meta content="Author" name="MJ Maraz">
-    <link href="~/assets/images/logo.png" rel="icon">
+    <link href="~/assets/images/favicon.png" rel="icon">
     <link href="~/assets/images/favicon.png" rel="apple-touch-icon">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -489,102 +498,23 @@
 <!-- =============== Design & Develop By = MJ MARAZ   ====================== -->
 
 <body style="background-color: #e0e8ee ">
-    @*<div class="tab-control" style="position:fixed;bottom:50px">
-        <ul class="tabs" style="background-color: #1d1b31">
-            <li class="tab selected"><a href="/Home/About" style="padding-right:5px">Home</a></li>
-
-        </ul>
-    </div>*@
     <div class="loader" style="z-index:1"></div>
-    <span id="spanText" class="text-loading">[usp_BKSaleOrder_SAP]</span>
+
     <div class="sidebar">
         <div class="logo-details">
 
         </div>
         <ul class="nav-links" style="justify-content: center; display:flex;margin-left:10px">
             <li>
-                <form id="dateForm" action="bangkehoadon" method="post" onsubmit="handleFormSubmit(event)">
+                <form id="dateForm" action="BCQT_LaiGopTheoGam" method="post" onsubmit="handleFormSubmit(event)">
                     <div id="locBC">
-                        <span id="spanText" class="text-loading">[usp_BaoCaoDoanhThuCN_SAP]</span>
+                        <span id="spanText" class="text-loading">[usp_BCQT_LaiGopTheoGam_SAP]</span>
                         <a>Từ Ngày</a><br /><br />
                         <input class="tu_ngay" placeholder="Từ Ngày" id="tu_ngay" name="From_date" type="date" format="YYYY-MM-DD" value="@Request.QueryString["From_date"]" />
                         <script>$("#tu_ngay").datetimepicker({ timepicker: false, format: 'Y-m-d' });</script><br /><br />
                         <a>Đến Ngày</a><br /><br />
                         <input class="den_ngay" id="den_ngay" placeholder=" Đến Ngày" name="To_date" type="DATE" format="YYYY-MM-DD" value="@Request.QueryString["To_date"]" /><br /><br />
                         <script>$("#den_ngay").datetimepicker({ timepicker: false, format: 'Y-m-d' });</script>
-                    </div>
-
-                    <div class="checkContainer">
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Ngày Chứng Từ
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Số Chứng Từ
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Mã Đối Tượng
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Tên Đối Tượng
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Mã Vật Tư
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Tên Vật Tư
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Mã KM
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Discount
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Loại Vật Tư
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Số Lượng
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Tiền(-VAT)
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Tiền(+VAT)
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Tình Trạng
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Mã DVCS
-                        </label>
                     </div>
 
                     <div>
@@ -595,14 +525,15 @@
             </li>
         </ul>
     </div>
-    <header class="header_part"style="background-color: #aec9e0; color: #3483bd ">
-        @if (Request.Cookies["UserName"].Value == "admin-cnct" || Request.Cookies["UserName"].Value == "admin-cntg" || Request.Cookies["UserName"].Value == "admin-cnmd" || Request.Cookies["UserName"].Value == "admin-cnh1" || Request.Cookies["UserName"].Value == "admin-cnvt"
-                     || Request.Cookies["UserName"].Value == "admin-cnnt" || Request.Cookies["UserName"].Value == "admin - cndn" || Request.Cookies["UserName"].Value == "admin - cnna" || Request.Cookies["UserName"].Value == "admin - cnhn")
+
+    <header class="header_part" style="background-color: #aec9e0; color: #3483bd ">
+        @if (Request.Cookies["UserName"].Value == "Admin-cnct" || Request.Cookies["UserName"].Value == "Admin-cntg" || Request.Cookies["UserName"].Value == "Admin-cnmd" || Request.Cookies["UserName"].Value == "Admin-cnh1" || Request.Cookies["UserName"].Value == "Admin-cnvt"
+                     || Request.Cookies["UserName"].Value == "Admin-cnnt" || Request.Cookies["UserName"].Value == "Admin - cndn" || Request.Cookies["UserName"].Value == "Admin - cnna" || Request.Cookies["UserName"].Value == "Admin - cnhn")
         {
 
 
 
-            <a href="/Home/About1" style="cursor:pointer">
+            <a href="/Home/AboutCN" style="cursor:pointer">
                 <img src="~/Images/opc.png" style="height:60px;width:60px;margin-left:10px">
             </a>
         }
@@ -612,58 +543,31 @@
                 <img src="~/Images/opc.png" style="height:60px;width:60px;margin-left:10px">
             </a>
         }
-        <h4 style="color:#3483bd">Báo Cáo Bảng Kê Chứng Từ</h4>
-        <h5 style="color:#3483bd">Từ @Request.QueryString["From_date"] đến @Request.QueryString["To_date"]</h5>
+        <h4 style="color:#3483bd">BÁO CÁO LÃI GỘP THEO GAM HÀNG</h4>
     </header>
     <!-- =======  Data-Table  = Start  ========================== -->
     <div class="container">
-
         <div class="row">
             <div class="col-12">
                 <div class="data_table">
                     <table id="example" class="table table-striped table-bordered">
                         <thead class="table-dark">
                             <tr>
-                                <th>Ngày Chứng từ</th>
-                                <th>Số Chứng Từ</th>
-                                <th>Mã Đối Tượng</th>
-                                <th>Tên Đối Tượng</th>
-                                <th>Mã Vt</th>
-                                <th>Tên Vật Tư</th>
-                                <th>mã KM</th>
-                                <th>Discount</th>
-                                <th>Loại vật Tư</th>
-                                <th>Số Lượng</th>
-                               
-                                <th>Tiền (-VAT)</th>
-                                <th>Tiền (+VAT)</th>
-                                <th>Tình Trạng</th>
-                                <th>Mã Đvcs</th>
+                             <th></th>
+                             <th>TỔNG CỘNG</th>
+                             <th>HÀNG SẢN XUẤT</th>
+                             <th>HÀNG THƯƠNG MẠI</th>
+                             <th>OPC</th>
+                             <th>OPC BÌNH DƯƠNG</th>
+                             <th>HD2</th>
+                             <th>PHIẾN</th>
+                             <th>TW25</th>
+                             <th>PHIẾN</th>
+                             <th>GC + XK</th>
+                             <th>NVL + DV</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (DataRow row2 in Model.Tables[0].Rows)
-                            {
-                            <tr>
-                                <td style="text-align:right">@row2["Ngay_Ct"]</td>
-                                <td style="text-align:right">@row2["so_ct"]</td>
-                                <td style="text-align:right">@row2["ma_dt"]</td>
-                                <td>@row2["ten_dt"]</td>
-                                <td style="text-align:right">@row2["ma_vt"]</td>
-                                <td>@row2["ten_vt"]</td>
-                                <td style="text-align:right">@row2["Ma_Km"]</td>
-                                <td style="text-align:right">@row2["Discount"]</td>
-                                <td>@row2["Loai_Vt"]</td>
-                                <td class="num" style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["so_luong"]))</td>
-                               
-                                <td class="num" style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["Tien"]))</td>
-                                <td class="num" style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["Tong_tien"]))</td>
-                                <td>@row2["Tinh_trang"]</td>
-                                <td>@row2["Ma_Dvcs1"]</td>
-                            </tr>
-                            }
-
-
                         </tbody>
                     </table>
                 </div>
@@ -672,7 +576,12 @@
     </div>
     <!-- =======  Data-Table  = End  ===================== -->
     <!-- ============ Java Script Files  ================== -->
+    @*<div class="tab-control">
+            <ul class="tabs" style="background-color: #1d1b31; bottom: 0; left: 0; right: 0;">
+                <li class="tab selected" style="padding-right:10px"><a href="/Home/About">Home</a></li>
 
+            </ul>
+        </div>*@
 
     <script src="~/assets/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/js/jquery-3.6.0.min.js"></script>
@@ -680,8 +589,36 @@
     <script src="~/assets/js/pdfmake.min.js"></script>
     <script src="~/assets/js/vfs_fonts.js"></script>
     <script src="~/assets/js/custom.js"></script>
+
+    <script>
+        // Set the "Từ Ngày" input to the first day of the current month
+        function setFirstDayOfCurrentMonth() {
+            const currentDate = new Date();
+            const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            const formattedDate = formatDate(firstDayOfMonth);
+
+            document.getElementById("tu_ngay").value = formattedDate;
+        }
+        function setCurrentDate() {
+            const currentDate = new Date();
+            const formattedToDate = formatDate(currentDate);
+            document.getElementById("den_ngay").value = formattedToDate;
+        }
+        // Format the date as "yyyy-mm-dd" for input type="date"
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, "0");
+            const day = date.getDate().toString().padStart(2, "0");
+            return `${year}-${month}-${day}`;
+        }
+
+        // Call the function to set the "Từ Ngày" input on page load
+        setFirstDayOfCurrentMonth();
+        setCurrentDate();
+    </script>
     <script>
         function runReport() {
+
             const uncheckedCheckboxIndexes = [];
             const checkboxes = document.querySelectorAll('input[name="myCheckbox"]');
 
@@ -699,8 +636,56 @@
         }
     </script>
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkboxes = document.querySelectorAll('input[name="myCheckbox"]');
+            const table = document.getElementById('example');
+
+            checkboxes.forEach((checkbox, index) => {
+                checkbox.addEventListener('change', function () {
+                    const columnIndex = index;
+                    const rows = table.querySelectorAll('tr');
+
+                    rows.forEach(row => {
+                        const cells = row.querySelectorAll('td, th');
+                        cells[columnIndex].style.display = this.checked ? '' : 'none';
+                    });
+                });
+            });
+        });
+    </script>
+    <script>
+        // Hàm lưu trạng thái checkbox vào Local Storage
+        function saveCheckboxState() {
+            const checkboxes = document.querySelectorAll('input[name="myCheckbox"]');
+            const checkboxState = {};
+
+            checkboxes.forEach((checkbox, index) => {
+                checkboxState[index] = checkbox.checked;
+            });
+
+            localStorage.setItem('checkboxState', JSON.stringify(checkboxState));
+        }
+
+        // Lưu trạng thái khi người dùng bỏ chọn checkbox
+        // Lắng nghe sự kiện thay đổi của các checkbox
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkboxes = document.querySelectorAll('input[name="myCheckbox"]');
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    localStorage.setItem(checkbox.value, checkbox.checked);
+                });
+            });
+        });
+
+    </script>
+    <script>
+
         function handleFormSubmit(event) {
             event.preventDefault();
+            showLoader();
+            // Show the loader when the form is submitted
+
 
             // Lấy các giá trị ngày đã chọn từ trường nhập liệu
             const fromDate = document.getElementById('tu_ngay').value;
@@ -713,6 +698,18 @@
             // Chuyển hướng tới URL mới với các giá trị ngày đã chọn làm các tham số truy vấn
             window.location.href = actionUrl;
         }
+        function displaySelectedDate() {
+            // Lấy các giá trị ngày đã chọn từ trường nhập liệu
+            const fromDate = document.getElementById('tu_ngay').value;
+            const toDate = document.getElementById('den_ngay').value;
+
+            // Hiển thị các giá trị ngày đã chọn lên thẻ h5
+            const selectedDateDisplay = document.getElementById('selectedDateDisplay');
+            selectedDateDisplay.innerText = `Từ ngày: ${fromDate} - Đến ngày: ${toDate}`;
+            window.location.href = selectedDateDisplay;
+        }
+
+        // Function to show the loader
         function showLoader() {
             const loader = document.querySelector(".loader");
             loader.classList.remove("loader-hidden");
@@ -724,10 +721,10 @@
             loader.classList.add("loader-hidden");
         }
 
-        // Add an event listener to the form submission
+        /*  Add an event listener to the form submission*/
         document.getElementById("dateForm").addEventListener("submit", (event) => {
             event.preventDefault();
-
+            displaySelectedDate();
             // Show the loader when the form is submitted
             showLoader();
 
@@ -747,11 +744,22 @@
         window.addEventListener("load", () => {
             // Hide the loader after the page is loaded
             hideLoader();
-            applyCheckboxAndColumnState();
+            const fromDate = urlParams.get('From_date');
+            const toDate = urlParams.get('To_date');
+            if (fromDate && toDate) {
+                displaySelectedDate();
+            }
         });
 
+
+
+
     </script>
- 
+
+
+
+
 </body>
 
 </html>
+

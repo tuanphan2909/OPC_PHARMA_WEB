@@ -244,14 +244,14 @@
                     <p><strong>6. Sản Phẩm Trưng bày&nbsp;</strong><span class="text-danger">*</span></p>
                 </div>
 
-                <input type="text" id="Ma_SP" list="dropdownListSP" placeholder="Tìm kiếm vật tư" name="Ma_SP" value="1006506">
+                <input type="text" id="Ma_SP" list="dropdownListSP" placeholder="Tìm kiếm vật tư" name="Ma_SP" value="1003671">
                 <datalist id="dropdownListSP">
                     @foreach (var item in ViewBag.DataItems2)
                     {
                         <option value="@item.Ma_vt" data-ten="@item.Ten_Vt">@item.Ten_Vt</option>
                     }
                 </datalist>
-                <input name="Ten_SP" id="Ten_SP" readonly value="HOASTEX-S (Hộp 01 chai x 90ml)">
+                <input name="Ten_SP" id="Ten_SP" readonly value="MIMOSA Viên An Thần">
                 <div class="form-group mb-3">
                     <p><strong>7. Mức Trả Thưởng&nbsp;</strong></p>
 
@@ -287,11 +287,14 @@
 
                 </div>
                 <div class="checkbox-wrapper-1">
-                    <input id="example-1" class="substituted" type="checkbox" aria-hidden="true" />
+                    @*<input id="example-1" class="substituted" type="checkbox" aria-hidden="true" />
                     <label for="example-1">Option 1</label>
 
                     <input id="example-2" class="substituted" type="checkbox" aria-hidden="true" />
-                    <label for="example-2">Option 2</label>
+                    <label for="example-2">Option 2</label>*@
+
+                    <input id="example-3" class="substituted" type="checkbox" aria-hidden="true" />
+                    <label for="example-3">Option 1</label>
                 </div>
                 <p id="errorMessage" class="error-message9">Vui lòng chọn ít nhất một tùy chọn trước khi lưu.</p>
 
@@ -694,12 +697,14 @@
             });
         }
         // Kiểm tra trạng thái của checkbox và gán giá trị tương ứng
-        var option1Value = $("#example-1").is(':checked') ? 1 : 0;
-        var option2Value = $("#example-2").is(':checked') ? 1 : 0;
+        //var option1Value = $("#example-1").is(':checked') ? 1 : 0;
+        //var option2Value = $("#example-2").is(':checked') ? 1 : 0;
+        var option3Value = $("#example-3").is(':checked') ? 1 : 0;
 
         // Lưu trữ giá trị vào cookies
-        document.cookie = "option_1=" + option1Value;
-        document.cookie = "option_2=" + option2Value;
+        //document.cookie = "option_1=" + option1Value;
+        //document.cookie = "option_2=" + option2Value;
+        document.cookie = "option_3=" + option3Value;
         $("#SaveCtV").click(function (e) {
             e.preventDefault();
             var warningText = $('#warning').text();
@@ -727,11 +732,13 @@
                 }
             });
 
-            var option1Value = $("#example-1").is(':checked') ? 1 : 0;
-            var option2Value = $("#example-2").is(':checked') ? 1 : 0;
+            //var option1Value = $("#example-1").is(':checked') ? 1 : 0;
+            //var option2Value = $("#example-2").is(':checked') ? 1 : 0;
+            var option3Value = $("#example-3").is(':checked') ? 1 : 0;
 
-            document.cookie = "option_1=" + option1Value;
-            document.cookie = "option_2=" + option2Value;
+            //document.cookie = "option_1=" + option1Value;
+            //document.cookie = "option_2=" + option2Value;
+            document.cookie = "option_3=" + option3Value;
 
             collectImageData(function (imageData) {
                 var data = JSON.stringify({
@@ -745,8 +752,8 @@
                     Ma_SP: $("#Ma_SP").val(),
                     Ten_SP: $("#Ten_SP").val(),
                     Ma_TDV: $("#Ma_TDV").val(),
-                    option_1: option1Value,
-                    option_2: option2Value,
+                    option_1: option3Value,
+                    option_2: "False",
                     ...imageData,
                     details: orderArr
                 });
@@ -808,35 +815,62 @@
                 tbody.deleteRow(0);
             }
             var dataRows = [
-                { Ma_vt: "1003734", Ten_Vt: "Viên trị ho TUSSIDAY", Dvt: "76000" },
-                { Ma_vt: "1003689", Ten_Vt: "Thuốc ho người lớn OPC", Dvt: "28952" },
-                { Ma_vt: "1003645", Ten_Vt: "CHOLAPAN Viên mật nghệ", Dvt: "42000" },
-                { Ma_vt: "1003675", Ten_Vt: "Viên dưỡng não OP.CAN", Dvt: "28476" },
-                { Ma_vt: "1003784", Ten_Vt: "Vitamin C 500mg", Dvt: "50190" }
+
+                { Ma_vt: "1003671", Ten_Vt: "MIMOSA Viên An Thần", Dvt: "77048" },
+                { Ma_vt: "1003734", Ten_Vt: "Viên trị ho TUSSIDAY (Hộp 100NM)", Dvt: "76000" },
+                //{ Ma_vt: "1003734", Ten_Vt: "Viên trị ho TUSSIDAY", Dvt: "76000" },
+                //{ Ma_vt: "1003689", Ten_Vt: "Thuốc ho người lớn OPC", Dvt: "28952" },
+                //{ Ma_vt: "1003645", Ten_Vt: "CHOLAPAN Viên mật nghệ", Dvt: "42000" },
+                //{ Ma_vt: "1003675", Ten_Vt: "Viên dưỡng não OP.CAN", Dvt: "28476" },
+                //{ Ma_vt: "1003784", Ten_Vt: "Vitamin C 500mg", Dvt: "50190" }
             ];
 
             // Kiểm tra checkbox nào được chọn và thêm hàng tương ứng
-            if (checkbox.id === "example-1" && checkbox.checked) {
-                document.getElementById("example-2").checked = false; // Uncheck "Option 2" nếu "Option 1" được chọn
-                // Thêm hàng cho "Option 1"
-                var newRow = tbody.insertRow(tbody.rows.length);
+            //if (checkbox.id === "example-1" && checkbox.checked) {
+            //    document.getElementById("example-2").checked = false; // Uncheck "Option 2" nếu "Option 1" được chọn
+            //    // Thêm hàng cho "Option 1"
+            //    var newRow = tbody.insertRow(tbody.rows.length);
 
-                newRow.innerHTML = '<tr>' +
-                    '<td><input type="text" name="Ma_vt" style="width: 170px" class="ma-vt-input" list="dropdownListVT" value="1006506" readonly /></td>' +
-                    '<td><input type="text" name="Ten_Vt" class="ten-vt-input" value="HoAstex-S" readonly /></td>' +
-                    '<td ><input type="text"style="text-align:right" name="Dvt_original" class="Dvt-input" value="' + 41.429+'" readonly />' +
-                    '<input type="hidden" name="Dvt" value="' +41429 + '" />' +
-                    '</td >' +
+            //    newRow.innerHTML = '<tr>' +
+            //        '<td><input type="text" name="Ma_vt" style="width: 170px" class="ma-vt-input" list="dropdownListVT" value="1006506" readonly /></td>' +
+            //        '<td><input type="text" name="Ten_Vt" class="ten-vt-input" value="HoAstex-S" readonly /></td>' +
+            //        '<td ><input type="text"style="text-align:right" name="Dvt_original" class="Dvt-input" value="' + 41.429+'" readonly />' +
+            //        '<input type="hidden" name="Dvt" value="' +41429 + '" />' +
+            //        '</td >' +
 
-                    '<td><input type="text" name="So_luong" style="width: 55px; height: 20px;" value="0" class="han-muc-input" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\')" /></td>' +
-                    '<td><button class="deleteRowBtn">Xóa</button></td>' +
-                    '</tr>';
+            //        '<td><input type="text" name="So_luong" style="width: 55px; height: 20px;" value="0" class="han-muc-input" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\')" /></td>' +
+            //        '<td><button class="deleteRowBtn">Xóa</button></td>' +
+            //        '</tr>';
 
 
-            } else if (checkbox.id === "example-2" && checkbox.checked) {
-                document.getElementById("example-1").checked = false; // Uncheck "Option 1" nếu "Option 2" được chọn
-                // Thêm hàng cho "Option 2"
-                dataRows.forEach(function (rowData) {
+            //} else if (checkbox.id === "example-2" && checkbox.checked) {
+            //    document.getElementById("example-1").checked = false; // Uncheck "Option 1" nếu "Option 2" được chọn
+            //    // Thêm hàng cho "Option 2"
+            //    dataRows.forEach(function (rowData) {
+            //        var newRow = tbody.insertRow(tbody.rows.length);
+            //        var formattedDvt = formatNumber(rowData.Dvt);
+            //        newRow.innerHTML = '<tr>' +
+            //            '<td><input type="text" name="Ma_vt" style="width: 170px" class="ma-vt-input" value="' + rowData.Ma_vt + '" readonly /></td>' +
+            //            '<td><input type="text" name="Ten_Vt" class="ten-vt-input" style="text-align:right"value="' + rowData.Ten_Vt + '" readonly /></td>' +
+            //            '<td>' +
+            //            '<input type="text" name="Dvt_original" style="width: 100%;text-align:right" class="Dvt-input" value="' + formattedDvt   + '" readonly />' +
+            //            '<input type="hidden" name="Dvt" value="' + rowData.Dvt + '" />' +
+            //            '</td>' +
+
+
+            //            '<td><input type="text" name="So_luong" style="width: 55px; height: 20px;" value ="0" class="han-muc-input" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\')" /></td>' +
+            //            '<td><button class="deleteRowBtn">Xóa</button></td>' +
+            //            '</tr>';
+
+            //    });
+
+            //}
+
+              if (checkbox.id === "example-3" && checkbox.checked) {
+                //document.getElementById("example-1").checked = false; // Uncheck "Option 2" nếu "Option 1" được chọn
+                //document.getElementById("example-2").checked = false; // Uncheck "Option 2" nếu "Option 2" được chọn
+                // Thêm hàng cho "Option 3"
+                  dataRows.forEach(function (rowData) {
                     var newRow = tbody.insertRow(tbody.rows.length);
                     var formattedDvt = formatNumber(rowData.Dvt);
                     newRow.innerHTML = '<tr>' +
@@ -848,11 +882,12 @@
                         '</td>' +
 
 
-                        '<td><input type="text" name="So_luong" style="width: 55px; height: 20px;" value ="0" class="han-muc-input" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\')" /></td>' +
+                        '<td><input type="text" name="So_luong" style="width: 55px; height: 20px;" value ="1" class="han-muc-input" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\')"readonly /></td>' +
                         '<td><button class="deleteRowBtn">Xóa</button></td>' +
                         '</tr>';
 
                 });
+
 
             }
         }
@@ -873,8 +908,8 @@
             var today = new Date();
             var dateStr = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
             document.getElementById("Ngay_Ct").value = dateStr;
-            document.getElementById("Ngay_Bat_Dau").value = "2024-06-01";
-            document.getElementById("Ngay_Ket_Thuc").value = "2024-08-31";
+            document.getElementById("Ngay_Bat_Dau").value = "2024-09-01";
+            document.getElementById("Ngay_Ket_Thuc").value = "2024-10-31";
         });
     </script>
 
@@ -927,13 +962,13 @@
                 console.log("Total là:", total);
                 $('#totalAmount').text(numberWithCommas(total));
 
-                if (total > 155000 && $('#example-2').is(':checked')) {
-                    $('#warning').text('Đã Vượt Quá Số Tiền Cho Phép');
-                } else if (isQuantityOver4 && $('#example-1').is(':checked')) {
-                    $('#warning').text('Số lượng không được vượt quá 4');
-                } else {
-                    $('#warning').text('');
-                }
+                //if (total > 155000 && $('#example-2').is(':checked')) {
+                //    $('#warning').text('Đã Vượt Quá Số Tiền Cho Phép');
+                //} else if (isQuantityOver4 && $('#example-1').is(':checked')) {
+                //    $('#warning').text('Số lượng không được vượt quá 4');
+                //} else {
+                //    $('#warning').text('');
+                //}
             }
 
             $(document).on('input', 'input[name="Dvt"], input[name="So_luong"]', function () {

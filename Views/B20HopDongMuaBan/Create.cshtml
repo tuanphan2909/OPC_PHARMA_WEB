@@ -1,11 +1,12 @@
 ﻿@model web4.Models.B20HDMuaBan
 @using Newtonsoft.Json;
 
-@{ ViewBag.Title = "Create Contract";
+@{
+    ViewBag.Title = "Create Contract";
     var dataItemsDtJson = JsonConvert.SerializeObject(Model.DataItemsDt);
     var dataItemsTdvJson = JsonConvert.SerializeObject(Model.DataItemsTdv);
     var paymentDataJson = JsonConvert.SerializeObject(Model.PaymentData);
-    var ckDataJson = JsonConvert.SerializeObject(Model.CKData); 
+    var ckDataJson = JsonConvert.SerializeObject(Model.CKData);
 }
 
 <!DOCTYPE html>
@@ -24,7 +25,7 @@
 
     <style>
         * {
-            font-family: 'Roboto',sans-serif;
+            font-family: 'Roboto', sans-serif;
         }
 
         body {
@@ -71,29 +72,41 @@
             font-weight: bold;
             font-size: 1.1em;
         }
+
+        .highlight-required {
+            border-color: #dc3545 !important;
+        }
+
+        .red-border {
+            border: 2px solid red !important;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2 class="text-center mb-4" style="color: orangered;">THÊM HỢP ĐỒNG</h2>
+        @if (!string.IsNullOrEmpty(Model.Ma_Dvcs))
+        {
+            <div class="alert alert-info">
+                <strong>Mã Chi Nhánh:</strong> @Model.Ma_Dvcs
+            </div>
+        }
 
         @if (!ViewData.ModelState.IsValid)
         {
-<div class="alert alert-danger">
-    <ul>
-        @foreach (var modelState in ViewData.ModelState.Values)
-        {
-            foreach (var error in modelState.Errors)
-            {
-<li>@error.ErrorMessage</li>}
-                }
-    </ul>
-</div>}
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (var modelState in ViewData.ModelState.Values)
+                    {
+                        foreach (var error in modelState.Errors)
+                        {
+                            <li>@error.ErrorMessage</li>
+                        }
+                    }
+                </ul>
+            </div>
+        }
 
-        <div class="branch-code-section">
-            <p><b>Mã Chi Nhánh:</b></p>
-            <div class="branch-code">@Model.SelectedBranch</div>
-        </div>
         <form id="createForm" method="post" action="@Url.Action("Create", "B20HopDongMuaBan")" novalidate>
             @Html.AntiForgeryToken()
             <input type="hidden" id="SelectedBranch" name="SelectedBranch" value="@Model.SelectedBranch" />
@@ -165,9 +178,10 @@
             </div>
             <div class="form-group">
                 <label for="So_Hop_Dong">Số Hợp Đồng:</label>
-                <input type="text" id="So_Hop_Dong" name="So_Hop_Dong" class="form-control" required />
+                <input type="text" id="So_Hop_Dong" name="So_Hop_Dong" class="form-control red-border" value="@Model.So_Hop_Dong" />
                 <div class="error-message" id="soHopDongError"></div>
             </div>
+
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="Ky_Hieu_HD">Ký Hiệu HĐ:</label>
@@ -202,8 +216,9 @@
             </div>
             <div class="form-group">
                 <label for="Ngay_Ky">Ngày Ký:</label>
-                <input type="text" id="Ngay_Ky" name="Ngay_Ky" class="form-control" />
+                <input type="text" id="Ngay_Ky" name="Ngay_Ky" class="form-control" value="@(Model.Ngay_Ky.HasValue ? Model.Ngay_Ky.Value.ToString("yyyy/MM/dd") : string.Empty)" />
             </div>
+
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="TG_Ky_HD">Thời Gian Ký Hợp Đồng:</label>
@@ -432,7 +447,10 @@
                 } else {
                     $("#soHopDongError").text("");
                 }
-
+                // Xóa giá trị của Ngay_Ky nếu nó để trống
+                if ($("#Ngay_Ky").val().trim() === "") {
+                    $("#Ngay_Ky").val(null);
+                }
                 if (!isValid) {
                     event.preventDefault();
                 }

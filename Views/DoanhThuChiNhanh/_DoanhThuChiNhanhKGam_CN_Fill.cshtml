@@ -18,12 +18,11 @@
 
         foreach (DataRow row in table.Rows)
         {
-            totalDoanhThu += Convert.ToDecimal(row["Tong_Thuc_Hien"]);
-            totalKhoan += Convert.ToDecimal(row["Tong_Khoan"]);
-            totalTyLe += Convert.ToDecimal(row["Ty_Le"]);
+            totalDoanhThu += row["Tong_Thuc_Hien"] != DBNull.Value ? Convert.ToDecimal(row["Tong_Thuc_Hien"]) : 0;
+            totalKhoan += row["Tong_Khoan"] != DBNull.Value ? Convert.ToDecimal(row["Tong_Khoan"]) : 0;
+            totalTyLe += row["Ty_Le"] != DBNull.Value ? Convert.ToDecimal(row["Ty_Le"]) : 0;
         }
 
-        // Calculate the average Ty Le
         decimal averageTyLe = rowCount > 0 ? totalTyLe / rowCount : 0;
 
         return new Totals
@@ -36,15 +35,7 @@
 }
 
 <table id="example" class="table table-striped table-bordered">
-    <thead class="table-dark ">
-        <tr>
-            <th class="ten-don-vi" style="width:300px">Tên Đơn Vị</th>
-            <th class="doanh-thu" style="width:120px">Doanh Thu</th>
-            <th class="khoan" style="width:120px">Khoán</th>
-            <th class="ty-le" style="width:120px">Tỷ lệ</th>
-            <th class="luy-ke" style="width:120px">Lũy Kế</th>
-        </tr>
-    </thead>
+
     <tbody>
         @if (Model.Tables.Count > 0)
         {
@@ -52,10 +43,14 @@
             {
                 <tr>
                     <td class="ten-don-vi">@row2["Ten_DvCs"]</td>
-                    <td class="doanh-thu num" style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["Tong_Thuc_Hien"]))</td>
-                    <td class="khoan num" style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["Tong_Khoan"]))</td>
+                    <td class="doanh-thu num" style="text-align:right">
+                        @String.Format("{0:n0}", row2["Tong_Thuc_Hien"] != DBNull.Value ? Convert.ToDecimal(row2["Tong_Thuc_Hien"]) : 0)
+                    </td>
+                    <td class="khoan num" style="text-align:right">
+                        @String.Format("{0:n0}", row2["Tong_Khoan"] != DBNull.Value ? Convert.ToDecimal(row2["Tong_Khoan"]) : 0)
+                    </td>
                     <td class="ty-le total-tyle" style="text-align:right">
-                        @String.Format("{0:P2}", Convert.ToDecimal(row2["Ty_Le"]) / 100)
+                        @String.Format("{0:P2}", row2["Ty_Le"] != DBNull.Value ? Convert.ToDecimal(row2["Ty_Le"]) / 100 : 0)
                     </td>
                     <td class="luy-ke num" style="text-align:right">0</td>
                 </tr>
@@ -78,7 +73,3 @@
         }
     </tfoot>
 </table>
-
-
-
-

@@ -51,346 +51,350 @@
                                                       )">1.Phiếu Xác Nhận Thanh Toán</a>
                 <a href="#" onclick="runReport('@Url.Action("GiamSatViengThamKH_Fill", "GiamSatViengThamKH")'
                                                       )">2.Báo Cáo Giám Sát Viếng Thăm Khách Hàng</a>
+                <a href="#" onclick="runReport('@Url.Action("TonNo_Index", "MauInChungTu")'
+                                                      )">3.Sổ Chi Tiết Tồn Nợ Phải Thu</a>
+                <a href="#" onclick="runReport('@Url.Action("BangDoiChieuCongNo_Fill", "MauInChungTu")'
+                                                      )">4.Đối Chiếu Doanh Thu Công Nợ</a>
                 @*<div style="display:flex">
-            <div class="color1"></div>
-            <button class="submenu-btn" onclick="toggleSubmenu('submenu1_1','arrow-subicon')">
-                1.Báo Cáo Quản Trị
-                <div id="arrow-subicon" class="subicon-arrow">
-                    <i class="fa-solid fa-chevron-down"></i>
-                </div>
-            </button>
-        </div>*@
+                        <div class="color1"></div>
+                        <button class="submenu-btn" onclick="toggleSubmenu('submenu1_1','arrow-subicon')">
+                            1.Báo Cáo Quản Trị
+                            <div id="arrow-subicon" class="subicon-arrow">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                        </button>
+                    </div>*@
                 @*<div id="submenu1_1" class="submenu-container" style="padding-left:15px">
-                            @if (string.Equals(ViewBag.UserName, "admin", StringComparison.OrdinalIgnoreCase) || string.Equals(ViewBag.UserName, "opcadmin", StringComparison.OrdinalIgnoreCase) || string.Equals(ViewBag.UserName, "vpct-nhatanh", StringComparison.OrdinalIgnoreCase))
-                            {
-                                <a href="#" onclick="runReport('@Url.Action("DoanhThuChiNhanhKGam_Fill", "DoanhThuChiNhanh")'
-                                                              )">1.1 Doanh Thu Chi Nhánh</a>
-                            }
-                            else
-                            {
-                                <a href="#" onclick="runReport('@Url.Action("DoanhThuChiNhanhKGam_CN_Fill", "DoanhThuChiNhanh")'
-                                                              )">1.1 Doanh Thu Chi Nhánh</a>
-                            }
-                            @if (string.Equals(ViewBag.UserName, "admin", StringComparison.OrdinalIgnoreCase) ||
-        string.Equals(ViewBag.UserName, "opcmar001", StringComparison.OrdinalIgnoreCase) || string.Equals(ViewBag.UserName, "opcadmin", StringComparison.OrdinalIgnoreCase) || string.Equals(ViewBag.UserName, "vpct-nhatanh", StringComparison.OrdinalIgnoreCase))
-                            {
-                                <a href="#" onclick="runReport('@Url.Action("DoanhThuChiNhanh_Admin_Fill", "DoanhThuChiNhanh")'
-                                                              )">1.2 Doanh Thu CN Theo Gam</a>
+                                        @if (string.Equals(ViewBag.UserName, "admin", StringComparison.OrdinalIgnoreCase) || string.Equals(ViewBag.UserName, "opcadmin", StringComparison.OrdinalIgnoreCase) || string.Equals(ViewBag.UserName, "vpct-nhatanh", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            <a href="#" onclick="runReport('@Url.Action("DoanhThuChiNhanhKGam_Fill", "DoanhThuChiNhanh")'
+                                                                          )">1.1 Doanh Thu Chi Nhánh</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#" onclick="runReport('@Url.Action("DoanhThuChiNhanhKGam_CN_Fill", "DoanhThuChiNhanh")'
+                                                                          )">1.1 Doanh Thu Chi Nhánh</a>
+                                        }
+                                        @if (string.Equals(ViewBag.UserName, "admin", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(ViewBag.UserName, "opcmar001", StringComparison.OrdinalIgnoreCase) || string.Equals(ViewBag.UserName, "opcadmin", StringComparison.OrdinalIgnoreCase) || string.Equals(ViewBag.UserName, "vpct-nhatanh", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            <a href="#" onclick="runReport('@Url.Action("DoanhThuChiNhanh_Admin_Fill", "DoanhThuChiNhanh")'
+                                                                          )">1.2 Doanh Thu CN Theo Gam</a>
 
-                            }
-                            else
-                            {
-                                <a href="#" onclick="runReport('@Url.Action("DoanhThuChiNhanh_Fill", "DoanhThuChiNhanh")'
-                                                              )">1.2 Doanh Thu CN Theo Gam</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#" onclick="runReport('@Url.Action("DoanhThuChiNhanh_Fill", "DoanhThuChiNhanh")'
+                                                                          )">1.2 Doanh Thu CN Theo Gam</a>
 
-                            }
+                                        }
 
-                            <a href="#" onclick="runReport('@Url.Action("DoanhThuChiNhanhTinhLuong_Fill", "DoanhThuChiNhanh")'
-                                                              )">1.3 Doanh Thu CN Tính Lương</a>
-                            <a href="#" onclick="runReport('@Url.Action("BaoCaoKetQuaKinhDoanh_Fill", "BaoCaoKetQuaKinhDoanh")'
-                                                              )">1.4 Doanh Thu Tổng Hợp - Chi Tiết</a>
-                        </div>
-                        <div style="display:flex">
-                            <div class="color2"></div>
-                            <button class="submenu-btn" onclick="toggleSubmenu('submenu1_2','arrow-subicon_2')">
-                                2.Báo Cáo Nghiệp Vụ  <div id="arrow-subicon_2" class="subicon-arrow">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </button>
-                        </div>
-                        <div id="submenu1_2" class="submenu-container" style="padding-left:15px">
-                            @if (string.Equals(ViewBag.UserName, "OPCHCM001", StringComparison.OrdinalIgnoreCase))
-                            {
+                                        <a href="#" onclick="runReport('@Url.Action("DoanhThuChiNhanhTinhLuong_Fill", "DoanhThuChiNhanh")'
+                                                                          )">1.3 Doanh Thu CN Tính Lương</a>
+                                        <a href="#" onclick="runReport('@Url.Action("BaoCaoKetQuaKinhDoanh_Fill", "BaoCaoKetQuaKinhDoanh")'
+                                                                          )">1.4 Doanh Thu Tổng Hợp - Chi Tiết</a>
+                                    </div>
+                                    <div style="display:flex">
+                                        <div class="color2"></div>
+                                        <button class="submenu-btn" onclick="toggleSubmenu('submenu1_2','arrow-subicon_2')">
+                                            2.Báo Cáo Nghiệp Vụ  <div id="arrow-subicon_2" class="subicon-arrow">
+                                                <i class="fa-solid fa-chevron-down"></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                    <div id="submenu1_2" class="submenu-container" style="padding-left:15px">
+                                        @if (string.Equals(ViewBag.UserName, "OPCHCM001", StringComparison.OrdinalIgnoreCase))
+                                        {
 
 
-                                <a href="#" onclick="runReport('@Url.Action("bangkehoadon_Fill_HCM", "bangkehoadon")'
-                                                              )">2.1 Bảng Kê Chứng Từ SO</a>
-                            }
-                            else
-                            {
-                                <a href="#" onclick="runReport('@Url.Action("bangkehoadon_Fill", "bangkehoadon")'
+                                            <a href="#" onclick="runReport('@Url.Action("bangkehoadon_Fill_HCM", "bangkehoadon")'
                                                                           )">2.1 Bảng Kê Chứng Từ SO</a>
-                            }
-                            @if (string.Equals(ViewBag.UserName, "OPCHCM001", StringComparison.OrdinalIgnoreCase))
-                            {
-                                <a href="#" onclick="runReport('@Url.Action("DanhSachHoaDon_Fill_HCM", "bangkehoadon")'
-                                                              )">2.2 Bảng kê Hóa Đơn</a>
-                            }
-                            else
-                            {
-                                <a href="#" onclick="runReport('@Url.Action("DanhSachHoaDon_Fill", "bangkehoadon")'
-                                                              )">2.2 Bảng kê Hóa Đơn</a>
-                            }
-                            <a href="#" onclick="runReport('@Url.Action("BaoCaoBanHangCN_Fill", "BaoCaobanHangCN")'
-                                                              )">2.3 BC Bán Hàng CN</a>
-                            <a href="#" onclick="runReport('@Url.Action("BaoCaoBanHangTDV_Fill", "BaoCaoBanHangTDV")'
-                                                              )">2.4 BC Bán Hàng TDV</a>
-                            @if (Request.Cookies["UserName"].Value == "vpct-nhatanh")
-                            {
-                                <a href="#" onclick="runReport('@Url.Action("BaoCaoTienVeCN2_Fill", "BaoCaoTienVeCN")'
-                                                              )">2.5 BC Tiền Về CN</a>
-                            }
-                            else
-                            {
-                                <a href="#" onclick="runReport('@Url.Action("BaoCaoTienVeCN_Fill", "BaoCaoTienVeCN")'
-                                                              )">2.5 BC Tiền Về CN</a>
-                            }
-                            <a href="#" onclick="runReport('@Url.Action("BaoCaoTienVeTDV_Fill", "BaoCaoTienVeCN")'
-                                                              )">2.6 BC Tiền Về TDV</a>
-                            <a href="#" onclick="runReport('@Url.Action("BaoCaoDoanhThuGamHangTheoDoiTuong_Fill", "BaoCaoDoanhThuGamHangTheoDoiTuong")'
-                                                              )">2.7 BC DT Gam Theo Đối Tượng</a>
-                            @if (string.Equals(ViewBag.UserName, "OPCTCKT001", StringComparison.OrdinalIgnoreCase))
-                            {
-                                <a href="#" onclick="runReport('@Url.Action("BaoCaoDTTinhLuongCTV_Fill_CongTy", "BaoCaoBanHangCTV")'
-                                                              )">2.8 BC DT Tính Lương CTV</a>
-                            }
-                            else
-                            {
-                                <a href="#" onclick="runReport('@Url.Action("BaoCaoDTTinhLuongCTV_Fill", "BaoCaoBanHangCTV")'
-                                                              )">2.8 BC DT Tính Lương CTV</a>
-                            }
-                            <a href="#" style="display:flex" onclick="runReport('@Url.Action("PhanTichBanHang_Fill", "PhanTichBanHang")'
-                                                              )">
-                                2.9 Phân Tích Bán Hàng
-                            </a>
-                        </div>
-                        <div style="display:flex">
-                            <div class="color3"></div>
-                            <button class="submenu-btn" onclick="toggleSubmenu('submenu1_3','arrow-subicon_3')">
-                                3.Báo Cáo Công Nợ <div id="arrow-subicon_3" class="subicon-arrow">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </button>
-                        </div>
-                        <div id="submenu1_3" class="submenu-container">
-                            <a href="#" onclick="toggleSubmenu('submenu1_3_1','arrow-subicon_3_1')" style="display:flex;margin-left:15px">
-                                3.1 Công Nợ Phải Thu<div id="arrow-subicon_3_1" class="subicon-arrow">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </a>
-                            <div id="submenu1_3_1" class="submenu-container" style="margin-left:28px">
-                                <a href="#" onclick="runReport('@Url.Action("BangDoiChieuCongNo_Fill", "MauInChungTu")'
-                                                              )">3.1.1 Đối Chiếu Doanh Thu Công Nợ</a>
-                                <a href="#" onclick="runReport('@Url.Action("BangDoiChieuDTCN_Fill", "MauInChungTu")'
-                                                              )">3.1.2 Đối Chiếu Công Nợ</a>
-                                @if (Request.Cookies["UserName"].Value == "vpct-nhatanh" || Request.Cookies["UserName"].Value == "opctckt001" || Request.Cookies["UserName"].Value == "OPCTCKT001")
-                                {
+                                        }
+                                        else
+                                        {
+                                            <a href="#" onclick="runReport('@Url.Action("bangkehoadon_Fill", "bangkehoadon")'
+                                                                                      )">2.1 Bảng Kê Chứng Từ SO</a>
+                                        }
+                                        @if (string.Equals(ViewBag.UserName, "OPCHCM001", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            <a href="#" onclick="runReport('@Url.Action("DanhSachHoaDon_Fill_HCM", "bangkehoadon")'
+                                                                          )">2.2 Bảng kê Hóa Đơn</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#" onclick="runReport('@Url.Action("DanhSachHoaDon_Fill", "bangkehoadon")'
+                                                                          )">2.2 Bảng kê Hóa Đơn</a>
+                                        }
+                                        <a href="#" onclick="runReport('@Url.Action("BaoCaoBanHangCN_Fill", "BaoCaobanHangCN")'
+                                                                          )">2.3 BC Bán Hàng CN</a>
+                                        <a href="#" onclick="runReport('@Url.Action("BaoCaoBanHangTDV_Fill", "BaoCaoBanHangTDV")'
+                                                                          )">2.4 BC Bán Hàng TDV</a>
+                                        @if (Request.Cookies["UserName"].Value == "vpct-nhatanh")
+                                        {
+                                            <a href="#" onclick="runReport('@Url.Action("BaoCaoTienVeCN2_Fill", "BaoCaoTienVeCN")'
+                                                                          )">2.5 BC Tiền Về CN</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#" onclick="runReport('@Url.Action("BaoCaoTienVeCN_Fill", "BaoCaoTienVeCN")'
+                                                                          )">2.5 BC Tiền Về CN</a>
+                                        }
+                                        <a href="#" onclick="runReport('@Url.Action("BaoCaoTienVeTDV_Fill", "BaoCaoTienVeCN")'
+                                                                          )">2.6 BC Tiền Về TDV</a>
+                                        <a href="#" onclick="runReport('@Url.Action("BaoCaoDoanhThuGamHangTheoDoiTuong_Fill", "BaoCaoDoanhThuGamHangTheoDoiTuong")'
+                                                                          )">2.7 BC DT Gam Theo Đối Tượng</a>
+                                        @if (string.Equals(ViewBag.UserName, "OPCTCKT001", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            <a href="#" onclick="runReport('@Url.Action("BaoCaoDTTinhLuongCTV_Fill_CongTy", "BaoCaoBanHangCTV")'
+                                                                          )">2.8 BC DT Tính Lương CTV</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#" onclick="runReport('@Url.Action("BaoCaoDTTinhLuongCTV_Fill", "BaoCaoBanHangCTV")'
+                                                                          )">2.8 BC DT Tính Lương CTV</a>
+                                        }
+                                        <a href="#" style="display:flex" onclick="runReport('@Url.Action("PhanTichBanHang_Fill", "PhanTichBanHang")'
+                                                                          )">
+                                            2.9 Phân Tích Bán Hàng
+                                        </a>
+                                    </div>
+                                    <div style="display:flex">
+                                        <div class="color3"></div>
+                                        <button class="submenu-btn" onclick="toggleSubmenu('submenu1_3','arrow-subicon_3')">
+                                            3.Báo Cáo Công Nợ <div id="arrow-subicon_3" class="subicon-arrow">
+                                                <i class="fa-solid fa-chevron-down"></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                    <div id="submenu1_3" class="submenu-container">
+                                        <a href="#" onclick="toggleSubmenu('submenu1_3_1','arrow-subicon_3_1')" style="display:flex;margin-left:15px">
+                                            3.1 Công Nợ Phải Thu<div id="arrow-subicon_3_1" class="subicon-arrow">
+                                                <i class="fa-solid fa-chevron-down"></i>
+                                            </div>
+                                        </a>
+                                        <div id="submenu1_3_1" class="submenu-container" style="margin-left:28px">
+                                            <a href="#" onclick="runReport('@Url.Action("BangDoiChieuCongNo_Fill", "MauInChungTu")'
+                                                                          )">3.1.1 Đối Chiếu Doanh Thu Công Nợ</a>
+                                            <a href="#" onclick="runReport('@Url.Action("BangDoiChieuDTCN_Fill", "MauInChungTu")'
+                                                                          )">3.1.2 Đối Chiếu Công Nợ</a>
+                                            @if (Request.Cookies["UserName"].Value == "vpct-nhatanh" || Request.Cookies["UserName"].Value == "opctckt001" || Request.Cookies["UserName"].Value == "OPCTCKT001")
+                                            {
 
-                                    <a href="#" onclick="runReport('@Url.Action("CongNoChiTietKH2_Fill", "CongNoChiTiet")'
-                                                              )">3.1.3 Công Nợ Chi Tiết Của KH(PL5)</a>
-                                }
-                                else
-                                {
-                                    <a href="#" onclick="runReport('@Url.Action("CongNoChiTietKH_Fill", "CongNoChiTiet")'
-                                                              )">3.1.3 Công Nợ Chi Tiết Của KH(PL5)</a>
-                                }
-                                <a href="#" onclick="runReport('@Url.Action("ThongBaoNoQH_Fill", "MauInChungTu")'
-                                                              )">3.1.4 Thông Báo Nợ QH</a>
-                                <a href="#" onclick="runReport('@Url.Action("TonNo_Index", "MauInChungTu")'
-                                                              )">3.1.5 Sổ Chi Tiết Tồn Nợ Phải Thu</a>
-                                <a href="#" onclick="runReport('@Url.Action("SoChiTietPhaiThu_Fill", "SoChiTietPhaiThu")'
-                                                              )">3.1.6 Sổ Chi Tiết Phải Thu Của KH</a>
-                                <a href="#" onclick="runReport('@Url.Action("CongNoChiTietKH_ETC_Fill", "CongNoChiTiet")'
-                                                              )">3.1.7 Công Nợ Chi Tiết Của KH ETC</a>
-                                <a href="#" onclick="runReport('@Url.Action("SoTongHopCongNoPhaiThu_Fill", "SoTHPhaiThu")'
-                                                              )">3.1.8 Sổ Tổng Hợp Phải Thu Của KH</a>
+                                                <a href="#" onclick="runReport('@Url.Action("CongNoChiTietKH2_Fill", "CongNoChiTiet")'
+                                                                          )">3.1.3 Công Nợ Chi Tiết Của KH(PL5)</a>
+                                            }
+                                            else
+                                            {
+                                                <a href="#" onclick="runReport('@Url.Action("CongNoChiTietKH_Fill", "CongNoChiTiet")'
+                                                                          )">3.1.3 Công Nợ Chi Tiết Của KH(PL5)</a>
+                                            }
+                                            <a href="#" onclick="runReport('@Url.Action("ThongBaoNoQH_Fill", "MauInChungTu")'
+                                                                          )">3.1.4 Thông Báo Nợ QH</a>
+                                            <a href="#" onclick="runReport('@Url.Action("TonNo_Index", "MauInChungTu")'
+                                                                          )">3.1.5 Sổ Chi Tiết Tồn Nợ Phải Thu</a>
+                                            <a href="#" onclick="runReport('@Url.Action("SoChiTietPhaiThu_Fill", "SoChiTietPhaiThu")'
+                                                                          )">3.1.6 Sổ Chi Tiết Phải Thu Của KH</a>
+                                            <a href="#" onclick="runReport('@Url.Action("CongNoChiTietKH_ETC_Fill", "CongNoChiTiet")'
+                                                                          )">3.1.7 Công Nợ Chi Tiết Của KH ETC</a>
+                                            <a href="#" onclick="runReport('@Url.Action("SoTongHopCongNoPhaiThu_Fill", "SoTHPhaiThu")'
+                                                                          )">3.1.8 Sổ Tổng Hợp Phải Thu Của KH</a>
 
-                            </div>
-                            <a href="#" onclick="toggleSubmenu('submenu1_3_2','arrow-subicon_3_2')" style="display: flex; margin-left: 15px">
-                                3.2 Công Nợ Phải Trả<div id="arrow-subicon_3_2" class="subicon-arrow">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </a>
-                            <div id="submenu1_3_2" class="submenu-container" style="margin-left:28px">
-                                @if (Request.Cookies["UserName"].Value == "vpct-nhatanh" || Request.Cookies["UserName"].Value == "opctckt001" || Request.Cookies["UserName"].Value == "OPCTCKT001")
-                                {
-                                    <a href="#" onclick="runReport('@Url.Action("ChonCN", "SoChiTietPhaiTra")'
-                                                              )">3.2.1 Sổ Chi Tiết Tồn Nợ Phải Trả</a>
-                                }
-                                else
-                                {
-                                    <a href="#" onclick="runReport('@Url.Action("SoChiTietPhaiTra_Fill", "SoChiTietPhaiTra")'
-                                                              )">3.2.1 Sổ Chi Tiết Tồn Nợ Phải Trả</a>}
-                                <a href="#" style="display:flex" onclick="runReport('@Url.Action("TongHopCongNoPhaiTra_Fill", "TongHopPhaiTra")'
-                                                              )">
-                                    3.2.2 Tổng Hợp Công Nợ Phải Trả
-                                </a>
-                                <a href="#" style="display:flex" onclick="runReport('@Url.Action("TongHopCongNoPhaiTra_Fill", "TongHopPhaiTra")'
-                                                              )">
-                                    3.2.3 Chi Tiết Công Nợ Phải Trả
-                                </a>
-                            </div>
-                        </div>
-                        <div style="display:flex">
-                            <div class="color4"></div>
-                            <button class="submenu-btn" onclick="toggleSubmenu('submenu1_4','arrow-subicon_4')">
-                                4.Báo Cáo Kế Toán <div id="arrow-subicon_4" class="subicon-arrow">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </button>
-                        </div>
-                        <div id="submenu1_4" class="submenu-container" style="padding-left:15px">
-                            <a href="#" style="display:flex" onclick="runReport('@Url.Action("SoQuyTienMat_Fill", "SoQuyTienMat")'
-                                                              )">
-                                4.1 Sổ Quỹ Tiền Mặt - Ngân hàng
-                            </a>
-                            <a href="#" style="display:flex" onclick="runReport('@Url.Action("PhieuKeToan", "PhieuKeToan")'
-                                                              )">
-                                4.2 Phiếu Kế Toán Khác
-                            </a>
-                            <a href="#" style="display:flex" onclick="runReport('@Url.Action("BaoCaoChiPhiKM_Fill", "BaoCaoChiPhiKhuyenMai")'
-                                                              )">
-                                4.3 BC Chi Phí Khuyến Mãi
-                            </a>
-                            <a href="#" style="display:flex" onclick="runReport('@Url.Action("BaoCaoDoanhThuGV_Fill", "BaoCaoDoanhThuGV")'
-                                                              )">
-                                4.4 BC Doanh Thu Giá Vốn
-                            </a>
-                            @if (Request.Cookies["UserName"].Value == "vpct-nhatanh")
-                            {
-                                <a href="#" style="display:flex" onclick="runReport('@Url.Action("BaoCaoTienVeThuong_Index", "BangKeNopTien")'
-                                                              )">
-                                    4.5 BC Tiền Về(Thưởng)
-                                </a>
-                            }
-                            @if (Request.Cookies["UserName"].Value == "vpct-nhatanh")
-                            {
+                                        </div>
+                                        <a href="#" onclick="toggleSubmenu('submenu1_3_2','arrow-subicon_3_2')" style="display: flex; margin-left: 15px">
+                                            3.2 Công Nợ Phải Trả<div id="arrow-subicon_3_2" class="subicon-arrow">
+                                                <i class="fa-solid fa-chevron-down"></i>
+                                            </div>
+                                        </a>
+                                        <div id="submenu1_3_2" class="submenu-container" style="margin-left:28px">
+                                            @if (Request.Cookies["UserName"].Value == "vpct-nhatanh" || Request.Cookies["UserName"].Value == "opctckt001" || Request.Cookies["UserName"].Value == "OPCTCKT001")
+                                            {
+                                                <a href="#" onclick="runReport('@Url.Action("ChonCN", "SoChiTietPhaiTra")'
+                                                                          )">3.2.1 Sổ Chi Tiết Tồn Nợ Phải Trả</a>
+                                            }
+                                            else
+                                            {
+                                                <a href="#" onclick="runReport('@Url.Action("SoChiTietPhaiTra_Fill", "SoChiTietPhaiTra")'
+                                                                          )">3.2.1 Sổ Chi Tiết Tồn Nợ Phải Trả</a>}
+                                            <a href="#" style="display:flex" onclick="runReport('@Url.Action("TongHopCongNoPhaiTra_Fill", "TongHopPhaiTra")'
+                                                                          )">
+                                                3.2.2 Tổng Hợp Công Nợ Phải Trả
+                                            </a>
+                                            <a href="#" style="display:flex" onclick="runReport('@Url.Action("TongHopCongNoPhaiTra_Fill", "TongHopPhaiTra")'
+                                                                          )">
+                                                3.2.3 Chi Tiết Công Nợ Phải Trả
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div style="display:flex">
+                                        <div class="color4"></div>
+                                        <button class="submenu-btn" onclick="toggleSubmenu('submenu1_4','arrow-subicon_4')">
+                                            4.Báo Cáo Kế Toán <div id="arrow-subicon_4" class="subicon-arrow">
+                                                <i class="fa-solid fa-chevron-down"></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                    <div id="submenu1_4" class="submenu-container" style="padding-left:15px">
+                                        <a href="#" style="display:flex" onclick="runReport('@Url.Action("SoQuyTienMat_Fill", "SoQuyTienMat")'
+                                                                          )">
+                                            4.1 Sổ Quỹ Tiền Mặt - Ngân hàng
+                                        </a>
+                                        <a href="#" style="display:flex" onclick="runReport('@Url.Action("PhieuKeToan", "PhieuKeToan")'
+                                                                          )">
+                                            4.2 Phiếu Kế Toán Khác
+                                        </a>
+                                        <a href="#" style="display:flex" onclick="runReport('@Url.Action("BaoCaoChiPhiKM_Fill", "BaoCaoChiPhiKhuyenMai")'
+                                                                          )">
+                                            4.3 BC Chi Phí Khuyến Mãi
+                                        </a>
+                                        <a href="#" style="display:flex" onclick="runReport('@Url.Action("BaoCaoDoanhThuGV_Fill", "BaoCaoDoanhThuGV")'
+                                                                          )">
+                                            4.4 BC Doanh Thu Giá Vốn
+                                        </a>
+                                        @if (Request.Cookies["UserName"].Value == "vpct-nhatanh")
+                                        {
+                                            <a href="#" style="display:flex" onclick="runReport('@Url.Action("BaoCaoTienVeThuong_Index", "BangKeNopTien")'
+                                                                          )">
+                                                4.5 BC Tiền Về(Thưởng)
+                                            </a>
+                                        }
+                                        @if (Request.Cookies["UserName"].Value == "vpct-nhatanh")
+                                        {
 
-                                <a href="#" style="display:flex" onclick="runReport('@Url.Action("BCanDoiSoPhatSinh_Fill", "CanDoiSoPhatSinh")'
-                                                              )">
-                                    4.6 Cân Đối Số Phát Sinh
-                                </a>
-                                <a href="#" style="display:flex" onclick="runReport('@Url.Action("BaoCaoLaiLo_Fill", "BaoCaoLaiLo")'
-                                                              )">
-                                    4.7 Báo Cáo Lãi Lỗ
-                                </a>
-                            }
-                            else
-                            {
+                                            <a href="#" style="display:flex" onclick="runReport('@Url.Action("BCanDoiSoPhatSinh_Fill", "CanDoiSoPhatSinh")'
+                                                                          )">
+                                                4.6 Cân Đối Số Phát Sinh
+                                            </a>
+                                            <a href="#" style="display:flex" onclick="runReport('@Url.Action("BaoCaoLaiLo_Fill", "BaoCaoLaiLo")'
+                                                                          )">
+                                                4.7 Báo Cáo Lãi Lỗ
+                                            </a>
+                                        }
+                                        else
+                                        {
 
-                                <a href="#" style="display:flex" onclick="runReport('@Url.Action("CanDoiSoPhatSinh_Fill", "CanDoiSoPhatSinh")'
-                                                              )">
-                                    4.5 Cân Đối Số Phát Sinh
-                                </a>
-                                <a href="#" style="display:flex" onclick="runReport('@Url.Action("BaoCaoLaiLo_Fill", "BaoCaoLaiLo")'
-                                                              )">
-                                    4.6 Báo Cáo Lãi Lỗ
-                                </a>
-                            }
-                        </div>
-                        <div style="display:flex">
-                            <div class="color5"></div>
-                            <button class="submenu-btn" onclick="toggleSubmenu('submenu1_5','arrow-subicon_5')">
-                                5.Báo Cáo Hợp Đồng <div id="arrow-subicon_5" class="subicon-arrow">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </button>
-                        </div>
-                        <div id="submenu1_5" class="submenu-container" style="padding-left:15px">
-                            <a href="#" style="display:flex" onclick="runReport('@Url.Action("TheoDoiHopDongThau_Fill", "TheoDoiHDThau")'
-                                                              )">
-                                5.1 Theo Dõi Hợp Đồng Thầu
-                            </a>
-                            @if (Request.Cookies["UserName"].Value == "vpct-nhatanh")
-                            {
-                                <a href="#" style="display:flex" onclick="runReport('@Url.Action("Index", "BangKeNopTien")'
-                                                              )">
-                                    5.2 Theo Dõi Bảng Kê Nộp Tiền
-                                </a>}
-                            else
-                            {
-                                <a href="#" style="display:flex" onclick="runReport('@Url.Action("BangKeNopTien_Fill", "BangKeNopTien")'
-                                                              )">
-                                    5.2 Theo Dõi Bảng Kê Nộp Tiền
-                                </a>
-                            }
+                                            <a href="#" style="display:flex" onclick="runReport('@Url.Action("CanDoiSoPhatSinh_Fill", "CanDoiSoPhatSinh")'
+                                                                          )">
+                                                4.5 Cân Đối Số Phát Sinh
+                                            </a>
+                                            <a href="#" style="display:flex" onclick="runReport('@Url.Action("BaoCaoLaiLo_Fill", "BaoCaoLaiLo")'
+                                                                          )">
+                                                4.6 Báo Cáo Lãi Lỗ
+                                            </a>
+                                        }
+                                    </div>
+                                    <div style="display:flex">
+                                        <div class="color5"></div>
+                                        <button class="submenu-btn" onclick="toggleSubmenu('submenu1_5','arrow-subicon_5')">
+                                            5.Báo Cáo Hợp Đồng <div id="arrow-subicon_5" class="subicon-arrow">
+                                                <i class="fa-solid fa-chevron-down"></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                    <div id="submenu1_5" class="submenu-container" style="padding-left:15px">
+                                        <a href="#" style="display:flex" onclick="runReport('@Url.Action("TheoDoiHopDongThau_Fill", "TheoDoiHDThau")'
+                                                                          )">
+                                            5.1 Theo Dõi Hợp Đồng Thầu
+                                        </a>
+                                        @if (Request.Cookies["UserName"].Value == "vpct-nhatanh")
+                                        {
+                                            <a href="#" style="display:flex" onclick="runReport('@Url.Action("Index", "BangKeNopTien")'
+                                                                          )">
+                                                5.2 Theo Dõi Bảng Kê Nộp Tiền
+                                            </a>}
+                                        else
+                                        {
+                                            <a href="#" style="display:flex" onclick="runReport('@Url.Action("BangKeNopTien_Fill", "BangKeNopTien")'
+                                                                          )">
+                                                5.2 Theo Dõi Bảng Kê Nộp Tiền
+                                            </a>
+                                        }
 
-                        </div>*@
+                                    </div>*@
                 <!--<div style="display:flex">
-        <div class="color6"></div>
-        <button class="submenu-btn" onclick="toggleSubmenu('submenu1_6','arrow-subicon_6')">
-            6.Báo Cáo Kho <div id="arrow-subicon_6" class="subicon-arrow">
-                <i class="fa-solid fa-chevron-down"></i>
-            </div>
-        </button>
-    </div>
-    <div id="submenu1_6" class="submenu-container" style="padding-left:15px">
-        <a href="#" style="display:flex" onclick="runReport('@Url.Action("TheKho_Fill", "TheKho")'
-                                          )">
-            6.1 Thẻ Kho
-        </a>
-        <button class="submenu-btn" onclick="toggleSubmenu('submenu6_2','arrow-subicon_6_2')">
-            6.2 Tổng Hợp Nhập Xuất Tồn <div id="arrow-subicon_6" class="subicon-arrow">
-                <i class="fa-solid fa-chevron-down"></i>
-            </div>
-        </button>
-        <div id="submenu6_2" class="submenu-container">
-            <a href="#" style="display:flex" onclick="runReport('@Url.Action("TongNhapXuatTonTheoKy_Fill", "THNhapXuatTonTheoTK")'
-                                          )">
-                6.2.1 Tổng Hợp Nhập Xuất Tồn Theo TK
-            </a>
-            <a href="#" style="display:flex" onclick="runReport('@Url.Action("TongNhapXuatTonTheoLo_Fill", "TheKho")'
-                                          )">
-                6.2.2 Tổng Hợp Nhập Xuất Tồn Theo Kho
-            </a>-->
+                    <div class="color6"></div>
+                    <button class="submenu-btn" onclick="toggleSubmenu('submenu1_6','arrow-subicon_6')">
+                        6.Báo Cáo Kho <div id="arrow-subicon_6" class="subicon-arrow">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </button>
+                </div>
+                <div id="submenu1_6" class="submenu-container" style="padding-left:15px">
+                    <a href="#" style="display:flex" onclick="runReport('@Url.Action("TheKho_Fill", "TheKho")'
+                                                      )">
+                        6.1 Thẻ Kho
+                    </a>
+                    <button class="submenu-btn" onclick="toggleSubmenu('submenu6_2','arrow-subicon_6_2')">
+                        6.2 Tổng Hợp Nhập Xuất Tồn <div id="arrow-subicon_6" class="subicon-arrow">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </button>
+                    <div id="submenu6_2" class="submenu-container">
+                        <a href="#" style="display:flex" onclick="runReport('@Url.Action("TongNhapXuatTonTheoKy_Fill", "THNhapXuatTonTheoTK")'
+                                                      )">
+                            6.2.1 Tổng Hợp Nhập Xuất Tồn Theo TK
+                        </a>
+                        <a href="#" style="display:flex" onclick="runReport('@Url.Action("TongNhapXuatTonTheoLo_Fill", "TheKho")'
+                                                      )">
+                            6.2.2 Tổng Hợp Nhập Xuất Tồn Theo Kho
+                        </a>-->
                 @*<a href="#" style="display:flex" onclick="runReport('@Url.Action("PhieuNhapKho_Fill", "TheKho")'
-                                          )">
-            6.2 Phiếu Nhập Kho
-        </a>
-        <a href="#" style="display:flex" onclick="runReport('@Url.Action("PhieuXuatKho_Fill", "TheKho")'
-                                          )">
-            6.3 Phiếu Xuất Kho
-        </a>
-        <a href="#" style="display:flex" onclick="runReport('@Url.Action("PhieuNhapKho_Fill", "MauInChungTu")'
-                                          )">6.4.Phiếu Nhập Xuất Kho Khác</a>*@
+                                                      )">
+                        6.2 Phiếu Nhập Kho
+                    </a>
+                    <a href="#" style="display:flex" onclick="runReport('@Url.Action("PhieuXuatKho_Fill", "TheKho")'
+                                                      )">
+                        6.3 Phiếu Xuất Kho
+                    </a>
+                    <a href="#" style="display:flex" onclick="runReport('@Url.Action("PhieuNhapKho_Fill", "MauInChungTu")'
+                                                      )">6.4.Phiếu Nhập Xuất Kho Khác</a>*@
                 <!--</div>-->
                 @*<a href="#" style="display:flex" onclick="runReport('@Url.Action("TongNhapXuatTonTheoKy_Fill", "TheKho")'
-                                          )">
-            6.2 Tổng Hợp Nhập Xuất Tồn Theo TK
-        </a>*@
+                                                      )">
+                        6.2 Tổng Hợp Nhập Xuất Tồn Theo TK
+                    </a>*@
                 <!--<a href="#" style="display:flex" onclick="runReport('@Url.Action("PhieuNhapKho_Fill", "TheKho")'
-                                          )">
-            6.3 Phiếu Nhập Kho
-        </a>
-        <a href="#" style="display:flex" onclick="runReport('@Url.Action("PhieuXuatKho_Fill", "TheKho")'
-                                          )">
-            6.4 Phiếu Xuất Kho Có Giá Trị
-        </a>
-        <a href="#" style="display:flex" onclick="runReport('@Url.Action("PhieuNhapKho_Fill", "MauInChungTu")'
-                                          )">6.5.Phiếu Nhập Xuất Kho </a>
-    </div>-->
+                                                      )">
+                        6.3 Phiếu Nhập Kho
+                    </a>
+                    <a href="#" style="display:flex" onclick="runReport('@Url.Action("PhieuXuatKho_Fill", "TheKho")'
+                                                      )">
+                        6.4 Phiếu Xuất Kho Có Giá Trị
+                    </a>
+                    <a href="#" style="display:flex" onclick="runReport('@Url.Action("PhieuNhapKho_Fill", "MauInChungTu")'
+                                                      )">6.5.Phiếu Nhập Xuất Kho </a>
+                </div>-->
                 <!--<div style="display:flex">
-        <div class="color7"></div>
-        <button class="submenu-btn" onclick="toggleSubmenu('submenu1_7','arrow-subicon_7')">
-            7.Báo Cáo MAR <div id="arrow-subicon_6" class="subicon-arrow">
-                <i class="fa-solid fa-chevron-down"></i>
-            </div>
-        </button>
-    </div>
-    <div id="submenu1_7" class="submenu-container" style="padding-left:15px">
-        <a href="#" style="display:flex" onclick="runReport('@Url.Action("BaoCaoMar_Fill", "BaoCaoMAR")'
-                                          )">
-            7.1 BC Doanh Thu Bán Hàng OTC
-        </a>
-        <a href="#" style="display:flex" onclick="runReport('@Url.Action("QuanLyTrungBay_Fill", "ViengTham")'
-                                          )">
-            7.2 Quản Lý Trưng Bày
-        </a>-->
+                    <div class="color7"></div>
+                    <button class="submenu-btn" onclick="toggleSubmenu('submenu1_7','arrow-subicon_7')">
+                        7.Báo Cáo MAR <div id="arrow-subicon_6" class="subicon-arrow">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </button>
+                </div>
+                <div id="submenu1_7" class="submenu-container" style="padding-left:15px">
+                    <a href="#" style="display:flex" onclick="runReport('@Url.Action("BaoCaoMar_Fill", "BaoCaoMAR")'
+                                                      )">
+                        7.1 BC Doanh Thu Bán Hàng OTC
+                    </a>
+                    <a href="#" style="display:flex" onclick="runReport('@Url.Action("QuanLyTrungBay_Fill", "ViengTham")'
+                                                      )">
+                        7.2 Quản Lý Trưng Bày
+                    </a>-->
                 @*<a href="#" style="display:flex" onclick="runReport('@Url.Action("PhieuNhapKho_Fill", "TheKho")'
-                                          )">
-            6.2 Phiếu Nhập Kho
-        </a>
-        <a href="#" style="display:flex" onclick="runReport('@Url.Action("PhieuXuatKho_Fill", "TheKho")'
-                                          )">
-            6.3 Phiếu Xuất Kho
-        </a>
-        <a href="#" style="display:flex" onclick="runReport('@Url.Action("PhieuNhapKho_Fill", "MauInChungTu")'
-                                          )">6.4.Phiếu Nhập Xuất Kho Khác</a>*@
+                                                      )">
+                        6.2 Phiếu Nhập Kho
+                    </a>
+                    <a href="#" style="display:flex" onclick="runReport('@Url.Action("PhieuXuatKho_Fill", "TheKho")'
+                                                      )">
+                        6.3 Phiếu Xuất Kho
+                    </a>
+                    <a href="#" style="display:flex" onclick="runReport('@Url.Action("PhieuNhapKho_Fill", "MauInChungTu")'
+                                                      )">6.4.Phiếu Nhập Xuất Kho Khác</a>*@
                 <!--</div>-->
             </div>
 
-           
-        
+
+
 
 
             <button class="dropdown-btn" onclick="toggleSubmenu('submenu3','arrow3')">
@@ -409,8 +413,9 @@
                                                       )">1.Sản Phẩm Trưng Bày</a>
                 <a href="#" onclick="runReport('@Url.Action("Index", "DanhMucKhachHangTDV")'
                                                       )">2.Danh Mục Khách Hàng</a>
-                <a href="#" onclick="runReport('@Url.Action("index", "FormBKNopTien")'
-                                                      )">3.Bảng Kê Nộp Tiền</a>
+                <a href="#" id="addNewBtn2">3.Bảng Kê Nộp Tiền</a>
+                @*<a href="#" onclick="runReport('@Url.Action("Index", "FormBKNopTien")'
+                                          )">4.Bảng Kê Nộp Tiền</a>*@
                 <a href="#" onclick="runReport('@Url.Action("Index", "FormBKNopTienNH")'
                                           )">4.Bảng Kê Nộp Tiền NH</a>
                 @*<button class="submenu-btn" onclick="toggleSubmenu('submenu2_2')">Báo Cáo Quản Trị</button>
@@ -442,12 +447,12 @@
 
                 <div class="welcome-txt">WELCOME BACK</div>
                 <div class="user-txt">@Request.Cookies["UserName"].Value</div>
-                
+
             </div>
         </div>
-       
+
     </section>
-   
+
 
 
     <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -459,8 +464,8 @@
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-   
     <script>
         function getCookieNameDropDown(cname) {
             let name = cname + "=";
@@ -608,7 +613,7 @@
                     break;
                 }
             }
-         /*   updateCompanyNameFromCookie();*/
+            /*   updateCompanyNameFromCookie();*/
         };
     </script>
     <script>
@@ -681,7 +686,35 @@
         });
 
     </script>
+    <script>
+        $('#addNewBtn2').click(function () {
+            sessionStorage.clear();
 
- 
+            // Lấy giá trị từ cookie MA_DVCS
+            var dvcs = getCookie("MA_DVCS");
+            var maCbNv = getCookie("Ma_CbNv");
+
+            if (dvcs != null && maCbNv !=null) {
+                // Mở một cửa sổ mới và chuyển hướng đến URL mong muốn với dvcs từ cookie
+                var newWindow = window.open('', '_blank');
+                newWindow.location.href = `https://frontend-lake-nu-54.vercel.app/opc/form/bang-ke-nop-tien?maDvcs=${dvcs}&maCbNv=${maCbNv}`;
+            } else {
+                alert("Không tìm thấy MA_DVCS trong cookie");
+            }
+        });
+
+        // Hàm để lấy giá trị của cookie
+        function getCookie(name) {
+            var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+            if (match) {
+                return match[2];
+            } else {
+                return null;
+            }
+        }
+
+
+    </script>
+
 </body>
 </html>

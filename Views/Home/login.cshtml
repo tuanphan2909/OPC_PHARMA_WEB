@@ -7,8 +7,8 @@
     <title>Login</title>
 
     <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
-    @*<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>*@
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="~/Styles/loader.css">
     <link rel="stylesheet" type="text/css" href="~/Styles/login.css">
@@ -21,7 +21,6 @@
             align-items: center;
             /*padding: 0 2rem;*/
         }
-      
     </style>
 </head>
 <body>
@@ -77,24 +76,22 @@
             </form>
 
         </div>
-        <a class="link"id="tdv-link">Dành cho TDV</a>
+        <a class="link" id="tdv-link">Dành cho TDV</a>
     </div>
-   
+
 </body>
 </html>
-@if (ViewBag.Message != null)
+@if (TempData["ErrorMessage"] != null)
 {
-<script>
-        document.getElementById("wrong_pass").innerHTML = "@ViewBag.Message";
-          var message = "@ViewBag.Message";
-
-    // Kiểm tra xem ViewBag.Message có khác rỗng hay không
-    if (message.trim() !== "") {
-        // Gọi hàm hiển thị thông báo lỗi
-        displayAlert(message);
-    }
-</script>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Đăng Nhập Thất Bại!',
+            text: '@TempData["ErrorMessage"]'
+        });
+    </script>
 }
+
 
 <script>
     function saveName() {
@@ -126,7 +123,7 @@
     window.addEventListener("load", () => {
         // Hide the loader after the page is loaded
         hideLoader();
-       
+
     });
 </script>
 <script>

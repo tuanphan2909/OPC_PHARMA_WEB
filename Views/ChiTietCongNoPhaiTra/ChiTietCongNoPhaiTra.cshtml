@@ -698,26 +698,30 @@
                                 <th>Hạn TT</th>
                                 <th>Thời Hạn Nợ</th>
                                 <th>Công Nợ</th>
-
+                              
 
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (DataRow row3 in Model.Tables[0].Rows)
                             {
-                                <tr>
-                                    <td style="text-align:center;color:black">@row3["Ma_Dt"]</td>
-                                    <td style="text-align:left;color:black">@row3["Ten_Dt"]</td>
-                                    <td style="text-align:center;color:black">@row3["So_Hd_Sap"]</td>
-                                    <td style="text-align:center;color:black">@row3["So_Hd"]</td>
-                                    <td style="text-align:center;color:black">@row3["Ngay_Hd1"]</td>
-                                    <td style="text-align:center;color:black">@row3["Han_TT"]</td>
-                                    <td style="text-align:center;color:black">@row3["Thoi_Han_No1"]</td>
+                            <tr>
+                                <td style="text-align:center;color:black">@row3["Ma_Dt"]</td>
+                                <td style="text-align:left;color:black">@row3["Ten_Dt"]</td>
+                                <td style="text-align:center;color:black">@row3["So_Hd_Sap"]</td>
+                                <td style="text-align:center;color:black">@row3["So_Hd"]</td>
+                                <td style="text-align:center;color:black">@row3["Ngay_Hd1"]</td>
+                                <td style="text-align:center;color:black">@row3["Han_TT"]</td>
+                                <td style="text-align:center;color:black">@row3["Thoi_Han_No1"]</td>
+                             
+                                <td style="text-align:right;color:black">
+                                    @String.Format("{0:n0}", Convert.ToDecimal(row3["Cong_No"])).Replace(".",",")
 
-                                    <td style="text-align:right;color:black">@String.Format("{0:n0}", Convert.ToDecimal(row3["Cong_No"])).Replace(",", ".")</td>
+
+                                </td>
 
 
-                                </tr>
+                            </tr>
 
                             }
 
@@ -742,7 +746,28 @@
 
     <script src="~/Scripts/excellentexport.js"></script>
 
+    @*<script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excel',
+                        text: 'Xuất Excel',
+                        exportOptions: {
+                            format: {
+                                body: function (data, row, column, node) {
+                                    // Chuyển đổi dấu chấm về dấu phẩy khi xuất Excel
+                                    return column === 7 ? data.replace(/\./g, ',') : data;
+                                }
+                            }
+                        }
+                    }
+                ]
+            });
+        });
 
+    </script>*@
     <script>
 
         function saveNgay() {

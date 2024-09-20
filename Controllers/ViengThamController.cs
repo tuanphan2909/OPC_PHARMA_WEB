@@ -34,6 +34,7 @@ namespace web4.Controllers
             string ma_dvcs ;
             var fromDate = Request.Cookies["From_date"].Value;
             var toDate = Request.Cookies["To_Date"].Value;
+            var Ma_Vt = Request.Cookies["Ma_Vt"]!=null ? Request.Cookies["Ma_Vt"].Value:"";
             if (Request.Cookies["Ma_Dvcs_2"]!=null)
             {
                 ma_dvcs = Request.Cookies["Ma_Dvcs_2"].Value;
@@ -63,6 +64,7 @@ namespace web4.Controllers
                     cmd.Parameters.AddWithValue("@_Tu_Ngay", fromDate);
                     cmd.Parameters.AddWithValue("@_Den_Ngay", toDate);
                     cmd.Parameters.AddWithValue("@_ma_dvcs", ma_dvcs);
+                    cmd.Parameters.AddWithValue("@_Ma_Vt", Ma_Vt);
                     sda.Fill(ds);
 
                 }

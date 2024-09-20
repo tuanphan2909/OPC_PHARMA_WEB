@@ -111,10 +111,10 @@
                     </div>
                     <input type="text" id="dropdownInput" list="dropdownList" placeholder="Tìm kiếm danh mục" name="Ma_Dt" value="@row2["Ma_Dt"]">
                     <datalist id="dropdownList">
-                        @foreach (var item in ViewBag.DataItems)
+                        @*@foreach (var item in ViewBag.DataItems)
                         {
                             <option value="@item.Ma_Dt" data-ten="@item.Ten_Dt" data-dvcs="@item.Dvcs">@item.Ten_Dt</option>
-                        }
+                        }*@
                     </datalist>
                     <input name="Ten_Dt" id="selectedOption" value="@row2["Ten_Dt"]" readonly>
                     <input name="CTVid" id="CtvId" value="@row2["CTVId"]" readonly hidden>

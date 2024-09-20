@@ -163,7 +163,7 @@
                                 <input class="form-control datepicker" type="date" required="" name="Ngay_Ct" id="Ngay_Ct" value="@formattedNgayCt" />
                             </div>
                             <div class="col">
-                                <p><strong>2. SỐ</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="So_Ct" id="So_Ct" value="@row2["So_Ct"]" readonly>
+                                <p><strong>2. SỐ</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="So_Ct" id="So_Ct" value="@row2["So_Ct"]" >
                             </div>
                         </div>
                     </div>
@@ -260,7 +260,7 @@
 
                 </table>
                 <button type="button" id="addRowBtn">Thêm dòng</button>
-                <button class="submit" type="button" onclick="saveValueToCookie()" id="SaveHD">Lưu</button>
+                <button class="submit" type="button" onclick="saveValueToCookie();saveCookie()" id="SaveHD">Lưu</button>
 
 
             </form>
@@ -528,7 +528,7 @@
                 Ngay_Ct: $("#Ngay_Ct").val(),
                 So_Ct: $("#So_Ct").val(),
                 NV_GiaoHang: $("#dropdownInput").val(),
-                Ten_NVGiaoHang: $("#selectedOption").val(),
+                Ten_NVPhuKho: $("#Ten_NVPhuKho").val(),
                 Stt: $("#Stt").val(),
 
                 details: orderArr
@@ -763,14 +763,14 @@
         //    return decodeURIComponent(results[2].replace(/\+/g, ' '));
         //}
 
-        document.addEventListener('DOMContentLoaded', (event) => {
-            document.getElementById('Ngay_Ct').value = getParameterByName('Ngay_Ct');
-            document.getElementById('So_Ct').value = getParameterByName('So_Ct');
-            document.getElementById('dropdownInput').value = getParameterByName('Ma_NVGH');
-            document.getElementById('selectedOption').value = getParameterByName('Ten_NVGH');
-            document.getElementById('Ly_do').value = getParameterByName('Ly_Do');
-            document.getElementById('Ten_NVPhuKho').value = getParameterByName('Ten_NVPhuKho');
-        });
+        //document.addEventListener('DOMContentLoaded', (event) => {
+        //    document.getElementById('Ngay_Ct').value = getParameterByName('Ngay_Ct');
+        //    document.getElementById('So_Ct').value = getParameterByName('So_Ct');
+        //    document.getElementById('dropdownInput').value = getParameterByName('Ma_NVGH');
+        //    document.getElementById('selectedOption').value = getParameterByName('Ten_NVGH');
+        //    document.getElementById('Ly_do').value = getParameterByName('Ly_Do');
+        //    document.getElementById('Ten_NVPhuKho').value = getParameterByName('Ten_NVPhuKho');
+        //});
     </script>
     <script>
         function saveValueToCookie() {
@@ -806,7 +806,15 @@
             document.getElementById('Den_Ngay').value = formatDate(lastDay);
         });
     </script>
+    <script>
+        function saveCookie() {
+            var maNVGH = document.getElementById('dropdownInput').value;
+            var tenNVGH = document.getElementById('selectedOption').value;
+            setCookie('Ma_NVGH', maNVGH, 7);
+            setCookie('Ten_NVGH', tenNVGH, 7);// The cookie will expire in 7 days
 
+        }
+    </script>
 
 </body>
 

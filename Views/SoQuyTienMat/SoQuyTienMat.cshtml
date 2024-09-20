@@ -84,7 +84,8 @@
     else if (MaNH == "311100007727122" && MaTK != "1111")
     {
         TenNH = "Ngân hàng TMCP Đầu tư và Phát Triển VN";
-    } else if (MaNH == "31110370007977" && MaTK != "1111")
+    }
+    else if (MaNH == "31110370007977" && MaTK != "1111")
     {
         TenNH = "Ngân hàng TMCP Đầu tư và Phát Triển VN";
     }
@@ -200,7 +201,7 @@
 
 
     <style>
-    
+
 
         * {
             font-family: "Times New Roman";
@@ -732,7 +733,7 @@
                 z-index: 100;
             }
 
-      /*  .bold-row td:nth-child(3) {
+        /*  .bold-row td:nth-child(3) {
             font-weight: bold;
         }*/
 
@@ -759,6 +760,7 @@
         .bold-row td:nth-child(9) {
             font-weight: bold;
         }
+
         .num {
             mso-number-format: "\#\,\#\#0\.00_ \;\[Red\]\-\#\,\#\#0\.00\ ";
         }
@@ -766,6 +768,7 @@
         .date {
             mso-number-format: "Medium Date";
         }
+
         .select-btn2 {
             position: relative;
         }
@@ -1009,7 +1012,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td class="DuDauKy"style="font-weight:bold;text-align:right"></td>
+                                <td class="DuDauKy" style="font-weight:bold;text-align:right"></td>
                             </tr>
                             @{
                                 //decimal Du_Cuoi_FirstRow = 0; // Khởi tạo biến lưu giá trị Du_Cuoi của hàng đầu tiên
@@ -1045,18 +1048,58 @@
                                                 // Đảo ngược vị trí ngày và tháng
                                                 string formattedNgayCt = ngayCt.ToString("dd/MM/yyyy");
                                                 ngayCt.ToString("MM/dd/yyyy");
-                                                if (ngayCt.Day >= fromDate1.Day && ngayCt.Day <= toDate1.Day)
+                                                if (fromDate1.Month < toDate1.Month)
                                                 {
-                                                    if (!isFirstRowFound)
+                                                    if (ngayCt.Day >= fromDate1.Day && (ngayCt.Day <= toDate1.Day|| ngayCt.Day<=31))
                                                     {
-                                                        decimal PS_No = Convert.ToDecimal(row2["Ps_No"]);
-                                                        decimal PS_Co = Convert.ToDecimal(row2["Ps_Co"]);
-                                                        Du_Cuoi_Calculated = Convert.ToDecimal(row2["Du_Cuoi"]) - PS_No + PS_Co;
-                                                        isFirstRowFound = true; // Đánh dấu là đã tìm thấy giá trị đầu tiên
-                                                        formattedDuCuoi = String.Format(Du_Cuoi_Calculated.ToString("#,##0", CultureInfo.InvariantCulture)).Replace(",",".");
+                                                        if (!isFirstRowFound)
+                                                        {
+                                                            decimal PS_No = Convert.ToDecimal(row2["Ps_No"]);
+                                                            decimal PS_Co = Convert.ToDecimal(row2["Ps_Co"]);
+                                                            Du_Cuoi_Calculated = Convert.ToDecimal(row2["Du_Cuoi"]) - PS_No + PS_Co;
+                                                            isFirstRowFound = true; // Đánh dấu là đã tìm thấy giá trị đầu tiên
+                                                            formattedDuCuoi = String.Format(Du_Cuoi_Calculated.ToString("#,##0", CultureInfo.InvariantCulture)).Replace(",", ".");
 
+
+                                                        }
+
+                                                        <tr class="data-row">
+                                                            <td>@formattedNgayCt</td>
+                                                            <td data-format="string">@row2["So_NumBer"].ToString()</td>
+                                                            <td>@row2["So_Ct"].ToString()</td>
+                                                            <td>@row2["So_Ct_Chi"].ToString()</td>
+                                                            <td style="text-align:left">@row2["Ten_Dt"]</td>
+                                                            <td class="text" style="text-align:left">@row2["Dien_Giai"]</td>
+                                                            <td>@row2["Tk_Du"]</td>
+                                                            <td data-t="n" class="num" style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["Ps_No"])).Replace(",", ".")</td>
+                                                            <td data-t="n" style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["Ps_Co"])).Replace(",", ".")</td>
+                                                            <td data-t="n" style="text-align:right;">@String.Format("{0:n0}", Convert.ToDecimal(row2["Du_Cuoi"])).Replace(",", ".")</td>
+                                                        </tr>
+                                                        decimal Thu = Convert.ToDecimal(row2["PS_No"]);
+                                                        decimal Chi = Convert.ToDecimal(row2["PS_Co"]);
+                                                        sumThu += Thu;
+                                                        sumChi += Chi;
+                                                        formattedChi = String.Format(sumChi.ToString("#,##0", CultureInfo.InvariantCulture)).Replace(",", ".");
+                                                        formattedThu = String.Format(sumThu.ToString("#,##0", CultureInfo.InvariantCulture)).Replace(",", ".");
+                                                        DuCuoiKy = Convert.ToDecimal(row2["Du_Cuoi"]);
+                                                        formattedDuCuoiKy = String.Format(DuCuoiKy.ToString("#,##0", CultureInfo.InvariantCulture)).Replace(",", ".");
 
                                                     }
+                                                }
+                                                if (fromDate1.Month == toDate1.Month)
+                                                {
+                                                    if ((ngayCt.Day >= fromDate1.Day && ngayCt.Day <= toDate1.Day))
+                                                    {
+                                                        if (!isFirstRowFound)
+                                                        {
+                                                            decimal PS_No = Convert.ToDecimal(row2["Ps_No"]);
+                                                            decimal PS_Co = Convert.ToDecimal(row2["Ps_Co"]);
+                                                            Du_Cuoi_Calculated = Convert.ToDecimal(row2["Du_Cuoi"]) - PS_No + PS_Co;
+                                                            isFirstRowFound = true; // Đánh dấu là đã tìm thấy giá trị đầu tiên
+                                                            formattedDuCuoi = String.Format(Du_Cuoi_Calculated.ToString("#,##0", CultureInfo.InvariantCulture)).Replace(",", ".");
+
+
+                                                        }
 
                                                     <tr class="data-row">
                                                         <td>@formattedNgayCt</td>
@@ -1070,21 +1113,41 @@
                                                         <td data-t="n" style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["Ps_Co"])).Replace(",", ".")</td>
                                                         <td data-t="n" style="text-align:right;">@String.Format("{0:n0}", Convert.ToDecimal(row2["Du_Cuoi"])).Replace(",", ".")</td>
                                                     </tr>
-                                                    decimal Thu = Convert.ToDecimal(row2["PS_No"]);
-                                                    decimal Chi = Convert.ToDecimal(row2["PS_Co"]);
-                                                    sumThu += Thu;
-                                                    sumChi += Chi;
-                                                    formattedChi = String.Format(sumChi.ToString("#,##0", CultureInfo.InvariantCulture)).Replace(",", ".");
-                                                    formattedThu = String.Format(sumThu.ToString("#,##0", CultureInfo.InvariantCulture)).Replace(",", ".");
-                                                    DuCuoiKy = Convert.ToDecimal(row2["Du_Cuoi"]);
-                                                    formattedDuCuoiKy = String.Format(DuCuoiKy.ToString("#,##0", CultureInfo.InvariantCulture)).Replace(",", ".");
-
+                                                            decimal Thu = Convert.ToDecimal(row2["PS_No"]);
+                                                            decimal Chi = Convert.ToDecimal(row2["PS_Co"]);
+                                                            sumThu += Thu;
+                                                            sumChi += Chi;
+                                                            formattedChi = String.Format(sumChi.ToString("#,##0", CultureInfo.InvariantCulture)).Replace(",", ".");
+                                                            formattedThu = String.Format(sumThu.ToString("#,##0", CultureInfo.InvariantCulture)).Replace(",", ".");
+                                                            DuCuoiKy = Convert.ToDecimal(row2["Du_Cuoi"]);
+                                                            formattedDuCuoiKy = String.Format(DuCuoiKy.ToString("#,##0", CultureInfo.InvariantCulture)).Replace(",", ".");
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
+                                        else
+                                        {
+                                            if (!isFirstRowFound)
+                                            {
+                                                decimal PS_No = Convert.ToDecimal(row2["Ps_No"]);
+                                                decimal PS_Co = Convert.ToDecimal(row2["Ps_Co"]);
+                                                Du_Cuoi_Calculated = Convert.ToDecimal(row2["Du_Cuoi"]) - PS_No + PS_Co;
+                                                isFirstRowFound = true; // Đánh dấu là đã tìm thấy giá trị đầu tiên
+                                                formattedDuCuoi = String.Format(Du_Cuoi_Calculated.ToString("#,##0", CultureInfo.InvariantCulture)).Replace(",", ".");
+
+
+                                            }
+                                            decimal Thu = Convert.ToDecimal(row2["PS_No"]);
+                                            decimal Chi = Convert.ToDecimal(row2["PS_Co"]);
+
+                                            formattedChi = String.Format(sumChi.ToString("#,##0", CultureInfo.InvariantCulture)).Replace(",", ".");
+                                            formattedThu = String.Format(sumThu.ToString("#,##0", CultureInfo.InvariantCulture)).Replace(",", ".");
+                                            DuCuoiKy = Convert.ToDecimal(row2["Du_Cuoi"]);
+                                            formattedDuCuoiKy = String.Format(DuCuoiKy.ToString("#,##0", CultureInfo.InvariantCulture)).Replace(",", ".");
+                                        }
                                     }
                                 }
-                            }
                             <tr style="font-weight:bold">
                                 <td></td>
                                 <td></td>
@@ -1093,8 +1156,8 @@
                                 <td></td>
                                 <td>Tổng Phát Sinh</td>
                                 <td></td>
-                                <td class="ThuCuoiKy"style="font-weight:bold;text-align:right"></td>
-                                <td class="ChiCuoiKy"style="font-weight:bold;text-align:right"></td>
+                                <td class="ThuCuoiKy" style="font-weight:bold;text-align:right"></td>
+                                <td class="ChiCuoiKy" style="font-weight:bold;text-align:right"></td>
 
                                 <td></td>
                             </tr>
@@ -1108,7 +1171,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td class="DuCuoiKy"style="font-weight:bold;text-align:right"></td>
+                                <td class="DuCuoiKy" style="font-weight:bold;text-align:right"></td>
 
                             </tr>
                         </tbody>
@@ -1145,12 +1208,12 @@
                 ExcellentExport.excel(this, 'example', 'Sheet 1');
             });
         </script>*@
-<script>
+    <script>
     $(".DuDauKy").text('@formattedDuCuoi');
     $(".ThuCuoiKy").text('@formattedThu');
      $(".ChiCuoiKy").text('@formattedChi');
      $(".DuCuoiKy").text('@formattedDuCuoiKy');
-</script>
+    </script>
     <script>
         function exportToExcel() {
             // Lấy danh sách cột cần xuất từ bảng gốc

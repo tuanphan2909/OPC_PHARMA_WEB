@@ -7,7 +7,7 @@ using web4.Controllers;
 namespace web4.Models
 {
     public class B20HDMuaBan
-    {   
+    {
         public int Id { get; set; }
         public string Ma_Dvcs { get; set; }
         [Required(ErrorMessage = "Mã Đối Tượng là bắt buộc.")]
@@ -27,7 +27,8 @@ namespace web4.Models
         public string Ma_Dai_Dien { get; set; }
         public string Ten_Dai_Dien { get; set; }
         public string So_Dien_Thoai { get; set; }
-        public DateTime Ngay_Ky { get; set; }
+        public DateTime? Ngay_Ky { get; set; }
+
         [Required(ErrorMessage = "Số Hợp Đồng là bắt buộc")]
         public string So_Hop_Dong { get; set; }
         public string Ky_Hieu_HD { get; set; }
@@ -46,7 +47,8 @@ namespace web4.Models
         public List<PaymentData> PaymentData { get; internal set; }
         public List<KeyValuePair<string, string>> CKData { get; internal set; } // Change this line
 
-       
+
+
     }
 
 }

@@ -89,7 +89,7 @@
         }
 
         form {
-            text-align: center;
+            /*                text-align: center;*/
             padding: 20px;
             border: 0px solid #ccc;
             border: none;
@@ -124,6 +124,7 @@
 
         h3 {
             text-align: center;
+            font-weight: bold;
             color: black;
         }
 
@@ -386,7 +387,7 @@
         }
 
         h5 {
-            text-align: center;
+            /*text-align: center;*/
             font-size: 15px;
         }
 
@@ -459,102 +460,25 @@
             }
         }
 
+        img {
+            width: 70px;
+            height: 40px;
+        }
+
         tr {
-            page-break-inside: avoid;
-        }
-        body, h1, h3, h4, td {
-            font-family: Arial, sans-serif;
+            page-break-inside: avoid; /* Tránh chuyển trang giữa các dòng */
         }
 
-        h4 {
-        }
-
-        table {
-            font-size: 12px;
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th, td {
-            padding: 8px;
-            text-align: center;
-            border-bottom: 1px solid black;
-            font-size: 12px; /* Set font size to 12px */
-        }
-
-            th:last-child, td:last-child {
-                border-right: 1px solid black;
+            tr td {
+                text-align: center;
             }
 
-        tr:last-child td {
-            border-bottom: none;
+        tfoot {
+            display: table-row-group;
         }
 
-        page {
-         
-            margin: 0;
-        }
-
-        body {
-            display: flex;
-            transform: scale(1.05);
-            justify-content: center;
-            /*  align-items: center;*/
-            min-height: 0vh;
-            margin: 0;
-        }
-
-        form {
-            text-align: center;
-            padding: 20px;
-            border: 0px solid #ccc;
-            border: none;
-        }
-
-        .left-aligned {
-            text-align: left;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th, td {
-            padding: 8px;
-            text-align: center; /* Align content to the left */
-            border-bottom: 1px solid black; /* Add bottom border to cells */
-        }
-
-            th:last-child, td:last-child {
-                border-right: 1px solid black; /* Add right border to last cell in each row */
-            }
-
-        tr:last-child td {
-            border-bottom: none; /* Remove bottom border from last row */
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .center {
-            display: flex;
-            justify-content: center;
-            flex-grow: 1;
-        }
-
-        .text-loading {
-            position: fixed;
-            bottom: 10px;
-            left: 10px;
-            font-size: 13px;
-            color: black;
-            z-index: 1;
-            background-color: rgba(255, 255, 255, 0.9); /* Background color for the span */
-            padding: 5px 10px;
-            display: none; /* Hide the span element initially */
+        thead {
+            display: table-header-group;
         }
     </style>
 
@@ -610,7 +534,7 @@
                 }
 
 
-            <h1 style="font-size:12px">
+            <h1 style="font-size:12px;text-align:center">
                 Ngày   @foreach (DataRow row3 in Model.Tables[0].Rows)
                 {
                     var Ngay = row3["Ngay"].ToString();
@@ -639,7 +563,7 @@
                     }
                 }@nam
             </h1>
-                <h1 style=" font-size:12px;margin-top:5px"> Số: @soCtFromUrl </h1>
+                <h1 style=" font-size:12px;margin-top:5px;text-align:center"> Số: @soCtFromUrl </h1>
             </div>
 
             <div style="text-align:left;line-height: 20px;margin-left:40px">
@@ -675,34 +599,35 @@
             </div>
             <div>
                 <table border="1" style="width:700px">
-                    <tr>
-                        <th rowspan="2">STT</th>
-                        <th rowspan="2" width="120px">Tên,nhãn hiệu, quy cách phẩm chất vật tư dụng cụ sản phẩm, hàng hóa</th>
-                        <th rowspan="2">Mã số</th>
-                        <th rowspan="2" style="width:50px">Đơn vị tính</th>
-                        <th colspan="2">Số Lượng</th>
-                        <th rowspan="2">Đơn giá</th>
-                        <th rowspan="2">Thành tiền</th>
-                        <th rowspan="2">Số lô- Hạn dùng</th>
-                    </tr>
-
-                    @if (Request.Cookies["LoaiCt"].Value == "1")
-                    {
-
+               
                         <tr>
-                            <th style="width:60px">Theo chứng từ</th>
-                            <th>Thực Xuất</th>
+                            <th rowspan="2">STT</th>
+                            <th rowspan="2" width="120px">Tên,nhãn hiệu, quy cách phẩm chất vật tư dụng cụ sản phẩm, hàng hóa</th>
+                            <th rowspan="2">Mã số</th>
+                            <th rowspan="2" style="width:50px">Đơn vị tính</th>
+                            <th colspan="2">Số Lượng</th>
+                            <th rowspan="2">Đơn giá</th>
+                            <th rowspan="2">Thành tiền</th>
+                            <th rowspan="2">Số lô- Hạn dùng</th>
                         </tr>
-                    }
-                    else
-                    {
-                        <tr>
-                            <th>Theo chứng từ</th>
-                            <th>Thực Nhập</th>
-                        </tr>
-                    }
 
+                        @if (Request.Cookies["LoaiCt"].Value == "1")
+                        {
 
+                            <tr>
+                                <th style="width:60px">Theo chứng từ</th>
+                                <th>Thực Xuất</th>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <th>Theo chứng từ</th>
+                                <th>Thực Nhập</th>
+                            </tr>
+                        }
+
+                  
                     <tbody>
                         @{
 
@@ -751,13 +676,13 @@
                 <div style="text-align:right;margin-right:20px">
                     <h4>Ngày @ngay tháng @thang năm @nam</h4>
                 </div>
-                <div class="header" style="margin-left:20px">
+                <div class="header" style="text-align: center; margin-left: 20px; justify-content: space-between; display: flex ">
                     <h4>Người lập phiếu&nbsp;&nbsp;&nbsp;&nbsp;</h4>
                     <h4 style="margin-right:10px">Người nhận hàng</h4>
                     <h4>Thủ Kho</h4>
                     <h4 style="margin-right:35px">GĐ.Đơn vị</h4>
                 </div>
-                <div class="header" style="text-align:center;align-content:space-between;display:flex">
+                <div class="header" style="text-align:center;justify-content:space-between;display:flex">
                     <h4 style="text-align:left;margin-left:25px">(Ký, họ tên)</h4>
                     <h4 style="margin-right:-10px">(Ký, họ tên)</h4>
                     <h4 style="text-align:center;margin-right:-40px">(Ký, họ tên)</h4>

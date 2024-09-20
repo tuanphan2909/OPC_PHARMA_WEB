@@ -151,8 +151,8 @@ namespace web4.Controllers
         public ActionResult SaveSPTB(SPTrungBay SPTB)
         {
             var Ma_dvcs = Request.Cookies["ma_dvcs"]?.Value;
-            var Option_1 = Request.Cookies["Option_1"]?.Value;
-            var Option_2 = Request.Cookies["Option_2"]?.Value;
+            var Option_1 = Request.Cookies["Option_3"]?.Value;
+            //var Option_2 = Request.Cookies["Option_2"]?.Value;
 
             string result = "Error!";
             connectSQL();
@@ -196,7 +196,7 @@ namespace web4.Controllers
                             command.Parameters.AddWithValue("@_Ma_TDV", SPTB.Ma_TDV);
                             command.Parameters.AddWithValue("@_Ten_SP", SPTB.Ten_SP);
                             command.Parameters.AddWithValue("@_Option_1", Option_1);
-                            command.Parameters.AddWithValue("@_Option_2", Option_2);
+                            command.Parameters.AddWithValue("@_Option_2", "0");
                             command.Parameters.AddWithValue("@_Hinh_1", (object)img1 ?? 0);
                             command.Parameters.AddWithValue("@_Hinh_2", (object)img2 ?? 0);
                             command.Parameters.AddWithValue("@_Hinh_3", (object)img3 ?? 0);
@@ -244,7 +244,7 @@ namespace web4.Controllers
 
             using (SqlCommand cmd = new SqlCommand(Pname, con))
             {
-                cmd.CommandTimeout = 950;
+                cmd.CommandTimeout = 450;
 
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -298,24 +298,24 @@ namespace web4.Controllers
 
             return View(ds);
         }
-        public ActionResult SaveUpdate(SPTrungBay TDGH)
+        public ActionResult SaveUpdate(SPTrungBay SPTB)
         {
 
 
 
-            TDGH.Dvcs = Request.Cookies["MA_DVCS"] != null ? Request.Cookies["MA_DVCS"].Value : "";
-            var Option_1 = Request.Cookies["Option_1"].Value;
-            var Option_2 = Request.Cookies["Option_2"].Value;
+            SPTB.Dvcs = Request.Cookies["MA_DVCS"] != null ? Request.Cookies["MA_DVCS"].Value : "";
+            var Option_1 = Request.Cookies["Option_3"].Value;
+            //var Option_2 = Request.Cookies["Option_2"].Value;
 
             string result = "Error!";
             connectSQL();
-            if (TDGH != null && TDGH.Details != null)
+            if (SPTB != null && SPTB.Details != null)
             {
                 try
                 {
-                    byte[] img1 = !string.IsNullOrEmpty(TDGH.Hinh_1) ? Convert.FromBase64String(TDGH.Hinh_1.Split(',')[1]) : new byte[0];
-                    byte[] img2 = !string.IsNullOrEmpty(TDGH.Hinh_2) ? Convert.FromBase64String(TDGH.Hinh_2.Split(',')[1]) : new byte[0];
-                    byte[] img3 = !string.IsNullOrEmpty(TDGH.Hinh_3) ? Convert.FromBase64String(TDGH.Hinh_3.Split(',')[1]) : new byte[0];
+                    byte[] img1 = !string.IsNullOrEmpty(SPTB.Hinh_1) ? Convert.FromBase64String(SPTB.Hinh_1.Split(',')[1]) : new byte[0];
+                    byte[] img2 = !string.IsNullOrEmpty(SPTB.Hinh_2) ? Convert.FromBase64String(SPTB.Hinh_2.Split(',')[1]) : new byte[0];
+                    byte[] img3 = !string.IsNullOrEmpty(SPTB.Hinh_3) ? Convert.FromBase64String(SPTB.Hinh_3.Split(',')[1]) : new byte[0];
 
                     //byte[] img1 = !string.IsNullOrEmpty(SPTB.Hinh_1) ? Convert.FromBase64String(SPTB.Hinh_1.Split(',')[1]) : new byte[0];
                     //byte[] img2 = !string.IsNullOrEmpty(SPTB.Hinh_2) ? Convert.FromBase64String(SPTB.Hinh_2.Split(',')[1]) : new byte[0];
@@ -327,7 +327,7 @@ namespace web4.Controllers
                     detailsTable.Columns.Add("Dvt", typeof(string));
                     detailsTable.Columns.Add("So_luong", typeof(int));
 
-                    foreach (var detail in TDGH.Details)
+                    foreach (var detail in SPTB.Details)
                     {
                         detailsTable.Rows.Add(detail.Ma_Vt, detail.Ten_Vt, detail.Dvt, detail.So_luong);
                     }
@@ -340,17 +340,18 @@ namespace web4.Controllers
                         {
                             command.CommandType = CommandType.StoredProcedure;
 
-                            command.Parameters.AddWithValue("@_Ngay_Ct", TDGH.Ngay_Ct);
-                            command.Parameters.AddWithValue("@_Ma_Dt", TDGH.Ma_Dt);
-                            command.Parameters.AddWithValue("@_Ten_Dt", TDGH.Ten_Dt);
-                            command.Parameters.AddWithValue("@_Ngay_Bat_Dau", TDGH.Ngay_Bat_Dau);
-                            command.Parameters.AddWithValue("@_Ngay_Ket_Thuc", TDGH.Ngay_Ket_Thuc);
-                            command.Parameters.AddWithValue("@_Ma_SP", TDGH.Ma_SP);
-                            command.Parameters.AddWithValue("@_Ten_SP", TDGH.Ten_SP);
-                            command.Parameters.AddWithValue("@_Tien_TB", TDGH.Tien_TB);
-                            command.Parameters.AddWithValue("@_Stt", TDGH.STT);
+                            command.Parameters.AddWithValue("@_Ngay_Ct", SPTB.Ngay_Ct);
+                            command.Parameters.AddWithValue("@_Ma_Dt", SPTB.Ma_Dt);
+                            command.Parameters.AddWithValue("@_Ten_Dt", SPTB.Ten_Dt);
+                            command.Parameters.AddWithValue("@_so_Ct", SPTB.So_Ct);
+                            command.Parameters.AddWithValue("@_Ngay_Bat_Dau", SPTB.Ngay_Bat_Dau);
+                            command.Parameters.AddWithValue("@_Ngay_Ket_Thuc", SPTB.Ngay_Ket_Thuc);
+                            command.Parameters.AddWithValue("@_Ma_SP", SPTB.Ma_SP);
+                            command.Parameters.AddWithValue("@_Ten_SP", SPTB.Ten_SP);
+                            command.Parameters.AddWithValue("@_Tien_TB", SPTB.Tien_TB);
+                            command.Parameters.AddWithValue("@_Stt", SPTB.STT);
                             command.Parameters.AddWithValue("@_Option_1", Option_1);
-                            command.Parameters.AddWithValue("@_Option_2", Option_2);
+                            command.Parameters.AddWithValue("@_Option_2", "0");
                             command.Parameters.AddWithValue("@_Hinh_1", (object)img1 ?? DBNull.Value);
                             command.Parameters.AddWithValue("@_Hinh_2", (object)img2 ?? DBNull.Value);
                             command.Parameters.AddWithValue("@_Hinh_3", (object)img3 ?? DBNull.Value);

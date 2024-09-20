@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using System.Data.Entity.Validation;
 using static web4.Controllers.SERVERController;
 using static web4.Controllers.LoadDataController;
+using System.Threading.Tasks;
+
 namespace web4.Controllers
 {
     public class CongTacVienController : Controller
@@ -132,7 +134,7 @@ namespace web4.Controllers
         public ActionResult InputCTV()
         {
             List<MauInChungTu> dmDlist = LoadData.LoadDmDt("",Request);
-            List<BKHoaDonGiaoHang> DmVt = LoadData.LoadDmVt();
+            List<CTV> DmVt = LoadDmVt();
            
             ViewBag.DataItems = dmDlist;
             ViewBag.DataItems2 = DmVt;
@@ -288,47 +290,74 @@ namespace web4.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+       
+        public async Task<List<CTV>> LoadDmVtAsync()
+        {
+            SqlConnectionHelper.ConnectSQL(con);
+            List<CTV> dataItems = new List<CTV>();
 
+            using (SqlConnection connection = new SqlConnection(con.ConnectionString))
+            {
+                await connection.OpenAsync();
 
-        public ActionResult EditCTV()
+                using (SqlCommand command = new SqlCommand("[usp_DanhMucVt_SAP]", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandTimeout = 50;
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            CTV dataItem = new CTV
+                            {
+                                Ma_vt = reader["Ma_Vt"].ToString(),
+                                Ten_Vt = reader["Ten_Vt"].ToString()
+                            };
+                            dataItems.Add(dataItem);
+                        }
+                    }
+                }
+            }
+
+            return dataItems;
+        }
+
+        public async Task<ActionResult> EditCTV()
         {
             DataSet ds = new DataSet();
             SqlConnectionHelper.ConnectSQL(con);
-            List<MauInChungTu> dmDlist = LoadData.LoadDmDt("", Request);
-            List<CTV> DmVt = LoadDmVt();
 
-            ViewBag.DataItems = dmDlist;
+            // Load data asynchronously
+            List<CTV> DmVt = await LoadDmVtAsync();
             ViewBag.DataItems2 = DmVt;
 
             string Pname = "[EditHanMucCTV]";
             string ctvId = Request.QueryString["CTVId"];
             using (SqlCommand cmd = new SqlCommand(Pname, con))
             {
-                cmd.CommandTimeout = 950;
-
+                cmd.CommandTimeout = 50;
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-              
+
+                cmd.Parameters.AddWithValue("@_CTVId", ctvId);
 
                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
                 {
-
-                    cmd.Parameters.AddWithValue("@_CTVId", ctvId);
-                    sda.Fill(ds);
-
+                    await Task.Run(() => sda.Fill(ds));
                 }
             }
-
 
             return View(ds);
         }
 
-        public ActionResult CoppyCTV()
+
+        public async Task<ActionResult> CoppyCTV()
         {
             DataSet ds = new DataSet();
             SqlConnectionHelper.ConnectSQL(con);
-            List<MauInChungTu> dmDlist = LoadData.LoadDmDt("", Request);
-            List<BKHoaDonGiaoHang> DmVt = LoadData.LoadDmVt();
+            List<MauInChungTu> dmDlist =  LoadData.LoadDmDt("", Request);
+            List<CTV> DmVt = await LoadDmVtAsync();
 
             ViewBag.DataItems = dmDlist;
             ViewBag.DataItems2 = DmVt;

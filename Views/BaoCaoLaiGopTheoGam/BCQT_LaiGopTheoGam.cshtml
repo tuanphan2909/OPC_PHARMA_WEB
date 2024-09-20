@@ -1,10 +1,14 @@
-﻿@using System.Data;
+﻿
+@using System.Data;
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <style>
+        *{
+            font-family: serif
+        }
         a:hover {
             background-color: lightskyblue;
         }
@@ -449,6 +453,7 @@
                 .tab-control ul li {
                     text-align: center;
                 }
+
         .tab.selected-tab {
             pointer-events: none;
             background-color: #3763a3; /* Màu nền của tab */
@@ -465,7 +470,7 @@
     </style>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>BÁO CÁO BẢNG KÊ CHỨNG TỪ</title>
+    <title>BÁO CÁO LÃI GỘP THEO GAM HÀNG</title>
     <meta content="" name="description">
     <meta content="Author" name="MJ Maraz">
     <link href="~/assets/images/logo.png" rel="icon">
@@ -489,23 +494,18 @@
 <!-- =============== Design & Develop By = MJ MARAZ   ====================== -->
 
 <body style="background-color: #e0e8ee ">
-    @*<div class="tab-control" style="position:fixed;bottom:50px">
-        <ul class="tabs" style="background-color: #1d1b31">
-            <li class="tab selected"><a href="/Home/About" style="padding-right:5px">Home</a></li>
 
-        </ul>
-    </div>*@
     <div class="loader" style="z-index:1"></div>
-    <span id="spanText" class="text-loading">[usp_BKSaleOrder_SAP]</span>
+
     <div class="sidebar">
         <div class="logo-details">
 
         </div>
         <ul class="nav-links" style="justify-content: center; display:flex;margin-left:10px">
             <li>
-                <form id="dateForm" action="bangkehoadon" method="post" onsubmit="handleFormSubmit(event)">
+                <form id="dateForm" action="BCQT_LaiGopTheoGam" method="post" onsubmit="handleFormSubmit(event)">
                     <div id="locBC">
-                        <span id="spanText" class="text-loading">[usp_BaoCaoDoanhThuCN_SAP]</span>
+                        <span id="spanText" class="text-loading">[usp_BCQT_LaiGopTheoGam_SAP]</span>
                         <a>Từ Ngày</a><br /><br />
                         <input class="tu_ngay" placeholder="Từ Ngày" id="tu_ngay" name="From_date" type="date" format="YYYY-MM-DD" value="@Request.QueryString["From_date"]" />
                         <script>$("#tu_ngay").datetimepicker({ timepicker: false, format: 'Y-m-d' });</script><br /><br />
@@ -514,88 +514,21 @@
                         <script>$("#den_ngay").datetimepicker({ timepicker: false, format: 'Y-m-d' });</script>
                     </div>
 
-                    <div class="checkContainer">
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Ngày Chứng Từ
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Số Chứng Từ
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Mã Đối Tượng
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Tên Đối Tượng
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Mã Vật Tư
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Tên Vật Tư
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Mã KM
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Discount
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Loại Vật Tư
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Số Lượng
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Tiền(-VAT)
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Tiền(+VAT)
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Tình Trạng
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="myCheckbox" value="option1" checked>
-                            <span class="checkmark"></span>
-                            Mã DVCS
-                        </label>
-                    </div>
-
                     <div>
                         <button class="submit" type="submit" onclick="runReport()"> Chạy Báo Cáo </button>
                     </div>
-
+                    <div style="display:flex">
+                        @*<button id="exportbutton"style="border-radius: 10px; margin-bottom: 10px;margin-top:10px; background-color: #aec9e0; color: #3483bd ">Xuất Excel</button>*@
+                        <button style="border-radius: 10px; margin-bottom: 10px;margin-top:10px; background-color: #aec9e0; color: #3483bd " onclick="exportToExcel()">
+                            @*<a onclick="return ExcellentExport.excel(this, 'example', 'Sheet 1');" download="SoQuyTienMat.xls" style="color: #3483bd">Xuất Excel </a>*@Xuất Excel
+                        </button>
+                     
+                    </div>
                 </form>
             </li>
         </ul>
     </div>
-    <header class="header_part"style="background-color: #aec9e0; color: #3483bd ">
+    <header class="header_part" style="background-color: #aec9e0; color: #3483bd ">
         @if (Request.Cookies["UserName"].Value == "admin-cnct" || Request.Cookies["UserName"].Value == "admin-cntg" || Request.Cookies["UserName"].Value == "admin-cnmd" || Request.Cookies["UserName"].Value == "admin-cnh1" || Request.Cookies["UserName"].Value == "admin-cnvt"
                      || Request.Cookies["UserName"].Value == "admin-cnnt" || Request.Cookies["UserName"].Value == "admin - cndn" || Request.Cookies["UserName"].Value == "admin - cnna" || Request.Cookies["UserName"].Value == "admin - cnhn")
         {
@@ -612,7 +545,7 @@
                 <img src="~/Images/opc.png" style="height:60px;width:60px;margin-left:10px">
             </a>
         }
-        <h4 style="color:#3483bd">Báo Cáo Bảng Kê Chứng Từ</h4>
+        <h4 style="color:#3483bd">BÁO CÁO LÃI GỘP THEO GAM HÀNG</h4>
         <h5 style="color:#3483bd">Từ @Request.QueryString["From_date"] đến @Request.QueryString["To_date"]</h5>
     </header>
     <!-- =======  Data-Table  = Start  ========================== -->
@@ -624,45 +557,63 @@
                     <table id="example" class="table table-striped table-bordered">
                         <thead class="table-dark">
                             <tr>
-                                <th>Ngày Chứng từ</th>
-                                <th>Số Chứng Từ</th>
-                                <th>Mã Đối Tượng</th>
-                                <th>Tên Đối Tượng</th>
-                                <th>Mã Vt</th>
-                                <th>Tên Vật Tư</th>
-                                <th>mã KM</th>
-                                <th>Discount</th>
-                                <th>Loại vật Tư</th>
-                                <th>Số Lượng</th>
-                               
-                                <th>Tiền (-VAT)</th>
-                                <th>Tiền (+VAT)</th>
-                                <th>Tình Trạng</th>
-                                <th>Mã Đvcs</th>
+                                <th></th>
+                                <th>TỔNG CỘNG</th>
+                                <th>HÀNG SẢN XUẤT</th>
+                                <th>HÀNG THƯƠNG MẠI</th>
+                                <th>OPC</th>
+                                <th>OPC BÌNH DƯƠNG</th>
+                                <th>HD2</th>
+                                <th>PHIẾN</th>
+                                <th>TW25</th>
+                                <th>TM</th>
+                                <th>GC + XK</th>
+                                <th>NVL + DV</th>
+                                <th>KHÁC</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (DataRow row2 in Model.Tables[0].Rows)
                             {
-                            <tr>
-                                <td style="text-align:right">@row2["Ngay_Ct"]</td>
-                                <td style="text-align:right">@row2["so_ct"]</td>
-                                <td style="text-align:right">@row2["ma_dt"]</td>
-                                <td>@row2["ten_dt"]</td>
-                                <td style="text-align:right">@row2["ma_vt"]</td>
-                                <td>@row2["ten_vt"]</td>
-                                <td style="text-align:right">@row2["Ma_Km"]</td>
-                                <td style="text-align:right">@row2["Discount"]</td>
-                                <td>@row2["Loai_Vt"]</td>
-                                <td class="num" style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["so_luong"]))</td>
-                               
-                                <td class="num" style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["Tien"]))</td>
-                                <td class="num" style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["Tong_tien"]))</td>
-                                <td>@row2["Tinh_trang"]</td>
-                                <td>@row2["Ma_Dvcs1"]</td>
-                            </tr>
+                                <tr>
+                                    <td style="text-align:left">@row2["Ghi_Chu"]</td>
+                                    <td style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["Tong_Cong"] == DBNull.Value || row2["Tong_Cong"].ToString() == "" ? 0 : row2["Tong_Cong"])).Replace(",", ".")</td>
+                                    <td style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["Hang_SX"] == DBNull.Value || row2["Hang_SX"].ToString() == "" ? 0 : row2["Hang_SX"])).Replace(",", ".")</td>
+                                    <td style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["Hang_TM"] == DBNull.Value || row2["Hang_TM"].ToString() == "" ? 0 : row2["Hang_TM"])).Replace(",", ".")</td>
+                                    <td style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["OPC"] == DBNull.Value || row2["OPC"].ToString() == "" ? 0 : row2["OPC"])).Replace(",", ".")</td>
+                                    <td style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["OPC_BD"] == DBNull.Value || row2["OPC_BD"].ToString() == "" ? 0 : row2["OPC_BD"])).Replace(",", ".")</td>
+                                    <td style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["HD2"] == DBNull.Value || row2["HD2"].ToString() == "" ? 0 : row2["HD2"])).Replace(",", ".")</td>
+                                    <td style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["PHIEN"] == DBNull.Value || row2["PHIEN"].ToString() == "" ? 0 : row2["PHIEN"])).Replace(",", ".")</td>
+                                    <td style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["HH25"] == DBNull.Value || row2["HH25"].ToString() == "" ? 0 : row2["HH25"])).Replace(",", ".")</td>
+                                    <td style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["GC_XK"] == DBNull.Value || row2["GC_XK"].ToString() == "" ? 0 : row2["GC_XK"])).Replace(",", ".")</td>
+                                    <td style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["NVL_DV"] == DBNull.Value || row2["NVL_DV"].ToString() == "" ? 0 : row2["NVL_DV"])).Replace(",", ".")</td>
+                                    <td style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["TM"] == DBNull.Value || row2["TM"].ToString() == "" ? 0 : row2["TM"])).Replace(",", ".")</td>
+                                    <td style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["KHAC"] == DBNull.Value || row2["KHAC"].ToString() == "" ? 0 : row2["KHAC"])).Replace(",", ".")</td>
+                                </tr>
                             }
 
+                            @foreach (DataRow row2 in Model.Tables[1].Rows)
+                            {
+                                <tr>
+                                    <td style="text-align:left">@row2["Ghi_Chu"]</td>
+                                    <td style="text-align:right">@String.Format("{0:n2}", row2["Tong_Cong"] == DBNull.Value ? 0 : row2["Tong_Cong"])</td>
+
+                                    <td style="text-align:right">@String.Format("{0:n2}", row2["Hang_SX"] == DBNull.Value ? 0 : row2["Hang_SX"])</td>
+                                    <td style="text-align:right">@String.Format("{0:n2}", row2["Hang_TM"] == DBNull.Value ? 0 : row2["Hang_TM"])</td>
+                                    <td style="text-align:right">@String.Format("{0:n2}", row2["OPC"] == DBNull.Value ? 0 : row2["OPC"])</td>
+                                    <td style="text-align:right">@String.Format("{0:n2}", row2["OPC_BD"] == DBNull.Value ? 0 : row2["OPC_BD"])</td>
+                                    <td style="text-align:right">@String.Format("{0:n2}", row2["HD2"] == DBNull.Value ? 0 : row2["HD2"])</td>
+                                    <td style="text-align:right">@String.Format("{0:n2}", row2["PHIEN"] == DBNull.Value ? 0 : row2["PHIEN"])</td>
+                                    <td style="text-align:right">@String.Format("{0:n2}", row2["HH25"] == DBNull.Value ? 0 : row2["HH25"])</td>
+                                    <td style="text-align:right">@String.Format("{0:n2}", row2["GC_XK"] == DBNull.Value ? 0 : row2["GC_XK"])</td>
+                                    <td style="text-align:right">@String.Format("{0:n2}", row2["NVL_DV"] == DBNull.Value ? 0 : row2["NVL_DV"])</td>
+                                    <td style="text-align:right">@String.Format("{0:n2}", row2["TM"] == DBNull.Value ? 0 : row2["TM"])</td>
+                                    <td style="text-align:right">@String.Format("{0:n2}", row2["KHAC"] == DBNull.Value ? 0 : row2["KHAC"])</td>
+
+
+
+                                </tr>
+                            }
 
                         </tbody>
                     </table>
@@ -676,10 +627,43 @@
 
     <script src="~/assets/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/js/jquery-3.6.0.min.js"></script>
-    <script src="~/assets/js/datatables.min.js"></script>
+    @*<script src="~/assets/js/datatables.min.js"></script>*@
     <script src="~/assets/js/pdfmake.min.js"></script>
     <script src="~/assets/js/vfs_fonts.js"></script>
     <script src="~/assets/js/custom.js"></script>
+    <script src="~/Scripts/excellentexport.js"></script>
+    <script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+
+    <script src="~/Scripts/table2excel.js"></script>
+
+    <script>
+        function exportToExcel() {
+            // Lấy danh sách cột cần xuất từ bảng gốc
+            var columnsToExport = ['Ngày', 'Số', 'Số Trên SAP', 'Tên Đối Tượng', 'Diễn Giải', 'TK Đối Ứng', 'Thu', 'Chi', 'Số dư'];
+
+            // Tạo bảng tạm thời chỉ chứa cột cần xuất
+            var temporaryTable = $('#example').clone();
+
+            // Lặp qua các cột không nằm trong danh sách cần xuất và ẩn chúng
+            temporaryTable.find('thead th, tbody td').each(function () {
+                var columnHeader = $(this).text();
+                if (!columnsToExport.includes(columnHeader)) {
+                    $(this).hide();
+                }
+            });
+
+            // Format cells with numeric data (assuming 'Tổng tiền' is a numeric column)
+            temporaryTable.find('tbody td:contains("₫")').attr('data-type', 'number'); // This assumes that the 'Tổng tiền' column contains "₫" symbol
+
+            // Xuất Excel từ bảng tạm thời
+            temporaryTable.table2excel({
+                exclude: ".hidden",
+                name: "Sheet 1",
+                filename: "BaoCaoLaiGopTheoGam"
+            });
+        }
+
+    </script>
     <script>
         function runReport() {
             const uncheckedCheckboxIndexes = [];
@@ -751,7 +735,7 @@
         });
 
     </script>
- 
+
 </body>
 
 </html>

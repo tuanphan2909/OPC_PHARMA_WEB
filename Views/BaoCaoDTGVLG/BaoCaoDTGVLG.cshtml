@@ -1396,292 +1396,313 @@
         <div class="row">
             <div class="col-12">
                 <h6 style="text-align: left; margin-left: 150px; width: 100%; font-size: 22px; margin-top: 30px">I.DOANH THU THUẦN VỀ BÁN HÀNG VÀ CUNG CẤP DỊCH VỤ</h6>
+               
                 @*Bang 7*@
-                <div class="data_table" style="">
+            <div class="data_table" style="">
+                <div style="display:flex">
                     <h6 style="text-align:left">1.Doanh Thu Thuần Theo Gam Hàng</h6>
-                    <table id="example" class="table table-striped table-bordered">
-                        <thead class="table-dark" id="head">
-                            <tr>
-                                <th>Loại TP</th>
-
-                                <th>CTY</th>
-                                <th>PKD</th>
-                                <th>CNT</th>
-                                <th>CNHCM</th>
-                                <th>CNCT</th>
-                                <th>CNTG</th>
-                                <th>CNMD</th>
-                                <th>CNVT</th>
-                                <th>CNNT</th>
-                                <th>CNDN</th>
-                                <th>CNNA</th>
-                                <th>CNHN</th>
-                                <th>TỔNG</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-
-
-                            @{
-                                // Biến để lưu tổng của cột TỔNG
-                                decimal grandTotalRow7 = 0;
-                                foreach (DataRow row7 in Model.Tables[6].Rows)
-                                {
-                                    // Tính tổng cho mỗi hàng
-                                    var totalRow = GetDecimalValue(row7["CTY"]) + GetDecimalValue(row7["PKD"]) + GetDecimalValue(row7["CNHCM"]) + GetDecimalValue(row7["CNCT"]) +
-                                                   GetDecimalValue(row7["CNTG"]) + GetDecimalValue(row7["CNMD"]) + GetDecimalValue(row7["CNVT"]) + GetDecimalValue(row7["CNNT"]) +
-                                                   GetDecimalValue(row7["CNDN"]) + GetDecimalValue(row7["CNNA"]) + GetDecimalValue(row7["CNHN"]) + GetDecimalValue(row7["CNT"]);
-                                    grandTotalRow7 += totalRow;
-                                    <tr>
-                                        @if (row7["Loai_TP"].ToString() == "OPC")
-                                        {
-                                            <td style="text-align:left;color:black">OPC</td>
-                                        }
-                                        else if (row7["Loai_TP"].ToString() == "TP07")
-                                        {
-                                            <td style="text-align:left;color:black">SỦI</td>
-                                        }
-                                        else if (row7["Loai_TP"].ToString() == "HH04")
-                                        {
-                                            <td style="text-align:left;color:black">OPC BD</td>
-                                        }
-                                        else if (row7["Loai_TP"].ToString() == "HH25")
-                                        {
-                                            <td style="text-align:left;color:black">TW25</td>
-                                        }
-                                        else if (row7["Loai_TP"].ToString() == "TP08")
-                                        {
-                                            <td style="text-align:left;color:black">PHIẾN</td>
-                                        }
-                                        else if (row7["Loai_TP"].ToString() == "GC")
-                                        {
-                                            <td style="text-align:left;color:black">GIA CÔNG</td>
-                                        }
-                                        else if (row7["Loai_TP"].ToString() == "CD")
-                                        {
-                                            <td style="text-align:left;color:black">TPGC OPC BD</td>
-                                        }
-                                        else if (row7["Loai_TP"].ToString() == "KH")
-                                        {
-                                            <td style="text-align:left;color:black">KHÁC(DV + NVL + TM KHÁC)</td>
-                                        }
-                                        else
-                                        {
-                                            <td></td>
-                                        }
-                                        <td style="text-align:right;color:black">@FormatValue(row7["CTY"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row7["PKD"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row7["CNT"])</td>
-                                        <td style="text-align: right; color: black ">@FormatValue(row7["CNHCM"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row7["CNCT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row7["CNTG"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row7["CNMD"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row7["CNVT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row7["CNNT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row7["CNDN"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row7["CNNA"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row7["CNHN"])</td>
-                                        <td style="text-align:right;color:black">@FormatValue(totalRow)</td>
-                                    </tr>
-
-                                }
-                            }
-                        </tbody>
-                        <tfoot>
-                            <tr style="background-color: burlywood">
-                                <td style="font-weight:bold">Tổng Cộng:</td>
-                                <td style="text-align: right; color: black">@FormatValue(totalCTY7) </td>
-                                <td style="text-align: right; color: black">@FormatValue(totalPKD7) </td>
-                                <td style="text-align: right; color: black">@FormatValue(totalCNT7) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNHCM7) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNCT7) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNTG7) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNMD7) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNVT7) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNNT7) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNDN7) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNNA7) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNHN7) </td>
-                                <td style="text-align:right;color:black">@FormatValue(grandTotalRow7)</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-
+                    <button style="border-radius: 10px; margin-left: 10px; margin-bottom: 10px; background-color: #aec9e0; color: #3483bd ">
+                        <a onclick="return ExcellentExport.excel(this, 'example', 'Sheet 1');" download="DOANH THU THUẦN THEO GAM HÀNG.xls" style="color: #3483bd">Xuất Excel</a>
+                    </button>
                 </div>
+                <table id="example" class="table table-striped table-bordered">
+                    <thead class="table-dark" id="head">
+                        <tr>
+                            <th>Loại TP</th>
+
+                            <th>CTY</th>
+                            <th>PKD</th>
+                            <th>CNT</th>
+                            <th>CNHCM</th>
+                            <th>CNCT</th>
+                            <th>CNTG</th>
+                            <th>CNMD</th>
+                            <th>CNVT</th>
+                            <th>CNNT</th>
+                            <th>CNDN</th>
+                            <th>CNNA</th>
+                            <th>CNHN</th>
+                            <th>TỔNG</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        @{
+                            // Biến để lưu tổng của cột TỔNG
+                            decimal grandTotalRow7 = 0;
+                            foreach (DataRow row7 in Model.Tables[6].Rows)
+                            {
+                                // Tính tổng cho mỗi hàng
+                                var totalRow = GetDecimalValue(row7["CTY"]) + GetDecimalValue(row7["PKD"]) + GetDecimalValue(row7["CNHCM"]) + GetDecimalValue(row7["CNCT"]) +
+                                               GetDecimalValue(row7["CNTG"]) + GetDecimalValue(row7["CNMD"]) + GetDecimalValue(row7["CNVT"]) + GetDecimalValue(row7["CNNT"]) +
+                                               GetDecimalValue(row7["CNDN"]) + GetDecimalValue(row7["CNNA"]) + GetDecimalValue(row7["CNHN"]) + GetDecimalValue(row7["CNT"]);
+                                grandTotalRow7 += totalRow;
+                                <tr>
+                                    @if (row7["Loai_TP"].ToString() == "OPC")
+                                    {
+                                        <td style="text-align:left;color:black">OPC</td>
+                                    }
+                                    else if (row7["Loai_TP"].ToString() == "TP07")
+                                    {
+                                        <td style="text-align:left;color:black">SỦI</td>
+                                    }
+                                    else if (row7["Loai_TP"].ToString() == "HH04")
+                                    {
+                                        <td style="text-align:left;color:black">OPC BD</td>
+                                    }
+                                    else if (row7["Loai_TP"].ToString() == "HH25")
+                                    {
+                                        <td style="text-align:left;color:black">TW25</td>
+                                    }
+                                    else if (row7["Loai_TP"].ToString() == "TP08")
+                                    {
+                                        <td style="text-align:left;color:black">PHIẾN</td>
+                                    }
+                                    else if (row7["Loai_TP"].ToString() == "GC")
+                                    {
+                                        <td style="text-align:left;color:black">GIA CÔNG</td>
+                                    }
+                                    else if (row7["Loai_TP"].ToString() == "CD")
+                                    {
+                                        <td style="text-align:left;color:black">TPGC OPC BD</td>
+                                    }
+                                    else if (row7["Loai_TP"].ToString() == "KH")
+                                    {
+                                        <td style="text-align:left;color:black">KHÁC(DV + NVL + TM KHÁC)</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    <td style="text-align:right;color:black">@FormatValue(row7["CTY"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row7["PKD"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row7["CNT"])</td>
+                                    <td style="text-align: right; color: black ">@FormatValue(row7["CNHCM"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row7["CNCT"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row7["CNTG"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row7["CNMD"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row7["CNVT"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row7["CNNT"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row7["CNDN"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row7["CNNA"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row7["CNHN"])</td>
+                                    <td style="text-align:right;color:black">@FormatValue(totalRow)</td>
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr style="background-color: burlywood">
+                            <td style="font-weight:bold">Tổng Cộng:</td>
+                            <td style="text-align: right; color: black">@FormatValue(totalCTY7) </td>
+                            <td style="text-align: right; color: black">@FormatValue(totalPKD7) </td>
+                            <td style="text-align: right; color: black">@FormatValue(totalCNT7) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNHCM7) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNCT7) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNTG7) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNMD7) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNVT7) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNNT7) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNDN7) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNNA7) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNHN7) </td>
+                            <td style="text-align:right;color:black">@FormatValue(grandTotalRow7)</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
 
                 @*Bang 8*@
-                <div class="data_table" style="margin-top:30px">
+            <div class="data_table" style="margin-top:30px">
+                <div style="display:flex">
                     <h6 style="text-align:left">2.Doanh Thu Thuần Theo Nhóm Hàng</h6>
-                    <table id="example" class="table table-striped table-bordered">
-                        <thead class="table-dark" id="head">
-                            <tr>
-
-                                <th>Nhóm Hàng</th>
-                                <th>CTY</th>
-                                <th>PKD</th>
-                                <th>CNT</th>
-                                <th>CNHCM</th>
-                                <th>CNCT</th>
-                                <th>CNTG</th>
-                                <th>CNMD</th>
-                                <th>CNVT</th>
-                                <th>CNNT</th>
-                                <th>CNDN</th>
-                                <th>CNNA</th>
-                                <th>CNHN</th>
-                                <th>TỔNG</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-
-
-                            @{
-                                // Biến để lưu tổng của cột TỔNG
-                                decimal grandTotalRow8 = 0;
-                                foreach (DataRow row8 in Model.Tables[7].Rows)
-                                {
-                                    // Tính tổng cho mỗi hàng
-                                    var totalRow = GetDecimalValue(row8["CTY"]) + GetDecimalValue(row8["PKD"]) + GetDecimalValue(row8["CNHCM"]) + GetDecimalValue(row8["CNCT"]) +
-                                                   GetDecimalValue(row8["CNTG"]) + GetDecimalValue(row8["CNMD"]) + GetDecimalValue(row8["CNVT"]) + GetDecimalValue(row8["CNNT"]) +
-                                                   GetDecimalValue(row8["CNDN"]) + GetDecimalValue(row8["CNNA"]) + GetDecimalValue(row8["CNHN"])+ GetDecimalValue(row8["CNT"]);
-                                    grandTotalRow8 += totalRow;
-                                    <tr>
-
-                                        <td style="text-align:left;color:black">@row8["Nhom_Hang"]</td>
-
-                                        <td style="text-align:right;color:black">@FormatValue(row8["CTY"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row8["PKD"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row8["CNT"])</td>
-                                        <td style="text-align: right; color: black ">@FormatValue(row8["CNHCM"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row8["CNCT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row8["CNTG"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row8["CNMD"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row8["CNVT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row8["CNNT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row8["CNDN"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row8["CNNA"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row8["CNHN"])</td>
-                                        <td style="text-align:right;color:black">@FormatValue(totalRow)</td>
-
-
-
-                                    </tr>
-
-                                }
-                            }
-                        </tbody>
-                        <tfoot>
-                            <tr style="background-color: burlywood">
-                                <td style="font-weight:bold">Tổng Cộng:</td>
-                                <td style="text-align: right; color: black">@FormatValue(totalCTY8) </td>
-                                <td style="text-align: right; color: black">@FormatValue(totalPKD8) </td>
-                                <td style="text-align: right; color: black">@FormatValue(totalCNT8) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNHCM8) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNCT8) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNTG8) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNMD8) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNVT8) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNNT8) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNDN8) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNNA8) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNHN8) </td>
-                                <td style="text-align:right;color:black">@FormatValue(grandTotalRow8)</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-
+                    <button style="border-radius: 10px; margin-left: 10px; margin-bottom: 10px; background-color: #aec9e0; color: #3483bd ">
+                        <a onclick="return ExcellentExport.excel(this, 'example2', 'Sheet 1');" download="DOANH THU THUẦN THEO NHÓM HÀNG.xls" style="color: #3483bd">Xuất Excel</a>
+                    </button>
                 </div>
+                <table id="example2" class="table table-striped table-bordered">
+                    <thead class="table-dark" id="head">
+                        <tr>
+
+                            <th>Nhóm Hàng</th>
+                            <th>CTY</th>
+                            <th>PKD</th>
+                            <th>CNT</th>
+                            <th>CNHCM</th>
+                            <th>CNCT</th>
+                            <th>CNTG</th>
+                            <th>CNMD</th>
+                            <th>CNVT</th>
+                            <th>CNNT</th>
+                            <th>CNDN</th>
+                            <th>CNNA</th>
+                            <th>CNHN</th>
+                            <th>TỔNG</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        @{
+                            // Biến để lưu tổng của cột TỔNG
+                            decimal grandTotalRow8 = 0;
+                            foreach (DataRow row8 in Model.Tables[7].Rows)
+                            {
+                                // Tính tổng cho mỗi hàng
+                                var totalRow = GetDecimalValue(row8["CTY"]) + GetDecimalValue(row8["PKD"]) + GetDecimalValue(row8["CNHCM"]) + GetDecimalValue(row8["CNCT"]) +
+                                               GetDecimalValue(row8["CNTG"]) + GetDecimalValue(row8["CNMD"]) + GetDecimalValue(row8["CNVT"]) + GetDecimalValue(row8["CNNT"]) +
+                                               GetDecimalValue(row8["CNDN"]) + GetDecimalValue(row8["CNNA"]) + GetDecimalValue(row8["CNHN"]) + GetDecimalValue(row8["CNT"]);
+                                grandTotalRow8 += totalRow;
+                                <tr>
+
+                                    <td style="text-align:left;color:black">@row8["Nhom_Hang"]</td>
+
+                                    <td style="text-align:right;color:black">@FormatValue(row8["CTY"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row8["PKD"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row8["CNT"])</td>
+                                    <td style="text-align: right; color: black ">@FormatValue(row8["CNHCM"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row8["CNCT"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row8["CNTG"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row8["CNMD"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row8["CNVT"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row8["CNNT"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row8["CNDN"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row8["CNNA"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row8["CNHN"])</td>
+                                    <td style="text-align:right;color:black">@FormatValue(totalRow)</td>
+
+
+
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr style="background-color: burlywood">
+                            <td style="font-weight:bold">Tổng Cộng:</td>
+                            <td style="text-align: right; color: black">@FormatValue(totalCTY8) </td>
+                            <td style="text-align: right; color: black">@FormatValue(totalPKD8) </td>
+                            <td style="text-align: right; color: black">@FormatValue(totalCNT8) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNHCM8) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNCT8) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNTG8) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNMD8) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNVT8) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNNT8) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNDN8) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNNA8) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNHN8) </td>
+                            <td style="text-align:right;color:black">@FormatValue(grandTotalRow8)</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
 
 
                 @*Bang 9*@
-                <div class="data_table" style="margin-top:30px">
+            <div class="data_table" style="margin-top:30px">
+                <div style="display:flex">
                     <h6 style="text-align:left">3.Doanh Thu Thuần Theo Kênh Bán Hàng</h6>
-                    <table id="example" class="table table-striped table-bordered">
-                        <thead class="table-dark" id="head">
-                            <tr>
-
-                                <th>Kênh</th>
-                                <th>CTY</th>
-                                <th>PKD</th>
-                                <th>CNT</th>
-                                <th>CNHCM</th>
-                                <th>CNCT</th>
-                                <th>CNTG</th>
-                                <th>CNMD</th>
-                                <th>CNVT</th>
-                                <th>CNNT</th>
-                                <th>CNDN</th>
-                                <th>CNNA</th>
-                                <th>CNHN</th>
-                                <th>TỔNG</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-
-
-                            @{
-                                // Biến để lưu tổng của cột TỔNG
-                                decimal grandTotalRow9 = 0;
-                                foreach (DataRow row9 in Model.Tables[8].Rows)
-                                {
-                                    // Tính tổng cho mỗi hàng
-                                    var totalRow = GetDecimalValue(row9["CTY"]) + GetDecimalValue(row9["PKD"]) + GetDecimalValue(row9["CNHCM"]) + GetDecimalValue(row9["CNCT"]) +
-                                                   GetDecimalValue(row9["CNTG"]) + GetDecimalValue(row9["CNMD"]) + GetDecimalValue(row9["CNVT"]) + GetDecimalValue(row9["CNNT"]) +
-                                                   GetDecimalValue(row9["CNDN"]) + GetDecimalValue(row9["CNNA"]) + GetDecimalValue(row9["CNHN"])+ GetDecimalValue(row9["CNT"]);
-                                    grandTotalRow9 += totalRow;
-                                    <tr>
-
-                                        <td style="text-align:left;color:black">@row9["Kenh"]</td>
-
-                                        <td style="text-align:right;color:black">@FormatValue(row9["CTY"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row9["PKD"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row9["CNT"])</td>
-                                        <td style="text-align: right; color: black ">@FormatValue(row9["CNHCM"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row9["CNCT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row9["CNTG"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row9["CNMD"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row9["CNVT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row9["CNNT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row9["CNDN"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row9["CNNA"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row9["CNHN"])</td>
-                                        <td style="text-align:right;color:black">@FormatValue(totalRow)</td>
-
-
-
-                                    </tr>
-
-                                } }
-
-                        </tbody>
-                        <tfoot>
-                            <tr style="background-color: burlywood">
-                                <td style="font-weight:bold">Tổng Cộng:</td>
-                                <td style="text-align: right; color: black">@FormatValue(totalCTY9) </td>
-                                <td style="text-align: right; color: black">@FormatValue(totalPKD9) </td>
-                                <td style="text-align: right; color: black">@FormatValue(totalCNT9) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNHCM9) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNCT9) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNTG9) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNMD9) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNVT9) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNNT9) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNDN9) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNNA9) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNHN9) </td>
-                                <td style="text-align:right;color:black">@FormatValue(grandTotalRow9)</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-
+                    <button style="border-radius: 10px; margin-left: 10px; margin-bottom: 10px; background-color: #aec9e0; color: #3483bd ">
+                        <a onclick="return ExcellentExport.excel(this, 'example9', 'Sheet 1');" download="DOANH THU THUẦN THEO KÊNH BÁN HÀNG.xls" style="color: #3483bd">Xuất Excel</a>
+                    </button>
                 </div>
+                <table id="example9" class="table table-striped table-bordered">
+                    <thead class="table-dark" id="head">
+                        <tr>
+
+                            <th>Kênh</th>
+                            <th>CTY</th>
+                            <th>PKD</th>
+                            <th>CNT</th>
+                            <th>CNHCM</th>
+                            <th>CNCT</th>
+                            <th>CNTG</th>
+                            <th>CNMD</th>
+                            <th>CNVT</th>
+                            <th>CNNT</th>
+                            <th>CNDN</th>
+                            <th>CNNA</th>
+                            <th>CNHN</th>
+                            <th>TỔNG</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        @{
+                            // Biến để lưu tổng của cột TỔNG
+                            decimal grandTotalRow9 = 0;
+                            foreach (DataRow row9 in Model.Tables[8].Rows)
+                            {
+                                // Tính tổng cho mỗi hàng
+                                var totalRow = GetDecimalValue(row9["CTY"]) + GetDecimalValue(row9["PKD"]) + GetDecimalValue(row9["CNHCM"]) + GetDecimalValue(row9["CNCT"]) +
+                                               GetDecimalValue(row9["CNTG"]) + GetDecimalValue(row9["CNMD"]) + GetDecimalValue(row9["CNVT"]) + GetDecimalValue(row9["CNNT"]) +
+                                               GetDecimalValue(row9["CNDN"]) + GetDecimalValue(row9["CNNA"]) + GetDecimalValue(row9["CNHN"]) + GetDecimalValue(row9["CNT"]);
+                                grandTotalRow9 += totalRow;
+                                <tr>
+
+                                    <td style="text-align:left;color:black">@row9["Kenh"]</td>
+
+                                    <td style="text-align:right;color:black">@FormatValue(row9["CTY"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row9["PKD"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row9["CNT"])</td>
+                                    <td style="text-align: right; color: black ">@FormatValue(row9["CNHCM"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row9["CNCT"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row9["CNTG"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row9["CNMD"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row9["CNVT"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row9["CNNT"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row9["CNDN"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row9["CNNA"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row9["CNHN"])</td>
+                                    <td style="text-align:right;color:black">@FormatValue(totalRow)</td>
+
+
+
+                                </tr>
+
+                            } }
+
+                    </tbody>
+                    <tfoot>
+                        <tr style="background-color: burlywood">
+                            <td style="font-weight:bold">Tổng Cộng:</td>
+                            <td style="text-align: right; color: black">@FormatValue(totalCTY9) </td>
+                            <td style="text-align: right; color: black">@FormatValue(totalPKD9) </td>
+                            <td style="text-align: right; color: black">@FormatValue(totalCNT9) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNHCM9) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNCT9) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNTG9) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNMD9) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNVT9) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNNT9) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNDN9) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNNA9) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNHN9) </td>
+                            <td style="text-align:right;color:black">@FormatValue(grandTotalRow9)</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
                 <h6 style="text-align:left;margin-left:150px;width:100%;font-size:22px">II.DOANH THU BÁN HÀNG</h6>
                 <div class="data_table">
-                    <h6 style="text-align:left">1.Doanh Thu Bán Hàng Theo Gam Hàng</h6>
-                    <table id="example" class="table table-striped table-bordered">
+                    <div style="display:flex">
+                        <h6 style="text-align:left">1.Doanh Thu Bán Hàng Theo Gam Hàng</h6>
+                        <button style="border-radius: 10px; margin-left: 10px; margin-bottom: 10px;margin-top:10px; background-color: #aec9e0; color: #3483bd ">
+                            <a onclick="return ExcellentExport.excel(this, 'example4', 'Sheet 1');" download="DOANH THU BÁN HÀNG THEO GAM HÀNG.xls" style="color: #3483bd">Xuất Excel</a>
+                        </button>
+                    </div>
+                    <table id="example4" class="table table-striped table-bordered">
                         <thead class="table-dark" id="head">
                             <tr>
                                 <th>STT</th>
@@ -1740,7 +1761,7 @@
                                     // Tính tổng cho mỗi hàng
                                     var totalRow = GetDecimalValue(row3["CTY"]) + GetDecimalValue(row3["PKD"]) + GetDecimalValue(row3["CNHCM"]) + GetDecimalValue(row3["CNCT"]) +
                                                    GetDecimalValue(row3["CNTG"]) + GetDecimalValue(row3["CNMD"]) + GetDecimalValue(row3["CNVT"]) + GetDecimalValue(row3["CNNT"]) +
-                                                   GetDecimalValue(row3["CNDN"]) + GetDecimalValue(row3["CNNA"]) + GetDecimalValue(row3["CNHN"])+ GetDecimalValue(row3["CNT"]);
+                                                   GetDecimalValue(row3["CNDN"]) + GetDecimalValue(row3["CNNA"]) + GetDecimalValue(row3["CNHN"]) + GetDecimalValue(row3["CNT"]);
 
                                     // Cộng dồn vào tổng của cột TỔNG
                                     grandTotalRow += totalRow;
@@ -1825,15 +1846,20 @@
 
 
                 <div class="data_table" style="margin-top:30px">
-                    <h6 style="text-align:left">2.Doanh Thu Bán Hàng Theo Nhóm Hàng</h6>
-                    <table id="example" class="table table-striped table-bordered">
+                    <div style="display:flex">
+                        <h6 style="text-align:left">2.Doanh Thu Bán Hàng Theo Nhóm Hàng</h6>
+                        <button style="border-radius: 10px; margin-left: 10px; margin-bottom: 10px; background-color: #aec9e0; color: #3483bd ">
+                            <a onclick="return ExcellentExport.excel(this, 'example5', 'Sheet 1');" download="DOANH THU BÁN HÀNG THEO NHÓM HÀNG.xls" style="color: #3483bd">Xuất Excel</a>
+                        </button>
+                    </div>
+                    <table id="example5" class="table table-striped table-bordered">
                         <thead class="table-dark" id="head">
                             <tr>
                                 <th>STT</th>
                                 <th>Nhóm Hàng</th>
                                 <th>CTY</th>
                                 <th>PKD</th>
-                                
+
                                 <th>Chuỗi Nhà Thuốc</th>
                                 <th>CNHCM</th>
                                 <th>CNCT</th>
@@ -1858,7 +1884,7 @@
                                     // Tính tổng cho mỗi hàng
                                     var totalRow = GetDecimalValue(row3["CTY"]) + GetDecimalValue(row3["PKD"]) + GetDecimalValue(row3["CNHCM"]) + GetDecimalValue(row3["CNCT"]) +
                                                    GetDecimalValue(row3["CNTG"]) + GetDecimalValue(row3["CNMD"]) + GetDecimalValue(row3["CNVT"]) + GetDecimalValue(row3["CNNT"]) +
-                                                   GetDecimalValue(row3["CNDN"]) + GetDecimalValue(row3["CNNA"]) + GetDecimalValue(row3["CNHN"])+ GetDecimalValue(row3["CNT"]);
+                                                   GetDecimalValue(row3["CNDN"]) + GetDecimalValue(row3["CNNA"]) + GetDecimalValue(row3["CNHN"]) + GetDecimalValue(row3["CNT"]);
 
                                     // Cộng dồn vào tổng của cột TỔNG
                                     grandTotalRow2 += totalRow;
@@ -1910,7 +1936,12 @@
 
 
                 <div class="data_table" style="margin-top:30px">
-                    <h6 style="text-align:left">3.Doanh Thu Bán Hàng Theo Kênh Bán Hàng</h6>
+                    <div style="display:flex">
+                        <h6 style="text-align:left">3.Doanh Thu Bán Hàng Theo Kênh Bán Hàng</h6>
+                        <button style="border-radius: 10px; margin-left: 10px; margin-bottom: 10px; background-color: #aec9e0; color: #3483bd ">
+                            <a onclick="return ExcellentExport.excel(this, 'example3', 'Sheet 1');" download="DOANH THU BÁN HÀNG THEO KÊNH BÁN HÀNG.xls" style="color: #3483bd">Xuất Excel</a>
+                        </button>
+                    </div>
                     <table id="example3" class="table table-striped table-bordered">
                         <thead class="table-dark" id="head">
                             <tr>
@@ -1954,7 +1985,7 @@
                                 {
                                     var totalRow = GetDecimalValue(row["CTY"]) + GetDecimalValue(row["PKD"]) + GetDecimalValue(row["CNHCM"]) + GetDecimalValue(row["CNCT"]) +
                                                    GetDecimalValue(row["CNTG"]) + GetDecimalValue(row["CNMD"]) + GetDecimalValue(row["CNVT"]) + GetDecimalValue(row["CNNT"]) +
-                                                   GetDecimalValue(row["CNDN"]) + GetDecimalValue(row["CNNA"]) + GetDecimalValue(row["CNHN"])+ GetDecimalValue(row["CNT"]);
+                                                   GetDecimalValue(row["CNDN"]) + GetDecimalValue(row["CNNA"]) + GetDecimalValue(row["CNHN"]) + GetDecimalValue(row["CNT"]);
                                     grandTotalRow3 += totalRow;
 
                                     if (row["Ma_Kenh"].ToString() == "OTC")
@@ -2005,7 +2036,7 @@
                                         totalsKhac[9] += GetDecimalValue(row["CNDN"]);
                                         totalsKhac[10] += GetDecimalValue(row["CNNA"]);
                                         totalsKhac[11] += GetDecimalValue(row["CNHN"]);
-                                        totalsKhac[12] += totalRow; 
+                                        totalsKhac[12] += totalRow;
                                         sumTotalKhac += totalRow;
                                     }
                                 }
@@ -2023,13 +2054,13 @@
                             </tr>
 
                             @foreach (DataRow row in Model.Tables[2].Rows)
-                                        {
-                                                var totalRow = GetDecimalValue(row["CTY"]) + GetDecimalValue(row["PKD"]) + GetDecimalValue(row["CNHCM"]) + GetDecimalValue(row["CNCT"]) +
-                                                                                      GetDecimalValue(row["CNTG"]) + GetDecimalValue(row["CNMD"]) + GetDecimalValue(row["CNVT"]) + GetDecimalValue(row["CNNT"]) +
-                                                                                      GetDecimalValue(row["CNDN"]) + GetDecimalValue(row["CNNA"]) + GetDecimalValue(row["CNHN"])+ GetDecimalValue(row["CNT"]);
+                            {
+                                var totalRow = GetDecimalValue(row["CTY"]) + GetDecimalValue(row["PKD"]) + GetDecimalValue(row["CNHCM"]) + GetDecimalValue(row["CNCT"]) +
+                                                                      GetDecimalValue(row["CNTG"]) + GetDecimalValue(row["CNMD"]) + GetDecimalValue(row["CNVT"]) + GetDecimalValue(row["CNNT"]) +
+                                                                      GetDecimalValue(row["CNDN"]) + GetDecimalValue(row["CNNA"]) + GetDecimalValue(row["CNHN"]) + GetDecimalValue(row["CNT"]);
 
-                                                if (row["Ma_Kenh"].ToString() == "OTC")
-                                                {
+                                if (row["Ma_Kenh"].ToString() == "OTC")
+                                {
                                     <tr class="expandable-content_detail">
                                         <td style="text-align:center;color:black">@stt</td>
 
@@ -2051,27 +2082,27 @@
                                     </tr>
                                     stt++;
                                 }
-                                }
-
-                        <tr class="expandable-content">
-                            <td style="font-weight:bold">ETC  <span class="material-symbols-outlined expandable-icon noExl" onclick="toggleRowsETC(this)"><i class="fa-solid fa-caret-down"></i></span></td>
-                            <td></td>
-                            <td></td>
-                            @for (int i = 0; i < totalsETC.Length; i++)
-                            {
-                                <td style='text-align:right;mso-number-format:" #,##0.00"'>@FormatValue(totalsETC[i])</td>
                             }
-                            @*<td style='text-align:right;mso-number-format:" #,##0.00"'>@FormatValue(sumTotalETC) </td>*@
-                        </tr>
+
+                            <tr class="expandable-content">
+                                <td style="font-weight:bold">ETC  <span class="material-symbols-outlined expandable-icon noExl" onclick="toggleRowsETC(this)"><i class="fa-solid fa-caret-down"></i></span></td>
+                                <td></td>
+                                <td></td>
+                                @for (int i = 0; i < totalsETC.Length; i++)
+                                {
+                                    <td style='text-align:right;mso-number-format:" #,##0.00"'>@FormatValue(totalsETC[i])</td>
+                                }
+                                @*<td style='text-align:right;mso-number-format:" #,##0.00"'>@FormatValue(sumTotalETC) </td>*@
+                            </tr>
 
                             @foreach (DataRow row in Model.Tables[2].Rows)
                             {
-                                            var totalRow = GetDecimalValue(row["CTY"]) + GetDecimalValue(row["PKD"]) + GetDecimalValue(row["CNHCM"]) + GetDecimalValue(row["CNCT"]) +
-                                                             GetDecimalValue(row["CNTG"]) + GetDecimalValue(row["CNMD"]) + GetDecimalValue(row["CNVT"]) + GetDecimalValue(row["CNNT"]) +
-                                                             GetDecimalValue(row["CNDN"]) + GetDecimalValue(row["CNNA"]) + GetDecimalValue(row["CNHN"])+ GetDecimalValue(row["CNT"]);
+                                var totalRow = GetDecimalValue(row["CTY"]) + GetDecimalValue(row["PKD"]) + GetDecimalValue(row["CNHCM"]) + GetDecimalValue(row["CNCT"]) +
+                                                 GetDecimalValue(row["CNTG"]) + GetDecimalValue(row["CNMD"]) + GetDecimalValue(row["CNVT"]) + GetDecimalValue(row["CNNT"]) +
+                                                 GetDecimalValue(row["CNDN"]) + GetDecimalValue(row["CNNA"]) + GetDecimalValue(row["CNHN"]) + GetDecimalValue(row["CNT"]);
 
-                                            if (row["Ma_Kenh"].ToString() == "ETC")
-                                            {
+                                if (row["Ma_Kenh"].ToString() == "ETC")
+                                {
                                     <tr class="expandable-content_detailETC">
                                         <td style="text-align:center;color:black">@stt1</td>
 
@@ -2095,22 +2126,22 @@
                                 }
                             }
 
-                        <tr class="expandable-content">
-                            <td style="font-weight:bold">KHÁC  <span class="material-symbols-outlined expandable-icon noExl" onclick="toggleRowsKHAC(this)"><i class="fa-solid fa-caret-down"></i></span></td>
-                            <td></td>
-                            <td></td>
-                            @for (int i = 0; i < totalsKhac.Length; i++)
-                            {
-                                <td style='text-align:right;mso-number-format:" #,##0.00"'>@FormatValue(totalsKhac[i])</td>
-                            }
-                            @*<td style='text-align:right;mso-number-format:" #,##0.00"'>@FormatValue(sumTotalKhac)</td>*@
-                        </tr>
+                            <tr class="expandable-content">
+                                <td style="font-weight:bold">KHÁC  <span class="material-symbols-outlined expandable-icon noExl" onclick="toggleRowsKHAC(this)"><i class="fa-solid fa-caret-down"></i></span></td>
+                                <td></td>
+                                <td></td>
+                                @for (int i = 0; i < totalsKhac.Length; i++)
+                                {
+                                    <td style='text-align:right;mso-number-format:" #,##0.00"'>@FormatValue(totalsKhac[i])</td>
+                                }
+                                @*<td style='text-align:right;mso-number-format:" #,##0.00"'>@FormatValue(sumTotalKhac)</td>*@
+                            </tr>
 
                             @foreach (DataRow row in Model.Tables[2].Rows)
                             {
                                 var totalRow = GetDecimalValue(row["CTY"]) + GetDecimalValue(row["PKD"]) + GetDecimalValue(row["CNHCM"]) + GetDecimalValue(row["CNCT"]) +
                                                    GetDecimalValue(row["CNTG"]) + GetDecimalValue(row["CNMD"]) + GetDecimalValue(row["CNVT"]) + GetDecimalValue(row["CNNT"]) +
-                                                   GetDecimalValue(row["CNDN"]) + GetDecimalValue(row["CNNA"]) + GetDecimalValue(row["CNHN"])+ GetDecimalValue(row["CNT"]);
+                                                   GetDecimalValue(row["CNDN"]) + GetDecimalValue(row["CNNA"]) + GetDecimalValue(row["CNHN"]) + GetDecimalValue(row["CNT"]);
 
                                 if (row["Ma_Kenh"].ToString() == "")
                                 {
@@ -2162,303 +2193,323 @@
 
 
                 @*Bang 4*@   <h6 style="text-align: left; margin-left: 150px; width: 100%; font-size: 22px; margin-top: 30px">III. CÁC KHOẢN GIẢM TRỪ DOANH THU</h6>
-                <div class="data_table" style="">
-                    <h6 style="text-align:left">1.Các Khoản Giảm Trừ Theo Gam Hàng</h6>
-                    <table id="example" class="table table-striped table-bordered">
-                        <thead class="table-dark" id="head">
-                            <tr>
-                                <th>STT</th>
-                                <th>Loại TP</th>
-                                <th>CTY</th>
-                                <th>PKD</th>
-                                <th>CNT</th>
-                                <th>CNHCM</th>
-                                <th>CNCT</th>
-                                <th>CNTG</th>
-                                <th>CNMD</th>
-                                <th>CNVT</th>
-                                <th>CNNT</th>
-                                <th>CNDN</th>
-                                <th>CNNA</th>
-                                <th>CNHN</th>
-                                <th>TỔNG</th>
+                             <div class="data_table" style="">
+                                 <div style="display:flex">
+                                     <h6 style="text-align:left">1.Các Khoản Giảm Trừ Theo Gam Hàng</h6>
+                                     <button style="border-radius: 10px; margin-left: 10px; margin-bottom: 10px; background-color: #aec9e0; color: #3483bd ">
+                                         <a onclick="return ExcellentExport.excel(this, 'example7', 'Sheet 1');" download="CÁC KHOẢN GIẢM TRỪ THEO GAM HÀNG.xls" style="color: #3483bd">Xuất Excel</a>
+                                     </button>
+                                 </div>
+                                 <table id="example7" class="table table-striped table-bordered">
+                                     <thead class="table-dark" id="head">
+                                         <tr>
+                                             <th>STT</th>
+                                             <th>Loại TP</th>
+                                             <th>CTY</th>
+                                             <th>PKD</th>
+                                             <th>CNT</th>
+                                             <th>CNHCM</th>
+                                             <th>CNCT</th>
+                                             <th>CNTG</th>
+                                             <th>CNMD</th>
+                                             <th>CNVT</th>
+                                             <th>CNNT</th>
+                                             <th>CNDN</th>
+                                             <th>CNNA</th>
+                                             <th>CNHN</th>
+                                             <th>TỔNG</th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-
-
-                            @{
-                                // Biến để lưu tổng của cột TỔNG
-                                decimal grandTotalRow4 = 0;
-
-                                foreach (DataRow row3 in Model.Tables[3].Rows)
-
-                                {
-                                    // Tính tổng cho mỗi hàng
-                                    var totalRow = GetDecimalValue(row3["CTY"]) + GetDecimalValue(row3["PKD"]) + GetDecimalValue(row3["CNHCM"]) + GetDecimalValue(row3["CNCT"]) +
-                                                   GetDecimalValue(row3["CNTG"]) + GetDecimalValue(row3["CNMD"]) + GetDecimalValue(row3["CNVT"]) + GetDecimalValue(row3["CNNT"]) +
-                                                   GetDecimalValue(row3["CNDN"]) + GetDecimalValue(row3["CNNA"]) + GetDecimalValue(row3["CNHN"])+ GetDecimalValue(row3["CNT"]);
-                                    grandTotalRow4 += totalRow;
-                                    <tr>
-                                        <td style="text-align:center;color:black">@row3["STT"]</td>
-                                        @if (row3["Loai_TP"].ToString() == "OPC")
-                                        {
-                                            <td style="text-align:left;color:black">OPC</td>
-                                        }
-                                        else if (row3["Loai_TP"].ToString() == "TP07")
-                                        {
-                                            <td style="text-align:left;color:black">SỦI</td>
-                                        }
-                                        else if (row3["Loai_TP"].ToString() == "HH04")
-                                        {
-                                            <td style="text-align:left;color:black">OPC BD</td>
-                                        }
-                                        else if (row3["Loai_TP"].ToString() == "HH25")
-                                        {
-                                            <td style="text-align:left;color:black">TW25</td>
-                                        }
-                                        else if (row3["Loai_TP"].ToString() == "TP08")
-                                        {
-                                            <td style="text-align:left;color:black">PHIẾN</td>
-                                        }
-                                        else if (row3["Loai_TP"].ToString() == "GC")
-                                        {
-                                            <td style="text-align:left;color:black">GIA CÔNG</td>
-                                        }
-                                        else if (row3["Loai_TP"].ToString() == "CD")
-                                        {
-                                            <td style="text-align:left;color:black">TPGC OPC BD</td>
-                                        }
-                                        else if (row3["Loai_TP"].ToString() == "KH")
-                                        {
-                                            <td style="text-align:left;color:black">KHÁC(DV + NVL + TM KHÁC)</td>
-                                        }
-                                        else
-                                        {
-                                            <td></td>
-                                        }
-                                        <td style="text-align:right;color:black">@FormatValue(row3["CTY"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row3["PKD"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row3["CNT"])</td>
-                                        <td style="text-align: right; color: black ">@FormatValue(row3["CNHCM"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row3["CNCT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row3["CNTG"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row3["CNMD"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row3["CNVT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row3["CNNT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row3["CNDN"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row3["CNNA"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row3["CNHN"])</td>
-                                        <td style="text-align:right;color:black">@FormatValue(totalRow)</td>
+                                         </tr>
+                                     </thead>
+                                     <tbody>
 
 
+                                         @{
+                                             // Biến để lưu tổng của cột TỔNG
+                                             decimal grandTotalRow4 = 0;
 
-                                    </tr>
+                                             foreach (DataRow row3 in Model.Tables[3].Rows)
 
-                                }
-                            }
-                        </tbody>
-                        <tfoot>
-                            <tr style="background-color: burlywood">
-                                <td colspan="2" style="font-weight:bold">Tổng Cộng:</td>
-                                <td style="text-align: right; color: black">@FormatValue(totalCTY4) </td>
-                                <td style="text-align: right; color: black">@FormatValue(totalPKD4) </td>
-                                <td style="text-align: right; color: black">@FormatValue(totalCNT4) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNHCM4) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNCT4) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNTG4) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNMD4) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNVT4) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNNT4) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNDN4) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNNA4) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNHN4) </td>
-                                <td style="text-align:right;color:black">@FormatValue(grandTotalRow4)</td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                                             {
+                                                 // Tính tổng cho mỗi hàng
+                                                 var totalRow = GetDecimalValue(row3["CTY"]) + GetDecimalValue(row3["PKD"]) + GetDecimalValue(row3["CNHCM"]) + GetDecimalValue(row3["CNCT"]) +
+                                                                GetDecimalValue(row3["CNTG"]) + GetDecimalValue(row3["CNMD"]) + GetDecimalValue(row3["CNVT"]) + GetDecimalValue(row3["CNNT"]) +
+                                                                GetDecimalValue(row3["CNDN"]) + GetDecimalValue(row3["CNNA"]) + GetDecimalValue(row3["CNHN"]) + GetDecimalValue(row3["CNT"]);
+                                                 grandTotalRow4 += totalRow;
+                                                 <tr>
+                                                     <td style="text-align:center;color:black">@row3["STT"]</td>
+                                                     @if (row3["Loai_TP"].ToString() == "OPC")
+                                                     {
+                                                         <td style="text-align:left;color:black">OPC</td>
+                                                     }
+                                                     else if (row3["Loai_TP"].ToString() == "TP07")
+                                                     {
+                                                         <td style="text-align:left;color:black">SỦI</td>
+                                                     }
+                                                     else if (row3["Loai_TP"].ToString() == "HH04")
+                                                     {
+                                                         <td style="text-align:left;color:black">OPC BD</td>
+                                                     }
+                                                     else if (row3["Loai_TP"].ToString() == "HH25")
+                                                     {
+                                                         <td style="text-align:left;color:black">TW25</td>
+                                                     }
+                                                     else if (row3["Loai_TP"].ToString() == "TP08")
+                                                     {
+                                                         <td style="text-align:left;color:black">PHIẾN</td>
+                                                     }
+                                                     else if (row3["Loai_TP"].ToString() == "GC")
+                                                     {
+                                                         <td style="text-align:left;color:black">GIA CÔNG</td>
+                                                     }
+                                                     else if (row3["Loai_TP"].ToString() == "CD")
+                                                     {
+                                                         <td style="text-align:left;color:black">TPGC OPC BD</td>
+                                                     }
+                                                     else if (row3["Loai_TP"].ToString() == "KH")
+                                                     {
+                                                         <td style="text-align:left;color:black">KHÁC(DV + NVL + TM KHÁC)</td>
+                                                     }
+                                                     else
+                                                     {
+                                                         <td></td>
+                                                     }
+                                                     <td style="text-align:right;color:black">@FormatValue(row3["CTY"])</td>
+                                                     <td style="text-align: right; color: black">@FormatValue(row3["PKD"])</td>
+                                                     <td style="text-align: right; color: black">@FormatValue(row3["CNT"])</td>
+                                                     <td style="text-align: right; color: black ">@FormatValue(row3["CNHCM"])</td>
+                                                     <td style="text-align: right; color: black">@FormatValue(row3["CNCT"])</td>
+                                                     <td style="text-align: right; color: black">@FormatValue(row3["CNTG"])</td>
+                                                     <td style="text-align: right; color: black">@FormatValue(row3["CNMD"])</td>
+                                                     <td style="text-align: right; color: black">@FormatValue(row3["CNVT"])</td>
+                                                     <td style="text-align: right; color: black">@FormatValue(row3["CNNT"])</td>
+                                                     <td style="text-align: right; color: black">@FormatValue(row3["CNDN"])</td>
+                                                     <td style="text-align: right; color: black">@FormatValue(row3["CNNA"])</td>
+                                                     <td style="text-align: right; color: black">@FormatValue(row3["CNHN"])</td>
+                                                     <td style="text-align:right;color:black">@FormatValue(totalRow)</td>
 
-                </div>
+
+
+                                                 </tr>
+
+                                             }
+                                         }
+                                     </tbody>
+                                     <tfoot>
+                                         <tr style="background-color: burlywood">
+                                             <td colspan="2" style="font-weight:bold">Tổng Cộng:</td>
+                                             <td style="text-align: right; color: black">@FormatValue(totalCTY4) </td>
+                                             <td style="text-align: right; color: black">@FormatValue(totalPKD4) </td>
+                                             <td style="text-align: right; color: black">@FormatValue(totalCNT4) </td>
+                                             <td style="text-align: right; color: black"> @FormatValue(totalCNHCM4) </td>
+                                             <td style="text-align: right; color: black"> @FormatValue(totalCNCT4) </td>
+                                             <td style="text-align: right; color: black"> @FormatValue(totalCNTG4) </td>
+                                             <td style="text-align: right; color: black"> @FormatValue(totalCNMD4) </td>
+                                             <td style="text-align: right; color: black"> @FormatValue(totalCNVT4) </td>
+                                             <td style="text-align: right; color: black"> @FormatValue(totalCNNT4) </td>
+                                             <td style="text-align: right; color: black"> @FormatValue(totalCNDN4) </td>
+                                             <td style="text-align: right; color: black"> @FormatValue(totalCNNA4) </td>
+                                             <td style="text-align: right; color: black"> @FormatValue(totalCNHN4) </td>
+                                             <td style="text-align:right;color:black">@FormatValue(grandTotalRow4)</td>
+                                         </tr>
+                                     </tfoot>
+                                 </table>
+
+                             </div>
 
 
 
 
                 @*Bang 6*@
-                <div class="data_table" style="margin-top:30px">
+            <div class="data_table" style="margin-top:30px">
+                <div style="display:flex">
                     <h6 style="text-align:left">2.Các Khoản Giảm Trừ Theo Nhóm Hàng</h6>
-                    <table id="example" class="table table-striped table-bordered">
-                        <thead class="table-dark" id="head">
-                            <tr>
-                                <th>STT</th>
-                                <th>Nhóm Hàng</th>
-                                <th>CTY</th>
-                                <th>PKD</th>
-                                <th>CNT</th>
-                                <th>CNHCM</th>
-                                <th>CNCT</th>
-                                <th>CNTG</th>
-                                <th>CNMD</th>
-                                <th>CNVT</th>
-                                <th>CNNT</th>
-                                <th>CNDN</th>
-                                <th>CNNA</th>
-                                <th>CNHN</th>
-                                <th>TỔNG</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-
-
-                            @{
-                                // Biến để lưu tổng của cột TỔNG
-                                decimal grandTotalRow6 = 0;
-                                foreach (DataRow row6 in Model.Tables[5].Rows)
-                                {
-                                    // Tính tổng cho mỗi hàng
-                                    var totalRow = GetDecimalValue(row6["CTY"]) + GetDecimalValue(row6["PKD"]) + GetDecimalValue(row6["CNHCM"]) + GetDecimalValue(row6["CNCT"]) +
-                                                   GetDecimalValue(row6["CNTG"]) + GetDecimalValue(row6["CNMD"]) + GetDecimalValue(row6["CNVT"]) + GetDecimalValue(row6["CNNT"]) +
-                                                   GetDecimalValue(row6["CNDN"]) + GetDecimalValue(row6["CNNA"]) + GetDecimalValue(row6["CNHN"])+ GetDecimalValue(row6["CNT"]);
-                                    grandTotalRow6 += totalRow;
-                                    <tr>
-                                        <td style="text-align:center;color:black">@row6["STT"]</td>
-                                        <td style="text-align:left;color:black">@row6["Nhom_Hang"]</td>
-
-                                        <td style="text-align:right;color:black">@FormatValue(row6["CTY"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row6["PKD"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row6["CNT"])</td>
-                                        <td style="text-align: right; color: black ">@FormatValue(row6["CNHCM"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row6["CNCT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row6["CNTG"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row6["CNMD"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row6["CNVT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row6["CNNT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row6["CNDN"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row6["CNNA"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row6["CNHN"])</td>
-                                        <td style="text-align:right;color:black">@FormatValue(totalRow)</td>
-
-
-
-                                    </tr>
-
-                                }
-                            }
-                        </tbody>
-                        <tfoot>
-                            <tr style="background-color: burlywood">
-                                <td colspan="2" style="font-weight:bold">Tổng Cộng:</td>
-                                <td style="text-align: right; color: black">@FormatValue(totalCTY6) </td>
-                                <td style="text-align: right; color: black">@FormatValue(totalPKD6) </td>
-                                <td style="text-align: right; color: black">@FormatValue(totalCNT6) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNHCM6) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNCT6) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNTG6) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNMD6) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNVT6) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNNT6) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNDN6) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNNA6) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNHN6) </td>
-                                <td style="text-align:right;color:black">@FormatValue(grandTotalRow6)</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-
+                    <button style="border-radius: 10px; margin-left: 10px; margin-bottom: 10px; background-color: #aec9e0; color: #3483bd ">
+                        <a onclick="return ExcellentExport.excel(this, 'example8', 'Sheet 1');" download="CÁC KHOẢN GIẢM TRỪ THEO NHÓM HÀNG.xls" style="color: #3483bd">Xuất Excel</a>
+                    </button>
                 </div>
+                <table id="example8" class="table table-striped table-bordered">
+                    <thead class="table-dark" id="head">
+                        <tr>
+                            <th>STT</th>
+                            <th>Nhóm Hàng</th>
+                            <th>CTY</th>
+                            <th>PKD</th>
+                            <th>CNT</th>
+                            <th>CNHCM</th>
+                            <th>CNCT</th>
+                            <th>CNTG</th>
+                            <th>CNMD</th>
+                            <th>CNVT</th>
+                            <th>CNNT</th>
+                            <th>CNDN</th>
+                            <th>CNNA</th>
+                            <th>CNHN</th>
+                            <th>TỔNG</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        @{
+                            // Biến để lưu tổng của cột TỔNG
+                            decimal grandTotalRow6 = 0;
+                            foreach (DataRow row6 in Model.Tables[5].Rows)
+                            {
+                                // Tính tổng cho mỗi hàng
+                                var totalRow = GetDecimalValue(row6["CTY"]) + GetDecimalValue(row6["PKD"]) + GetDecimalValue(row6["CNHCM"]) + GetDecimalValue(row6["CNCT"]) +
+                                               GetDecimalValue(row6["CNTG"]) + GetDecimalValue(row6["CNMD"]) + GetDecimalValue(row6["CNVT"]) + GetDecimalValue(row6["CNNT"]) +
+                                               GetDecimalValue(row6["CNDN"]) + GetDecimalValue(row6["CNNA"]) + GetDecimalValue(row6["CNHN"]) + GetDecimalValue(row6["CNT"]);
+                                grandTotalRow6 += totalRow;
+                                <tr>
+                                    <td style="text-align:center;color:black">@row6["STT"]</td>
+                                    <td style="text-align:left;color:black">@row6["Nhom_Hang"]</td>
+
+                                    <td style="text-align:right;color:black">@FormatValue(row6["CTY"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row6["PKD"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row6["CNT"])</td>
+                                    <td style="text-align: right; color: black ">@FormatValue(row6["CNHCM"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row6["CNCT"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row6["CNTG"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row6["CNMD"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row6["CNVT"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row6["CNNT"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row6["CNDN"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row6["CNNA"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row6["CNHN"])</td>
+                                    <td style="text-align:right;color:black">@FormatValue(totalRow)</td>
+
+
+
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr style="background-color: burlywood">
+                            <td colspan="2" style="font-weight:bold">Tổng Cộng:</td>
+                            <td style="text-align: right; color: black">@FormatValue(totalCTY6) </td>
+                            <td style="text-align: right; color: black">@FormatValue(totalPKD6) </td>
+                            <td style="text-align: right; color: black">@FormatValue(totalCNT6) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNHCM6) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNCT6) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNTG6) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNMD6) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNVT6) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNNT6) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNDN6) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNNA6) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNHN6) </td>
+                            <td style="text-align:right;color:black">@FormatValue(grandTotalRow6)</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
                 @*Bang 5*@
 
-                <div class="data_table" style="margin-top:30px">
+            <div class="data_table" style="margin-top:30px">
+                <div style="display:flex">
                     <h6 style="text-align:left">3.Các Khoản Giảm Trừ Theo Kênh Bán Hàng</h6>
-                    <table id="example" class="table table-striped table-bordered">
-                        <thead class="table-dark" id="head">
-                            <tr>
-                                <th>STT</th>
-                                <th>Kênh</th>
-                                <th>Industry ID</th>
-                                <th>CTY</th>
-                                <th>PKD</th>
-                                <th>CNT</th>
-                                <th>CNHCM</th>
-                                <th>CNCT</th>
-                                <th>CNTG</th>
-                                <th>CNMD</th>
-                                <th>CNVT</th>
-                                <th>CNNT</th>
-                                <th>CNDN</th>
-                                <th>CNNA</th>
-                                <th>CNHN</th>
-                                <th>TỔNG</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-
-
-                            @{
-                                // Biến để lưu tổng của cột TỔNG
-                                decimal grandTotalRow5 = 0;
-                                foreach (DataRow row4 in Model.Tables[4].Rows)
-                                {
-                                    // Tính tổng cho mỗi hàng
-                                    var totalRow = GetDecimalValue(row4["CTY"]) + GetDecimalValue(row4["PKD"]) + GetDecimalValue(row4["CNHCM"]) + GetDecimalValue(row4["CNCT"]) +
-                                                   GetDecimalValue(row4["CNTG"]) + GetDecimalValue(row4["CNMD"]) + GetDecimalValue(row4["CNVT"]) + GetDecimalValue(row4["CNNT"]) +
-                                                   GetDecimalValue(row4["CNDN"]) + GetDecimalValue(row4["CNNA"]) + GetDecimalValue(row4["CNHN"])+ GetDecimalValue(row4["CNT"]);
-                                    grandTotalRow5 += totalRow;
-                                    <tr>
-                                        <td style="text-align:center;color:black">@row4["STT"]</td>
-                                        <td style="text-align:left;color:black">@row4["Kenh"]</td>
-                                        <td style="text-align:left;color:black">@row4["IndustryId"]</td>
-                                        <td style="text-align:right;color:black">@FormatValue(row4["CTY"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row4["PKD"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row4["CNT"])</td>
-                                        <td style="text-align: right; color: black ">@FormatValue(row4["CNHCM"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row4["CNCT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row4["CNTG"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row4["CNMD"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row4["CNVT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row4["CNNT"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row4["CNDN"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row4["CNNA"])</td>
-                                        <td style="text-align: right; color: black">@FormatValue(row4["CNHN"])</td>
-                                        <td style="text-align:right;color:black">@FormatValue(totalRow)</td>
-
-
-
-                                    </tr>
-
-                                }
-                            }
-                        </tbody>
-                        <tfoot>
-                            <tr style="background-color: burlywood">
-                                <td colspan="3" style="font-weight:bold">Tổng Cộng:</td>
-                                <td style="text-align: right; color: black">@FormatValue(totalCTY5) </td>
-                                <td style="text-align: right; color: black">@FormatValue(totalPKD5) </td>
-                                <td style="text-align: right; color: black">@FormatValue(totalCNT5) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNHCM5) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNCT5) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNTG5) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNMD5) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNVT5) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNNT5) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNDN5) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNNA5) </td>
-                                <td style="text-align: right; color: black"> @FormatValue(totalCNHN5) </td>
-                                <td style="text-align:right;color:black">@FormatValue(grandTotalRow5)</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-
+                    <button style="border-radius: 10px; margin-left: 10px; margin-bottom: 10px; background-color: #aec9e0; color: #3483bd ">
+                        <a onclick="return ExcellentExport.excel(this, 'example10', 'Sheet 1');" download="CÁC KHOẢN GIẢM TRỪ THEO KÊNH BÁN HÀNG.xls" style="color: #3483bd">Xuất Excel</a>
+                    </button>
                 </div>
+                <table id="example10" class="table table-striped table-bordered">
+                    <thead class="table-dark" id="head">
+                        <tr>
+                            <th>STT</th>
+                            <th>Kênh</th>
+                            <th>Industry ID</th>
+                            <th>CTY</th>
+                            <th>PKD</th>
+                            <th>CNT</th>
+                            <th>CNHCM</th>
+                            <th>CNCT</th>
+                            <th>CNTG</th>
+                            <th>CNMD</th>
+                            <th>CNVT</th>
+                            <th>CNNT</th>
+                            <th>CNDN</th>
+                            <th>CNNA</th>
+                            <th>CNHN</th>
+                            <th>TỔNG</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        @{
+                            // Biến để lưu tổng của cột TỔNG
+                            decimal grandTotalRow5 = 0;
+                            foreach (DataRow row4 in Model.Tables[4].Rows)
+                            {
+                                // Tính tổng cho mỗi hàng
+                                var totalRow = GetDecimalValue(row4["CTY"]) + GetDecimalValue(row4["PKD"]) + GetDecimalValue(row4["CNHCM"]) + GetDecimalValue(row4["CNCT"]) +
+                                               GetDecimalValue(row4["CNTG"]) + GetDecimalValue(row4["CNMD"]) + GetDecimalValue(row4["CNVT"]) + GetDecimalValue(row4["CNNT"]) +
+                                               GetDecimalValue(row4["CNDN"]) + GetDecimalValue(row4["CNNA"]) + GetDecimalValue(row4["CNHN"]) + GetDecimalValue(row4["CNT"]);
+                                grandTotalRow5 += totalRow;
+                                <tr>
+                                    <td style="text-align:center;color:black">@row4["STT"]</td>
+                                    <td style="text-align:left;color:black">@row4["Kenh"]</td>
+                                    <td style="text-align:left;color:black">@row4["IndustryId"]</td>
+                                    <td style="text-align:right;color:black">@FormatValue(row4["CTY"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row4["PKD"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row4["CNT"])</td>
+                                    <td style="text-align: right; color: black ">@FormatValue(row4["CNHCM"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row4["CNCT"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row4["CNTG"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row4["CNMD"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row4["CNVT"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row4["CNNT"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row4["CNDN"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row4["CNNA"])</td>
+                                    <td style="text-align: right; color: black">@FormatValue(row4["CNHN"])</td>
+                                    <td style="text-align:right;color:black">@FormatValue(totalRow)</td>
+
+
+
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr style="background-color: burlywood">
+                            <td colspan="3" style="font-weight:bold">Tổng Cộng:</td>
+                            <td style="text-align: right; color: black">@FormatValue(totalCTY5) </td>
+                            <td style="text-align: right; color: black">@FormatValue(totalPKD5) </td>
+                            <td style="text-align: right; color: black">@FormatValue(totalCNT5) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNHCM5) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNCT5) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNTG5) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNMD5) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNVT5) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNNT5) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNDN5) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNNA5) </td>
+                            <td style="text-align: right; color: black"> @FormatValue(totalCNHN5) </td>
+                            <td style="text-align:right;color:black">@FormatValue(grandTotalRow5)</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
 
 
                 @*Bang 10*@
                 <h6 style="text-align: left; margin-left: 150px; width: 100%; font-size: 22px; margin-top: 30px">IV. GIÁ VỐN HÀNG BÁN</h6>
                 <div class="data_table" style="margin-top:30px">
-                    <h6 style="text-align:left">1.Giá Vốn Theo Gam Hàng</h6>
-                    <table id="example" class="table table-striped table-bordered">
+                    <div style="display:flex">
+                        <h6 style="text-align:left">1.Giá Vốn Theo Gam Hàng</h6>
+                        <button style="border-radius: 10px; margin-left: 10px; margin-bottom: 10px; background-color: #aec9e0; color: #3483bd ">
+                            <a onclick="return ExcellentExport.excel(this, 'example11', 'Sheet 1');" download="GIÁ VỐN THEO GAM HÀNG.xls" style="color: #3483bd">Xuất Excel</a>
+                        </button>
+                    </div>
+                    <table id="example11" class="table table-striped table-bordered">
                         <thead class="table-dark" id="head">
                             <tr>
                                 <th>STT</th>
@@ -2490,7 +2541,7 @@
                                     // Tính tổng cho mỗi hàng
                                     var totalRow = GetDecimalValue(row10["CTY"]) + GetDecimalValue(row10["PKD"]) + GetDecimalValue(row10["CNHCM"]) + GetDecimalValue(row10["CNCT"]) +
                                                    GetDecimalValue(row10["CNTG"]) + GetDecimalValue(row10["CNMD"]) + GetDecimalValue(row10["CNVT"]) + GetDecimalValue(row10["CNNT"]) +
-                                                   GetDecimalValue(row10["CNDN"]) + GetDecimalValue(row10["CNNA"]) + GetDecimalValue(row10["CNHN"])+ GetDecimalValue(row10["CNT"]);
+                                                   GetDecimalValue(row10["CNDN"]) + GetDecimalValue(row10["CNNA"]) + GetDecimalValue(row10["CNHN"]) + GetDecimalValue(row10["CNT"]);
                                     grandTotalRow10 += totalRow;
                                     <tr>
 
@@ -2575,8 +2626,13 @@
 
                 </div>
                 <div class="data_table" style="margin-top:30px">
-                    <h6 style="text-align:left">2.Giá Vốn Theo Nhóm Hàng</h6>
-                    <table id="example" class="table table-striped table-bordered">
+                    <div style="display:flex">
+                        <h6 style="text-align:left">2.Giá Vốn Theo Nhóm Hàng</h6>
+                        <button style="border-radius: 10px; margin-left: 10px; margin-bottom: 10px; background-color: #aec9e0; color: #3483bd ">
+                            <a onclick="return ExcellentExport.excel(this, 'example12', 'Sheet 1');" download="GIÁ VỐN THEO NHÓM HÀNG.xls" style="color: #3483bd">Xuất Excel</a>
+                        </button>
+                    </div>
+                    <table id="example12" class="table table-striped table-bordered">
                         <thead class="table-dark" id="head">
                             <tr>
                                 <th>STT</th>
@@ -2609,7 +2665,7 @@
                                     // Tính tổng cho mỗi hàng
                                     var totalRow = GetDecimalValue(row12["CTY"]) + GetDecimalValue(row12["PKD"]) + GetDecimalValue(row12["CNHCM"]) + GetDecimalValue(row12["CNCT"]) +
                                                    GetDecimalValue(row12["CNTG"]) + GetDecimalValue(row12["CNMD"]) + GetDecimalValue(row12["CNVT"]) + GetDecimalValue(row12["CNNT"]) +
-                                                   GetDecimalValue(row12["CNDN"]) + GetDecimalValue(row12["CNNA"]) + GetDecimalValue(row12["CNHN"])+ GetDecimalValue(row12["CNT"]);
+                                                   GetDecimalValue(row12["CNDN"]) + GetDecimalValue(row12["CNNA"]) + GetDecimalValue(row12["CNHN"]) + GetDecimalValue(row12["CNT"]);
                                     grandTotalRow12 += totalRow;
                                     <tr>
 
@@ -2660,8 +2716,13 @@
                 </div>
                 @*Bang 11*@
             <div class="data_table" style="margin-top:30px">
-                <h6 style="text-align:left">3.Giá Vốn Theo Kênh Bán Hàng</h6>
-                <table id="example" class="table table-striped table-bordered">
+                <div style="display:flex">
+                    <h6 style="text-align:left">3.Giá Vốn Theo Kênh Bán Hàng</h6>
+                    <button style="border-radius: 10px; margin-left: 10px; margin-bottom: 10px; background-color: #aec9e0; color: #3483bd ">
+                        <a onclick="return ExcellentExport.excel(this, 'example13', 'Sheet 1');" download="GIÁ VỐN THEO KÊNH BÁN HÀNG.xls" style="color: #3483bd">Xuất Excel</a>
+                    </button>
+                </div>
+                <table id="example13" class="table table-striped table-bordered">
                     <thead class="table-dark" id="head">
                         <tr>
                             <th>STT</th>
@@ -2693,7 +2754,7 @@
                                 // Tính tổng cho mỗi hàng
                                 var totalRow = GetDecimalValue(row11["CTY"]) + GetDecimalValue(row11["PKD"]) + GetDecimalValue(row11["CNHCM"]) + GetDecimalValue(row11["CNCT"]) +
                                                GetDecimalValue(row11["CNTG"]) + GetDecimalValue(row11["CNMD"]) + GetDecimalValue(row11["CNVT"]) + GetDecimalValue(row11["CNNT"]) +
-                                               GetDecimalValue(row11["CNDN"]) + GetDecimalValue(row11["CNNA"]) + GetDecimalValue(row11["CNHN"])+ GetDecimalValue(row11["CNT"]);
+                                               GetDecimalValue(row11["CNDN"]) + GetDecimalValue(row11["CNNA"]) + GetDecimalValue(row11["CNHN"]) + GetDecimalValue(row11["CNT"]);
                                 grandTotalRow11 += totalRow;
                                 <tr>
 

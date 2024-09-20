@@ -206,7 +206,7 @@
                                 <p><strong>1. Ngày</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="date" required="" name="Ngay_Ct" id="Ngay_Ct" value="@formattedNgayCt">
                             </div>
                             <div class="col">
-                                <p><strong>2. SỐ HĐ</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="So_Ct" id="So_Ct" value="@row2["So_CT"]" readonly>
+                                <p><strong>2. SỐ HĐ</strong>&nbsp;<span class="text-danger">*</span></p><input class="form-control" type="text" required="" name="So_Ct" id="So_Ct" value="@row2["So_CT"]" >
                             </div>
                         </div>
                     </div>
@@ -292,11 +292,13 @@
 
                     </div>
                     <div class="checkbox-wrapper-1">
-                        <input id="example-1" onclick="handleCheckbox(this)" class="substituted" type="checkbox" aria-hidden="true" value="@row2["Option_1"]" />
-                        <label for="example-1">Option 1</label>
+                        @*<input id="example-1" onclick="handleCheckbox(this)" class="substituted" type="checkbox" aria-hidden="true" value="@row2["Option_1"]" />
+        <label for="example-1">Option 1</label>*@
 
-                        <input id="example-2" class="substituted" type="checkbox" aria-hidden="true" value="@row2["Option_2"]" />
-                        <label for="example-2">Option 2</label>
+                        @*<input id="example-2" class="substituted" type="checkbox" aria-hidden="true" value="@row2["Option_2"]" />
+        <label for="example-2">Option 2</label>*@
+                        <input id="example-3" class="substituted" type="checkbox" aria-hidden="true" />
+                        <label for="example-3">Option 1</label>
                     </div>
                 }
                 <table id="example" class="table table-striped table-bordered">
@@ -590,12 +592,13 @@
             });
         }
         // Kiểm tra trạng thái của checkbox và gán giá trị tương ứng
-        var option1Value = $("#example-1").is(':checked') ? 1 : 0;
-        var option2Value = $("#example-2").is(':checked') ? 1 : 0;
-
+        //var option1Value = $("#example-1").is(':checked') ? 1 : 0;
+        //var option2Value = $("#example-2").is(':checked') ? 1 : 0;
+        var option3Value = $("#example-3").is(':checked') ? 1 : 0;
         // Lưu trữ giá trị vào cookies
-        document.cookie = "option_1=" + option1Value;
-        document.cookie = "option_2=" + option2Value;
+        //document.cookie = "option_1=" + option1Value;
+        //document.cookie = "option_2=" + option2Value;
+        document.cookie = "option_3=" + option3Value;
         $("#SaveCtV").click(function (e) {
             e.preventDefault();
             var warningText = $('#warning').text();
@@ -625,11 +628,12 @@
                 }
             });
 
-            var option1Value = $("#example-1").is(':checked') ? 1 : 0;
-            var option2Value = $("#example-2").is(':checked') ? 1 : 0;
-
-            document.cookie = "option_1=" + option1Value;
-            document.cookie = "option_2=" + option2Value;
+            //var option1Value = $("#example-1").is(':checked') ? 1 : 0;
+            //var option2Value = $("#example-2").is(':checked') ? 1 : 0;
+            var option3Value = $("#example-3").is(':checked') ? 1 : 0;
+            //document.cookie = "option_1=" + option1Value;
+            //document.cookie = "option_2=" + option2Value;
+            document.cookie = "option_3=" + option3Value;
 
             collectImageData(function (imageData) {
                 var data = JSON.stringify({
@@ -643,8 +647,8 @@
                     Ma_SP: $("#Ma_SP").val(),
                     Ten_SP: $("#Ten_SP").val(),
                     Ma_TDV: $("#Ma_TDV").val(),
-                    option_1: option1Value,
-                    option_2: option2Value,
+                    option_1: option3Value,
+                    option_2: "False",
                     Stt: $("#Stt").val(),
                     ...imageData,
                     details: orderArr
@@ -704,45 +708,71 @@
                 tbody.deleteRow(0);
             }
             var dataRows = [
-                { Ma_vt: "1003734", Ten_Vt: "Viên trị ho TUSSIDAY", Dvt: "76000" },
-                { Ma_vt: "1003689", Ten_Vt: "Thuốc ho người lớn OPC", Dvt: "28952" },
-                { Ma_vt: "1003645", Ten_Vt: "CHOLAPAN Viên mật nghệ", Dvt: "42000" },
-                { Ma_vt: "1003675", Ten_Vt: "Viên dưỡng não OP.CAN", Dvt: "28476" },
-                { Ma_vt: "1003784", Ten_Vt: "Vitamin C 500mg", Dvt: "50190" }
+                { Ma_vt: "1003671", Ten_Vt: "MIMOSA Viên An Thần", Dvt: "77048" },
+                { Ma_vt: "1003734", Ten_Vt: "Viên trị ho TUSSIDAY (Hộp 100NM)", Dvt: "76000" },
+                //{ Ma_vt: "1003734", Ten_Vt: "Viên trị ho TUSSIDAY", Dvt: "76000" },
+                //{ Ma_vt: "1003689", Ten_Vt: "Thuốc ho người lớn OPC", Dvt: "28952" },
+                //{ Ma_vt: "1003645", Ten_Vt: "CHOLAPAN Viên mật nghệ", Dvt: "42000" },
+                //{ Ma_vt: "1003675", Ten_Vt: "Viên dưỡng não OP.CAN", Dvt: "28476" },
+                //{ Ma_vt: "1003784", Ten_Vt: "Vitamin C 500mg", Dvt: "50190" }
             ];
 
-            // Kiểm tra checkbox nào được chọn và thêm hàng tương ứng
-            if (checkbox.id === "example-1" && checkbox.checked) {
-                document.getElementById("example-2").checked = false; // Uncheck "Option 2" nếu "Option 1" được chọn
-                // Thêm hàng cho "Option 1"
-                var newRow = tbody.insertRow(tbody.rows.length);
-                newRow.innerHTML = '<tr>' +
-                    '<td><input type="text" name="Ma_vt" style="width: 170px" class="ma-vt-input" list="dropdownListVT" value="1006506" readonly /></td>' +
-                    '<td><input type="text" name="Ten_Vt" class="ten-vt-input" value="HoAstex-S" readonly /></td>' +
-                    '<td ><input type="text"style="text-align:right" name="Dvt-original" class="Dvt-input" value="41.429" readonly />' +
-                    '<input type="hidden" name="Dvt" value="' + 41429 + '" />' +
-                    '</td >' +
+            //// Kiểm tra checkbox nào được chọn và thêm hàng tương ứng
+            //if (checkbox.id === "example-1" && checkbox.checked) {
+            //    document.getElementById("example-2").checked = false; // Uncheck "Option 2" nếu "Option 1" được chọn
+            //    // Thêm hàng cho "Option 1"
+            //    var newRow = tbody.insertRow(tbody.rows.length);
+            //    newRow.innerHTML = '<tr>' +
+            //        '<td><input type="text" name="Ma_vt" style="width: 170px" class="ma-vt-input" list="dropdownListVT" value="1006506" readonly /></td>' +
+            //        '<td><input type="text" name="Ten_Vt" class="ten-vt-input" value="HoAstex-S" readonly /></td>' +
+            //        '<td ><input type="text"style="text-align:right" name="Dvt-original" class="Dvt-input" value="41.429" readonly />' +
+            //        '<input type="hidden" name="Dvt" value="' + 41429 + '" />' +
+            //        '</td >' +
 
-                    '<td><input type="text" name="So_luong" class="han-muc-input" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\')" /></td>' +
-                    '<td><button class="deleteRowBtn">Xóa</button></td>' +
-                    '</tr>';
-            } else if (checkbox.id === "example-2" && checkbox.checked) {
-                document.getElementById("example-1").checked = false; // Uncheck "Option 1" nếu "Option 2" được chọn
-                // Thêm hàng cho "Option 2"
+            //        '<td><input type="text" name="So_luong" class="han-muc-input" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\')" /></td>' +
+            //        '<td><button class="deleteRowBtn">Xóa</button></td>' +
+            //        '</tr>';
+            //} else if (checkbox.id === "example-2" && checkbox.checked) {
+            //    document.getElementById("example-1").checked = false; // Uncheck "Option 1" nếu "Option 2" được chọn
+            //    // Thêm hàng cho "Option 2"
+            //    dataRows.forEach(function (rowData) {
+            //        var newRow = tbody.insertRow(tbody.rows.length);
+            //        var formattedDvt = formatNumber(rowData.Dvt);
+            //        newRow.innerHTML = '<tr>' +
+            //            '<td><input type="text" name="Ma_vt" style="width: 170px" class="ma-vt-input" value="' + rowData.Ma_vt + '" readonly /></td>' +
+            //            '<td><input type="text" name="Ten_Vt" class="ten-vt-input" value="' + rowData.Ten_Vt + '" readonly /></td>' +
+            //            '<td>' +
+            //            '<input type="text" name="Dvt_original" style="width: 100%;text-align:right" class="Dvt-input" value="' + formattedDvt + '" readonly />' +
+            //            '<input type="hidden" name="Dvt" value="' + rowData.Dvt + '" />' +
+            //            '</td>' +
+            //            '<td><input type="text" name="So_luong" class="han-muc-input" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\')" /></td>' +
+            //            '<td><button class="deleteRowBtn">Xóa</button></td>' +
+            //            '</tr>';
+            //    });
+
+            //}
+            if (checkbox.id === "example-3" && checkbox.checked) {
+                //document.getElementById("example-1").checked = false; // Uncheck "Option 2" nếu "Option 1" được chọn
+                //document.getElementById("example-2").checked = false; // Uncheck "Option 2" nếu "Option 2" được chọn
+                // Thêm hàng cho "Option 3"
                 dataRows.forEach(function (rowData) {
                     var newRow = tbody.insertRow(tbody.rows.length);
                     var formattedDvt = formatNumber(rowData.Dvt);
                     newRow.innerHTML = '<tr>' +
                         '<td><input type="text" name="Ma_vt" style="width: 170px" class="ma-vt-input" value="' + rowData.Ma_vt + '" readonly /></td>' +
-                        '<td><input type="text" name="Ten_Vt" class="ten-vt-input" value="' + rowData.Ten_Vt + '" readonly /></td>' +
+                        '<td><input type="text" name="Ten_Vt" class="ten-vt-input" style="text-align:right"value="' + rowData.Ten_Vt + '" readonly /></td>' +
                         '<td>' +
                         '<input type="text" name="Dvt_original" style="width: 100%;text-align:right" class="Dvt-input" value="' + formattedDvt + '" readonly />' +
                         '<input type="hidden" name="Dvt" value="' + rowData.Dvt + '" />' +
                         '</td>' +
-                        '<td><input type="text" name="So_luong" class="han-muc-input" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\')" /></td>' +
+
+
+                        '<td><input type="text" name="So_luong" style="width: 55px; height: 20px;" value ="1" class="han-muc-input" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\')"readonly /></td>' +
                         '<td><button class="deleteRowBtn">Xóa</button></td>' +
                         '</tr>';
+
                 });
+
 
             }
         }
@@ -802,13 +832,13 @@
                 console.log("Total là:", total);
                 $('#totalAmount').text(numberWithCommas(total));
 
-                if (total > 155000 && $('#example-2').is(':checked')) {
-                    $('#warning').text('Đã Vượt Quá Số Tiền Cho Phép');
-                } else if (isQuantityOver4 && $('#example-1').is(':checked')) {
-                    $('#warning').text('Số lượng không được vượt quá 4');
-                } else {
-                    $('#warning').text('');
-                }
+                //if (total > 155000 && $('#example-2').is(':checked')) {
+                //    $('#warning').text('Đã Vượt Quá Số Tiền Cho Phép');
+                //} else if (isQuantityOver4 && $('#example-1').is(':checked')) {
+                //    $('#warning').text('Số lượng không được vượt quá 4');
+                //} else {
+                //    $('#warning').text('');
+                //}
             }
 
             // Gắn sự kiện tính toán tổng cho sự thay đổi ở Đơn giá hoặc Số lượng

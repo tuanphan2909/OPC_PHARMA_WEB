@@ -165,6 +165,9 @@
         .Tien_Con_Lai_1 {
             width: 100px;
         }
+        .highlight {
+            background-color: #ff4343 !important;
+        }
     </style>
 </head>
 
@@ -467,19 +470,19 @@
         });
 
         rowCount++;
-        var newRow = `<tr>
+                var newRow = `<tr >
             <td>
                 <input type="checkbox" id="myCheckbox" name="myCheckbox" class="custom-checkbox" onchange="handleCheckboxChange(event)">
             </td>
             <td>
-                <input style="text-align:center" type="text" name="So_HD" id="So_HD" class="So_HD" list="dropdownListVT" placeholder="Tìm kiếm Hóa Đơn">
+                <input style="text-align:center" type="text" name="So_HD" id="So_HD" class="So_HD" list="dropdownListVT" placeholder="Tìm kiếm Hóa Đơn" data-index="${rowCount}">
                 <datalist id="dropdownListVT">
                     @foreach (var item in ViewBag.DataHD)
                     {
                         <option value="@item.So_HD" data-ten="@item.Ten_Dt" data-NgayHD="@item.Ngay_Nop_Tien" data-MaDt="@item.Ma_Dt" data-So_CT1="@item.So_BK" data-tien="@item.Tien_HD" data-tiencktt="@item.Tien_CKTT">@item.Ten_Dt</option>
                     }
                 </datalist>
-                <div id="error-messages-${rowCount}"></div>
+                <div id="error-messages-${rowCount}"style="color:white"></div>
             </td>
             <td><input style="text-align:center" name="So_CT1" id="So_CT1" class="So_CT1" readonly></td>
             <td><input name="Ngay_Hd" id="Ngay_Hd" class="Ngay_Hd" readonly></td>
@@ -498,7 +501,7 @@
             <td><input style="text-align:right" type="text" name="Tien_CKTT_1" id="Tien_CKTT_1" class="Tien_CKTT_1" /></td>
             <td><input style="text-align:right" type="text" name="Tien_Phai_Thu_1" id="Tien_Phai_Thu_1" class="Tien_Phai_Thu_1" /></td>
             <td><input style="text-align:right" type="text" name="Tien_Con_Lai_1" id="Tien_Con_Lai_1" class="Tien_Con_Lai_1" readonly /></td>
-            <td><button type="button" class="deleteRowBtn" onclick="deleteRow(this)">Xóa</button></td>
+            <td><button type="button" class="deleteRowBtn" >Xóa</button></td>
         </tr>`;
                 $('#example tbody').append(newRow);
                 populateDropdownListVT();
@@ -573,7 +576,19 @@
         //Collect Multiple Order List For Pass To Controller
         $("#SaveHD").click(function (e) {
             e.preventDefault();
+            var hasError = false;
+            $("#example tbody tr").each(function () {
+                var errorMessage = $(this).find('div[id^="error-messages"]').text();
+                if (errorMessage !== '') {
+                    hasError = true;
+                    return false; // Exit the loop if an error is found
+                }
+            });
 
+            if (hasError) {
+                alert("Có hóa đơn bị trùng vui lòng kiểm tra lại.");
+                return; // Stop the execution if there are errors
+            }
             var orderArr = [];
             orderArr.length = 0;
 
@@ -638,30 +653,46 @@
         function checkDuplicateSoHD() {
             var inputs = document.querySelectorAll('.So_HD');
             var values = {};
-
-            inputs.forEach(function (input, index) {
+            inputs.forEach(function (input) {
                 var value = input.value;
-                var errorMessageDiv = document.getElementById(`error-messages-${index + 1}`);
-                errorMessageDiv.textContent = ''; // Clear previous error message
+                var index = input.getAttribute('data-index'); // Lấy giá trị data-index chính xác
+                console.log('Index:', index);
+
+                var errorMessageDiv = document.getElementById(`error-messages-${index}`);
+                console.log('ErrorMessageDiv:', errorMessageDiv);
+
+                if (errorMessageDiv) {
+                    errorMessageDiv.textContent = ''; // Clear previous error message
+                }
+                input.closest('tr').classList.remove('highlight');
 
                 if (value !== '') {
                     if (!values[value]) {
                         values[value] = [];
                     }
-                    values[value].push(index);
+                    values[value].push(input); // Lưu trực tiếp input thay vì chỉ số
                 }
             });
 
             Object.keys(values).forEach(function (value) {
-                var indexes = values[value];
-                if (indexes.length > 1) {
-                    indexes.forEach(function (index) {
-                        var errorMessageDiv = document.getElementById(`error-messages-${index + 1}`);
-                        errorMessageDiv.textContent = 'Có sự trùng lặp số hóa đơn';
+                var inputsWithSameValue = values[value];
+                if (inputsWithSameValue.length > 1) {
+                    inputsWithSameValue.forEach(function (input) {
+                        var index = input.getAttribute('data-index'); // Lấy data-index để khớp với ID div lỗi
+                        var errorMessageDiv = document.getElementById(`error-messages-${index}`);
+                        if (errorMessageDiv) {
+                            errorMessageDiv.textContent = 'Có sự trùng lặp số hóa đơn';
+                        }
+                        var row = input.closest('tr');
+                        if (row) {
+                            row.classList.add('highlight');
+                        }
                     });
                 }
             });
         }
+
+
        
         function setCookie(name, value, days) {
             var expires = "";

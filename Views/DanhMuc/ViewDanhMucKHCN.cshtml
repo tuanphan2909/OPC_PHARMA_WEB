@@ -531,6 +531,7 @@
                                 <th>Tên TDV</th>*@
                             <td>Distribution</td>
                             <th>Industry</th>
+                                <th>Giới Hạn Nợ</th>
                                 @*<th>Mã LKH Ct OPC</th>
                                 <th>Tên LKH OPC</th>*@
                                 <th>MST</th>
@@ -579,6 +580,8 @@
         <td>@row2["Ten_TDV"]</td>*@
                                 <td>@row2["Distribution_T"]</td>
                                 <td>@row2["Industry_T"]</td>
+                                <td class="num" style="text-align:right">@String.Format("{0:n0}", Convert.ToDecimal(row2["Gioi_Han_No"]))</td>
+
                                 @*<td>@row2["Ma_LKH_Ct_OPC"]</td>
         <td>@row2["Ten_LKH_OPC"]</td>*@
                                 <td>@row2["MST"]</td>

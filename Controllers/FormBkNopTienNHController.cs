@@ -108,7 +108,7 @@ namespace web4.Controllers
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand("[usp_RpCongNoTDV_SAP]", connection))
+                using (SqlCommand command = new SqlCommand("[usp_DSHoaDonBKNTNganHang_SAP]", connection))
                 {
                     command.CommandTimeout = 950;
                     command.CommandType = CommandType.StoredProcedure;

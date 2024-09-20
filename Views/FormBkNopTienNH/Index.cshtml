@@ -1,4 +1,6 @@
-﻿
+﻿@{ 
+
+}
 
 @using System.Data;
 
@@ -239,7 +241,43 @@
                         <tbody>
                             @foreach (DataRow row2 in Model.Tables[0].Rows)
                             {
-                            
+                                string Ma_CbNv = Request.Cookies["Ma_CbNv"] != null ? Request.Cookies["Ma_CbNv"].Value : "";
+                                if (Request.Cookies["UserName"] != null && Request.Cookies["UserName"].Value.StartsWith("OPC", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    Ma_CbNv = "";
+                                }
+                                if (Ma_CbNv != "" && Ma_CbNv != "100000")
+                                {
+                                    if (Request.Cookies["Ma_CbNv"].Value == row2["Ma_TDV"].ToString())
+                                    {
+
+                                        var currentSoCt = row2["Stt"].ToString();
+                                        <tr data-soct="@currentSoCt">
+                                            <td style="text-align:right" class="Ngay_Ct">@row2["Ngay_Ct"]</td>
+                                            <td class="so-bk">@row2["So_BK"]</td>
+                                            <td class="ma-tdv">@row2["Ma_TDV"]</td>
+                                            <td class="ten-tdv">@row2["Ten_TDV"]</td>
+                                            <td class="nguoi-nop-tien">@row2["Nguoi_Nop_Tien"]</td>
+                                            <td class="noi-dung">@row2["Noi_Dung"]</td>
+                                            <td>@row2["Ma_dvcs"]</td>
+                                            <td style="text-align:right">@string.Format("{0:n0}", row2["Tong_Tien"]).Replace(",", ".")</td>
+                                            <td><a href="#" class="editBtn">EDIT</a></td>
+                                            <td>
+                                                <form action="javascript:void(0);" method="post" onsubmit="deleteRow(this, '@row2["Stt"]');">
+                                                    <input type="hidden" name="stt" value="@row2["STT"]" />
+                                                    <button type="submit" class="delete-button">DELETE</button>
+                                                </form>
+                                            </td>
+                                            <td><a href="#" class="print" onclick="printRow(this)">PRINT</a></td>
+
+                                            <td hidden class="ctvid">@row2["Stt"]</td>
+                                            <td><button onclick="scrollToBottom()">SEE DETAIL</button></td>
+                                        </tr>
+                                    }
+                                }
+                                else if (Ma_CbNv == "100000")
+                                {
+
                                     var currentSoCt = row2["Stt"].ToString();
                                     <tr data-soct="@currentSoCt">
                                         <td style="text-align:right" class="Ngay_Ct">@row2["Ngay_Ct"]</td>
@@ -263,7 +301,33 @@
                                         <td><button onclick="scrollToBottom()">SEE DETAIL</button></td>
                                     </tr>
 
-                             
+                                }
+                                else
+                                {
+                                    var currentSoCt = row2["Stt"].ToString();
+                                    <tr data-soct="@currentSoCt">
+                                        <td style="text-align:right" class="Ngay_Ct">@row2["Ngay_Ct"]</td>
+                                        <td class="so-bk">@row2["So_BK"]</td>
+                                        <td class="ma-tdv">@row2["Ma_TDV"]</td>
+                                        <td class="ten-tdv">@row2["Ten_TDV"]</td>
+                                        <td class="nguoi-nop-tien">@row2["Nguoi_Nop_Tien"]</td>
+                                        <td class="noi-dung">@row2["Noi_Dung"]</td>
+                                        <td>@row2["Ma_dvcs"]</td>
+                                        <td style="text-align:right">@string.Format("{0:n0}", row2["Tong_Tien"]).Replace(",", ".")</td>
+                                        <td><a href="#" class="editBtn">EDIT</a></td>
+                                        <td>
+                                            <form action="javascript:void(0);" method="post" onsubmit="deleteRow(this, '@row2["Stt"]');">
+                                                <input type="hidden" name="stt" value="@row2["STT"]" />
+                                                <button type="submit" class="delete-button">DELETE</button>
+                                            </form>
+                                        </td>
+                                        <td><a href="#" class="print" onclick="printRow(this)">PRINT</a></td>
+
+                                        <td hidden class="ctvid">@row2["Stt"]</td>
+                                        <td><button onclick="scrollToBottom()">SEE DETAIL</button></td>
+                                    </tr>
+                                }
+
                             }
                         </tbody>
                     </table>
@@ -328,15 +392,27 @@
     <script src="~/assets/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/js/jquery-3.6.0.min.js"></script>
     <script src="~/assets/js/datatables.min.js"></script>
-    <script>
 
+    <script>
         $(document).ready(function () {
             $('#example').DataTable({
-                "order": [[0, "desc"]] // Cột đầu tiên (Ngày Chứng từ) và sắp xếp giảm dần
+                "order": [[0, "desc"]], // Sắp xếp theo cột đầu tiên (Ngày Chứng từ) giảm dần
+                "columnDefs": [
+                    {
+                        "targets": 0,  // Chỉ định cột Ngày Chứng từ
+                        "render": function (data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                var parts = data.split('/');
+                                return new Date(parts[2], parts[1] - 1, parts[0]);
+                            }
+                            return data;
+                        }
+                    }
+                ]
             });
         });
-
     </script>
+
     <script>
         function printRow(element) {
             // Lấy hàng hiện tại
@@ -359,10 +435,10 @@
         }
     </script>
     <script>
-        $(document).ready(function () {
-            $('#example').DataTable();
-        });
-    </script>
+            $(document).ready(function () {
+                $('#example').DataTable();
+            });
+        </script>
     <script>
         // Your existing JavaScript code
 
@@ -397,7 +473,7 @@
 
         });
 
-     
+
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -513,6 +589,8 @@
 
 
     </script>
+
+
 </body>
 
 </html>
